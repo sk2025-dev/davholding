@@ -74,7 +74,7 @@ export default function BookingModal({ isOpen, onClose, preService = null }) {
   const [selectedSlot, setSelectedSlot]   = useState("");
   const [availableSlots, setAvailableSlots] = useState([]);
   const [slotsLoading, setSlotsLoading]   = useState(false);
-  const [form, setForm] = useState({ firstName: "", lastName: "", phone: "", notes: "" });
+  const [form, setForm] = useState({ firstName: "", lastName: "", phone: "", notes: "", nbPersons: 1 });
   const [submitting, setSubmitting] = useState(false);
   const [bookError, setBookError]   = useState("");
 
@@ -165,7 +165,7 @@ export default function BookingModal({ isOpen, onClose, preService = null }) {
       const res = await fetch(`${API_URL}/rdv`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json", Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ service, date: dateStr, time: selectedSlot, first_name: form.firstName, last_name: form.lastName, phone: form.phone, email: user?.email, notes: form.notes || null, payment_method: "mobile" }),
+        body: JSON.stringify({ service, date: dateStr, time: selectedSlot, first_name: form.firstName, last_name: form.lastName, phone: form.phone, email: user?.email, notes: form.notes || null, nb_persons: form.nbPersons, payment_method: "mobile" }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data?.message || "Erreur lors de la réservation.");
@@ -300,6 +300,16 @@ export default function BookingModal({ isOpen, onClose, preService = null }) {
 
             <div className="bm-section-label" style={{ marginTop: 16 }}>Vos coordonnées</div>
             <div className="bm-form">
+              <div className="bm-field">
+                <label>Nombre de personnes</label>
+                <div className="bm-persons-row">
+                  <button type="button" className="bm-persons-btn"
+                    onClick={() => setForm((p) => ({ ...p, nbPersons: Math.max(1, p.nbPersons - 1) }))}>−</button>
+                  <span className="bm-persons-val">{form.nbPersons} personne{form.nbPersons > 1 ? "s" : ""}</span>
+                  <button type="button" className="bm-persons-btn"
+                    onClick={() => setForm((p) => ({ ...p, nbPersons: Math.min(10, p.nbPersons + 1) }))}>+</button>
+                </div>
+              </div>
               <div className="bm-row">
                 <div className="bm-field"><label>Prénom</label>
                   <input type="text" placeholder="Aya" value={form.firstName} onChange={(e) => setForm((p) => ({ ...p, firstName: e.target.value }))} /></div>
@@ -331,6 +341,7 @@ export default function BookingModal({ isOpen, onClose, preService = null }) {
               <div className="bm-recap-row"><span>Soin</span><strong>{serviceLabel}</strong></div>
               <div className="bm-recap-row"><span>Date</span><strong>{dateLabel}</strong></div>
               <div className="bm-recap-row"><span>Heure</span><strong>{selectedSlot}</strong></div>
+              <div className="bm-recap-row"><span>Personnes</span><strong>{form.nbPersons} personne{form.nbPersons > 1 ? "s" : ""}</strong></div>
               <div className="bm-recap-row"><span>Client</span><strong>{form.firstName} {form.lastName}</strong></div>
               <div className="bm-recap-row"><span>Téléphone</span><strong>{form.phone}</strong></div>
               {form.notes && <div className="bm-recap-row"><span>Note</span><strong>{form.notes}</strong></div>}

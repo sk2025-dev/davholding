@@ -1,4 +1,4 @@
-function BeautyCard({ variant, item, label, onAddToCart, onViewDetails }) {
+function BeautyCard({ variant, item, label, onAddToCart, onViewDetails, activePromo }) {
   if (variant === "product") {
     const isGommage = item.title.toLowerCase().includes("gommage");
 
@@ -23,7 +23,13 @@ function BeautyCard({ variant, item, label, onAddToCart, onViewDetails }) {
               )}
             </div>
           </div>
-          {item.badge ? (
+          {activePromo ? (
+            <span className="beauty-product-badge beauty-product-badge--promo">
+              {activePromo.discount_type === "percent"
+                ? `-${activePromo.value}%`
+                : `-${Number(activePromo.value).toLocaleString("fr-FR")} FCFA`}
+            </span>
+          ) : item.badge ? (
             <span className="beauty-product-badge">{item.badge}</span>
           ) : null}
         </div>

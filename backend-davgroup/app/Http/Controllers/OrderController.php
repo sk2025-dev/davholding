@@ -7,6 +7,78 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+    /* ── Admin : liste toutes les commandes ── */
+    public function index(Request $request)
+    {
+        $query = Order::with('user')->orderByDesc('created_at');
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('payment_status')) {
+            $query->where('payment_status', $request->payment_status);
+        }
+
+        if ($request->filled('search')) {
+            $q = $request->search;
+            $query->where(function ($qb) use ($q) {
+                $qb->where('order_number', 'like', "%{$q}%")
+                   ->orWhere('client_name',  'like', "%{$q}%")
+                   ->orWhere('client_email', 'like', "%{$q}%")
+                   ->orWhere('client_phone', 'like', "%{$q}%");
+            });
+        }
+
+        $orders = $query->paginate($request->input('per_page', 20));
+
+        return response()->json([
+            'data'  => $orders->items(),
+            'total' => $orders->total(),
+            'page'  => $orders->currentPage(),
+            'last_page' => $orders->lastPage(),
+        ]);
+    }
+
+    /* ── Admin : détail d'une commande ── */
+    public function show(Order $order)
+    {
+        $order->load('user');
+        $items = [];
+        if ($order->notes) {
+            $decoded = json_decode($order->notes, true);
+            if (is_array($decoded)) $items = $decoded;
+        }
+
+        return response()->json([
+            'data'  => $order,
+            'items' => $items,
+        ]);
+    }
+
+    /* ── Admin : changer le statut ── */
+    public function updateStatus(Request $request, Order $order)
+    {
+        $request->validate([
+            'status' => 'required|in:pending,confirmed,processing,shipped,delivered,cancelled',
+        ]);
+
+        $status = $request->status;
+
+        if ($status === 'shipped') {
+            $order->markAsShipped();
+        } elseif ($status === 'delivered') {
+            $order->markAsDelivered();
+        } elseif ($status === 'cancelled') {
+            $order->cancel();
+        } else {
+            $order->update(['status' => $status]);
+        }
+
+        return response()->json(['data' => $order->fresh()]);
+    }
+
+    /* ── Client : passer une commande livraison ── */
     public function storeDelivery(Request $request)
     {
         $request->validate([
@@ -21,11 +93,11 @@ class OrderController extends Controller
             'delivery_fee'     => 'nullable|numeric|min:0',
         ]);
 
-        $user         = $request->user();
-        $items        = $request->input('items');
-        $subtotal     = collect($items)->sum(fn($i) => $i['unitPrice'] * $i['quantity']);
-        $deliveryFee  = (float) ($request->input('delivery_fee', 0));
-        $total        = $subtotal + $deliveryFee;
+        $user        = $request->user();
+        $items       = $request->input('items');
+        $subtotal    = collect($items)->sum(fn($i) => $i['unitPrice'] * $i['quantity']);
+        $deliveryFee = (float) ($request->input('delivery_fee', 0));
+        $total       = $subtotal + $deliveryFee;
 
         $order = Order::create([
             'user_id'          => $user->id,

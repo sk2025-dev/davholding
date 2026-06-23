@@ -322,11 +322,6 @@ export const spaServices = [
     text: "Des soins doux pour détendre et rafraîchir la peau.",
     image: "/images/madame k.png",
   },
-  {
-    title: "Soin capillaire",
-    text: "Une parenthèse de confort pour repartir apaisée.",
-    image: "/images/miriam.png",
-  },
 ];
 
 /* Alias conservé pour compatibilité */

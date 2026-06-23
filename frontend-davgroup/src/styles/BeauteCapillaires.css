@@ -227,6 +227,18 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
+.beauty-product-badge--promo {
+  background: var(--red, #c41420);
+  color: #fff;
+  font-weight: 700;
+  font-size: 11px;
+  box-shadow: 0 4px 12px rgba(196, 20, 32, 0.4);
+  animation: promo-pulse 2s ease-in-out infinite;
+}
+@keyframes promo-pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.06); }
+}
 
 .beauty-product-body {
   padding: 18px 18px 20px;

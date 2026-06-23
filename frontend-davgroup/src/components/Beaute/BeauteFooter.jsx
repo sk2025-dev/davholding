@@ -12,7 +12,7 @@ function BeauteFooter() {
         <div className="dav-footer__grid">
           <div>
             <div className="brand" style={{ zIndex: 5, position: "relative" }}>
-              <img src="/images/logo dav beauty.png" alt="Dav'Beauté" />
+              <img src="/images/beauté.png" alt="Dav'Beauté" className="footer-logo" />
               <h4>Dav'Beauté</h4>
             </div>
             <p className="desc">

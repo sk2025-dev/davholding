@@ -335,8 +335,10 @@ class PaymentController extends Controller
         if ($token && $status === 'completed') {
             $order = Order::where('paydunya_token', $token)->first();
             if ($order) {
-                $order->markAsPaid();
-                $order->update(['status' => 'processing']);
+                $order->update([
+                    'payment_status' => 'paid',
+                    'status'         => 'confirmed',
+                ]);
             }
         }
 

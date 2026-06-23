@@ -34,6 +34,9 @@
   width: auto;
   display: block;
 }
+.dav-footer .brand img.footer-logo {
+  filter: brightness(0) invert(1);
+}
 .dav-footer .brand h4 {
   margin: 0;
   font-size: 24px;

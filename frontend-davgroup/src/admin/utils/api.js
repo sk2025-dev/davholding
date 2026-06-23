@@ -124,4 +124,36 @@ export const adminApi = {
       method: 'DELETE',
     });
   },
+
+  // ── Orders ──
+  async getOrders(params = {}) {
+    const qs = new URLSearchParams(params).toString();
+    return request(`/orders${qs ? '?' + qs : ''}`);
+  },
+  async getOrder(id) {
+    return request(`/orders/${id}`);
+  },
+  async updateOrderStatus(id, status) {
+    return request(`/orders/${id}/status`, {
+      method: 'PATCH',
+      body: JSON.stringify({ status }),
+    });
+  },
+
+  // ── Promos ──
+  async getPromos() {
+    return request('/promos');
+  },
+  async createPromo(data) {
+    return request('/promos', { method: 'POST', body: JSON.stringify(data) });
+  },
+  async updatePromo(id, data) {
+    return request(`/promos/${id}`, { method: 'PUT', body: JSON.stringify(data) });
+  },
+  async deletePromo(id) {
+    return request(`/promos/${id}`, { method: 'DELETE' });
+  },
+  async savePromoBar(text) {
+    return request('/promos/bar', { method: 'POST', body: JSON.stringify({ text }) });
+  },
 };

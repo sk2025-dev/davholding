@@ -462,6 +462,42 @@
 }
 .bm-recap-total strong { color: #c41420; font-size: 16px; }
 
+/* ── Compteur personnes ── */
+.bm-persons-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #faf9f8;
+  border: 1.5px solid rgba(26,15,10,.12);
+  border-radius: 10px;
+  padding: 10px 14px;
+  width: fit-content;
+}
+.bm-persons-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1.5px solid rgba(26,15,10,.15);
+  background: #fff;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  color: #1a0f0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .2s;
+  font-family: inherit;
+}
+.bm-persons-btn:hover { border-color: #c41420; color: #c41420; background: rgba(196,20,32,.06); }
+.bm-persons-val {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a0f0a;
+  min-width: 90px;
+  text-align: center;
+}
+
 /* ── Badge date sélectionnée (step info) ── */
 .bm-date-badge {
   display: flex;

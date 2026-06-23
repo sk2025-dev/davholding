@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\BeautyServiceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PromoController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -45,6 +46,11 @@ Route::get('/products/{id}', [ProductController::class, 'show']);
 Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/beauty-services', [BeautyServiceController::class, 'index']);
 
+// Promos — routes publiques
+Route::get('/promos/bar',      [PromoController::class, 'promoBar']);
+Route::get('/promos/active',   [PromoController::class, 'active']);
+Route::post('/promos/validate',[PromoController::class, 'validate']);
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/payment/initiate',        [PaymentController::class, 'initiate']);
     Route::post('/payment/mobile-initiate', [PaymentController::class, 'mobileInitiate']);
@@ -59,7 +65,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::match(['put', 'post'], '/beauty-services/{beautyService}', [BeautyServiceController::class, 'update']);
     Route::delete('/beauty-services/{beautyService}', [BeautyServiceController::class, 'destroy']);
 
-    Route::post('/orders/delivery', [OrderController::class, 'storeDelivery']);
+    // Promos — admin
+    Route::get('/promos',              [PromoController::class, 'index']);
+    Route::post('/promos',             [PromoController::class, 'store']);
+    Route::put('/promos/{promo}',      [PromoController::class, 'update']);
+    Route::delete('/promos/{promo}',   [PromoController::class, 'destroy']);
+    Route::post('/promos/bar',         [PromoController::class, 'savePromoBar']);
+
+    Route::get('/orders',                    [OrderController::class, 'index']);
+    Route::get('/orders/{order}',            [OrderController::class, 'show']);
+    Route::patch('/orders/{order}/status',   [OrderController::class, 'updateStatus']);
+    Route::post('/orders/delivery',          [OrderController::class, 'storeDelivery']);
     Route::post('/products', [ProductController::class, 'store']);
     Route::match(['put', 'post'], '/products/{product}', [ProductController::class, 'update']);
     Route::delete('/products/{product}', [ProductController::class, 'destroy']);

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "../../styles/BeauteCosmetiques.css";
+import "../../styles/BeauteCoiffures.css";
 import BeautyCard from "./BeautyCard";
 import ProductDetailModal from "./ProductDetailModal";
 
@@ -23,10 +24,14 @@ function toCardItem(p) {
   };
 }
 
+const PER_PAGE = 8;
+
 function BeauteCosmetiquesSection({ onAddToCart }) {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [page, setPage] = useState(1);
+  const [activePromo, setActivePromo] = useState(null);
 
   useEffect(() => {
     fetch(`${API_URL}/products?category=Cosmétiques`)
@@ -34,9 +39,17 @@ function BeauteCosmetiquesSection({ onAddToCart }) {
       .then((json) => setProducts((json?.data || []).map(toCardItem)))
       .catch(() => setProducts([]))
       .finally(() => setIsLoading(false));
+
+    fetch(`${API_URL}/promos/active`)
+      .then(r => r.json())
+      .then(d => { if (d?.data?.length > 0) setActivePromo(d.data[0]); })
+      .catch(() => {});
   }, []);
 
-  const inStock = products.filter((p) => p.inStock);
+  const inStock    = products.filter((p) => p.inStock);
+  const totalPages = Math.max(1, Math.ceil(inStock.length / PER_PAGE));
+  const safePage   = Math.min(page, totalPages);
+  const paged      = inStock.slice((safePage - 1) * PER_PAGE, safePage * PER_PAGE);
 
   return (
     <section className="products-section beauty-cosmetiques">
@@ -60,16 +73,40 @@ function BeauteCosmetiquesSection({ onAddToCart }) {
       ) : (
         <div className="cosm-sub">
           <div className="beauty-grid">
-            {inStock.map((item) => (
+            {paged.map((item) => (
               <BeautyCard
                 key={item.title}
                 variant="product"
                 item={item}
                 onAddToCart={() => onAddToCart(item)}
                 onViewDetails={() => setSelectedProduct(item)}
+                activePromo={activePromo}
               />
             ))}
           </div>
+
+          {totalPages > 1 && (
+            <div className="coif-pagination" style={{ marginTop: 40 }}>
+              <button className="coif-pag-btn"
+                onClick={() => { setPage((p) => Math.max(1, p - 1)); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                disabled={safePage === 1}>‹</button>
+
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
+                <button key={n}
+                  className={`coif-pag-btn${n === safePage ? " coif-pag-btn--active" : ""}`}
+                  onClick={() => { setPage(n); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                >{n}</button>
+              ))}
+
+              <button className="coif-pag-btn"
+                onClick={() => { setPage((p) => Math.min(totalPages, p + 1)); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                disabled={safePage === totalPages}>›</button>
+
+              <span className="coif-pag-info">
+                {inStock.length} produit{inStock.length > 1 ? "s" : ""} — page {safePage}/{totalPages}
+              </span>
+            </div>
+          )}
         </div>
       )}
 

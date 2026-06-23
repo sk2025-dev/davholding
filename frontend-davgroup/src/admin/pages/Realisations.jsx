@@ -127,16 +127,21 @@ const RealisationCard = ({ item, onToggle, onDelete, onEdit }) => {
 };
 
 /* ══════════════════════════════════════════════════════════════════════════ */
+const PER_PAGE = 10;
+
 const Realisations = () => {
   const { showToast } = useAdmin();
   const [items, setItems]            = useState([]);
   const [isLoading, setIsLoading]    = useState(true);
   const [filterCat, setFilterCat]    = useState("all");
   const [search, setSearch]          = useState("");
+  const [page, setPage]              = useState(1);
   const [addOpen, setAddOpen]        = useState(false);
-  const [editItem, setEditItem]      = useState(null); // item en cours d'édition
+  const [editItem, setEditItem]      = useState(null);
   const [form, setForm]              = useState(initialForm);
   const [imagePreview, setImagePreview] = useState(null);
+
+  const resetPage = () => setPage(1);
 
   const loadItems = async () => {
     try {
@@ -162,6 +167,10 @@ const Realisations = () => {
     }
     return r;
   }, [items, filterCat, search]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
+  const safePage   = Math.min(page, totalPages);
+  const paged      = filtered.slice((safePage - 1) * PER_PAGE, safePage * PER_PAGE);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -293,7 +302,7 @@ const Realisations = () => {
           type="text"
           placeholder="Rechercher par titre ou catégorie…"
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => { setSearch(e.target.value); resetPage(); }}
           style={{
             width: "100%", boxSizing: "border-box",
             padding: "11px 44px 11px 46px",
@@ -317,7 +326,7 @@ const Realisations = () => {
 
       {/* ── Filtres catégories ── */}
       <div style={{ display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap", marginBottom: "20px" }}>
-        <button onClick={() => setFilterCat("all")} style={{
+        <button onClick={() => { setFilterCat("all"); resetPage(); }} style={{
           padding: "6px 14px", borderRadius: "100px", fontSize: "12px", fontWeight: "600",
           cursor: "pointer", fontFamily: "'Inter', sans-serif", border: "1.5px solid",
           borderColor: filterCat === "all" ? "var(--red)" : "var(--border)",
@@ -333,7 +342,7 @@ const Realisations = () => {
           const count = items.filter((i) => i.category_key === c.value).length;
           const active = filterCat === c.value;
           return (
-            <button key={c.value} onClick={() => setFilterCat(c.value)} style={{
+            <button key={c.value} onClick={() => { setFilterCat(c.value); resetPage(); }} style={{
               padding: "6px 14px", borderRadius: "100px", fontSize: "12px", fontWeight: "600",
               cursor: "pointer", fontFamily: "'Inter', sans-serif", border: "1.5px solid",
               borderColor: active ? "var(--red)" : "var(--border)",
@@ -365,8 +374,9 @@ const Realisations = () => {
           <button className="action-btn ab-primary" onClick={() => setAddOpen(true)}>+ Ajouter une réalisation</button>
         </div>
       ) : (
+        <>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(210px, 1fr))", gap: "16px" }}>
-          {filtered.map((item) => (
+          {paged.map((item) => (
             <RealisationCard
               key={item.id}
               item={item}
@@ -376,6 +386,43 @@ const Realisations = () => {
             />
           ))}
         </div>
+
+        {/* ── Pagination ── */}
+        {totalPages > 1 && (
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "6px", marginTop: "28px", flexWrap: "wrap" }}>
+            <button
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              disabled={safePage === 1}
+              style={{ width: "34px", height: "34px", borderRadius: "8px", border: "1.5px solid var(--border)", background: "#fff", cursor: safePage === 1 ? "not-allowed" : "pointer", opacity: safePage === 1 ? 0.35 : 1, fontSize: "14px", display: "flex", alignItems: "center", justifyContent: "center" }}
+            >‹</button>
+
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
+              <button
+                key={n}
+                onClick={() => setPage(n)}
+                style={{
+                  width: "34px", height: "34px", borderRadius: "8px", fontSize: "12px", fontWeight: "600",
+                  border: "1.5px solid", cursor: "pointer", fontFamily: "'Inter', sans-serif",
+                  borderColor: n === safePage ? "var(--red)" : "var(--border)",
+                  background:  n === safePage ? "var(--red)" : "#fff",
+                  color:       n === safePage ? "#fff" : "var(--ink-s)",
+                  boxShadow:   n === safePage ? "0 4px 12px rgba(196,20,32,.25)" : "none",
+                }}
+              >{n}</button>
+            ))}
+
+            <button
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              disabled={safePage === totalPages}
+              style={{ width: "34px", height: "34px", borderRadius: "8px", border: "1.5px solid var(--border)", background: "#fff", cursor: safePage === totalPages ? "not-allowed" : "pointer", opacity: safePage === totalPages ? 0.35 : 1, fontSize: "14px", display: "flex", alignItems: "center", justifyContent: "center" }}
+            >›</button>
+
+            <span style={{ marginLeft: "8px", fontSize: "12px", color: "var(--ink-m)", fontWeight: "500" }}>
+              {filtered.length} réalisation(s) — page {safePage}/{totalPages}
+            </span>
+          </div>
+        )}
+        </>
       )}
 
       {/* ── Modal AJOUT ── */}

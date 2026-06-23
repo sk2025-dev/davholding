@@ -1,14 +1,26 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import BeauteMainNav from "./BeauteMainNav";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
+const DEFAULT_BAR = "✦ Livraison offerte à partir de 25 000 FCFA d'achat ✦ Code : DAVBEAUTE";
+
 function BeauteHeader({ sectionTabs, cartCount = 0, onCartClick }) {
+  const [promoBarText, setPromoBarText] = useState(DEFAULT_BAR);
+
+  useEffect(() => {
+    fetch(`${API_URL}/promos/bar`)
+      .then(r => r.json())
+      .then(d => { if (d.text) setPromoBarText(d.text); })
+      .catch(() => {});
+  }, []);
+
   return (
     <header className="site-header">
       <div className="promo-bar">
         <span>✦</span>
-        Livraison offerte à partir de 25 000 FCFA d'achat
+        {promoBarText}
         <span>✦</span>
-        Code : <strong>DAVBEAUTE</strong>
       </div>
 
       <div className="logo-zone">

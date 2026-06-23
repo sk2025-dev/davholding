@@ -81,7 +81,6 @@ const Sidebar = () => {
     { id: "rdvs",         label: "Rendez-vous",      badge: notifs.awaitingRdvs },
     { id: "products",     label: "Produits & Stock", badge: notifs.outOfStock },
     { id: "beauty",       label: "Beauté" },
-    { id: "photos",       label: "Photos" },
     { id: "realisations", label: "Réalisations" },
     { id: "promos",       label: "Promotions" },
   ];

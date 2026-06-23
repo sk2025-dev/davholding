@@ -21,6 +21,7 @@ class Rdv extends Model
         'service',
         'category',
         'notes',
+        'nb_persons',
         'status',
         'duration',
         'is_notified',

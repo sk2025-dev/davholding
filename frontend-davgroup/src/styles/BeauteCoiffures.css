@@ -1,0 +1,128 @@
+/* ── Pagination ── */
+.coif-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 48px;
+  flex-wrap: wrap;
+}
+.coif-pag-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: 1.5px solid rgba(26, 15, 10, 0.15);
+  background: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(26, 15, 10, 0.6);
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.coif-pag-btn:hover:not(:disabled) {
+  border-color: var(--red, #c41420);
+  color: var(--red, #c41420);
+}
+.coif-pag-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.coif-pag-btn--active {
+  background: var(--red, #c41420);
+  border-color: var(--red, #c41420);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(196, 20, 32, 0.3);
+}
+.coif-pag-info {
+  font-size: 12px;
+  color: rgba(26, 15, 10, 0.45);
+  margin-left: 8px;
+  font-weight: 500;
+}
+
+/* ── Carte coiffure avec overlay ── */
+.coif-card {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  aspect-ratio: 3 / 4;
+  background: var(--gold-pale, #f3e7d0);
+  cursor: pointer;
+}
+
+.coif-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  transition: transform 0.4s cubic-bezier(0.76, 0, 0.24, 1);
+}
+.coif-card:hover .coif-card__img {
+  transform: scale(1.06);
+}
+
+.coif-card__placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--gold-pale, #f3e7d0);
+  z-index: 0;
+}
+.coif-card__img + .coif-card__placeholder { display: none; }
+
+/* Overlay sombre au survol */
+.coif-card__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(to top, rgba(10, 6, 4, 0.82) 0%, rgba(10, 6, 4, 0.1) 55%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 16px 12px;
+  gap: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.coif-card:hover .coif-card__overlay {
+  opacity: 1;
+}
+
+.coif-card__name {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  text-align: center;
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+
+.coif-card__btn {
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: 100px;
+  border: none;
+  background: var(--red, #c41420);
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  transition: background 0.2s, transform 0.2s;
+  box-shadow: 0 4px 16px rgba(196, 20, 32, 0.5);
+}
+.coif-card__btn:hover {
+  background: #a00e18;
+  transform: translateY(-1px);
+}
