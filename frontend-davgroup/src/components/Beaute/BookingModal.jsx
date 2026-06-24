@@ -317,7 +317,7 @@ export default function BookingModal({ isOpen, onClose, preService = null }) {
                   <input type="text" placeholder="Kouassi" value={form.lastName} onChange={(e) => setForm((p) => ({ ...p, lastName: e.target.value }))} /></div>
               </div>
               <div className="bm-field"><label>Téléphone</label>
-                <input type="tel" placeholder="07 57 24 93 90" value={form.phone} onChange={(e) => setForm((p) => ({ ...p, phone: e.target.value }))} /></div>
+                <input type="tel" placeholder="0757249390" maxLength={10} value={form.phone} onChange={(e) => setForm((p) => ({ ...p, phone: e.target.value.replace(/\D/g, "").slice(0, 10) }))} /></div>
               <div className="bm-field">
                 <label>Note <span style={{ fontWeight:400, fontSize:"11px", color:"rgba(26,15,10,.45)" }}>(optionnel)</span></label>
                 <textarea placeholder="Précisions sur votre soin…" rows={2} value={form.notes} onChange={(e) => setForm((p) => ({ ...p, notes: e.target.value }))} />

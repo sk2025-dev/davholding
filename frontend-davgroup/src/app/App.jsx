@@ -11,6 +11,9 @@ import BeauteOngeriePage from "../pages/BeauteOngeriePage";
 import BeauteRdvPage from "../pages/BeauteRdvPage";
 import BeauteAboutPage from "../pages/BeauteAboutPage";
 import ConsultingPage from "../pages/ConsultingPage";
+import ConsultingBrandingPage from "../pages/ConsultingBrandingPage";
+import ConsultingDevPage from "../pages/ConsultingDevPage";
+import ConsultingDesignPage from "../pages/ConsultingDesignPage";
 import Admin from "../admin/Admin";
 import { ClientAuthProvider, useClientAuth } from "../context/ClientAuthContext";
 import AuthModal from "../components/Beaute/AuthModal";
@@ -61,6 +64,9 @@ function App() {
         <Route path="/beaute/rendezvous" element={<BeauteRdvPage />} />
         <Route path="/beaute/about" element={<BeauteAboutPage />} />
         <Route path="/consulting" element={<ConsultingPage />} />
+        <Route path="/consulting/realisations/branding" element={<ConsultingBrandingPage />} />
+        <Route path="/consulting/realisations/developpement" element={<ConsultingDevPage />} />
+        <Route path="/consulting/realisations/design" element={<ConsultingDesignPage />} />
         <Route path="/auth/callback" element={<AuthCallbackPage />} />
         <Route path="/paiement/succes" element={<PaymentSuccessPage />} />
         <Route path="/paiement/annule" element={<PaymentCancelPage />} />

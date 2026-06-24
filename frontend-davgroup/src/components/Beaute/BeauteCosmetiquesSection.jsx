@@ -16,6 +16,7 @@ function toCardItem(p) {
     title: p.name,
     type: p.category || "Cosmétique",
     price: formatPrice(p.price),
+    rawPrice: Number(p.price),
     badge: p.badge || null,
     image: p.image || "/images/placeholder.png",
     image2: p.image2 || null,

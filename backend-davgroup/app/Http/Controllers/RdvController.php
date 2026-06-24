@@ -34,6 +34,11 @@ class RdvController extends Controller
     // ── Liste (admin) ────────────────────────────────────────────
     public function index()
     {
+        // Mettre à jour automatiquement les RDV passés en "completed"
+        Rdv::whereIn('status', ['pending', 'confirmed'])
+            ->where('appointment_date', '<', now())
+            ->update(['status' => 'completed']);
+
         $rdvs = Rdv::orderBy('appointment_date', 'desc')->get();
 
         return response()->json([

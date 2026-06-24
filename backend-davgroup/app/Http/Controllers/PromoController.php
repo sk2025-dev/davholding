@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Promo;
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class PromoController extends Controller
@@ -16,11 +17,12 @@ class PromoController extends Controller
         return response()->json(['text' => $text]);
     }
 
-    /* ── Public : promos actives (pour les badges produits) ── */
+    /* ── Public : promos actives ── */
     public function active()
     {
         $today = Carbon::today()->toDateString();
-        $promos = Promo::where('is_active', true)
+        $promos = Promo::with('products:id')
+            ->where('is_active', true)
             ->where('start_date', '<=', $today)
             ->where('end_date', '>=', $today)
             ->get()
@@ -30,6 +32,7 @@ class PromoController extends Controller
                 'discount_type' => $p->discount_type,
                 'value'         => $p->value,
                 'label'         => $p->label,
+                'product_ids'   => $p->products->pluck('id'),
             ]);
 
         return response()->json(['data' => $promos]);
@@ -40,7 +43,9 @@ class PromoController extends Controller
     {
         $request->validate(['code' => 'required|string']);
 
-        $promo = Promo::where('code', strtoupper($request->code))->first();
+        $promo = Promo::with('products:id')
+            ->where('code', strtoupper($request->code))
+            ->first();
 
         if (!$promo || !$promo->isValid()) {
             return response()->json(['valid' => false, 'message' => 'Code invalide ou expiré'], 422);
@@ -52,13 +57,24 @@ class PromoController extends Controller
             'discount_type' => $promo->discount_type,
             'value'         => $promo->value,
             'label'         => $promo->label,
+            'product_ids'   => $promo->products->pluck('id'),
         ]);
     }
 
     /* ── Admin : liste complète ── */
     public function index()
     {
-        $promos = Promo::orderByDesc('created_at')->get();
+        $promos = Promo::with('products:id,name,image')
+            ->orderByDesc('created_at')
+            ->get()
+            ->map(fn($p) => array_merge($p->toArray(), [
+                'products' => $p->products->map(fn($pr) => [
+                    'id'    => $pr->id,
+                    'name'  => $pr->name,
+                    'image' => $pr->image,
+                ]),
+            ]));
+
         return response()->json(['data' => $promos]);
     }
 
@@ -73,12 +89,45 @@ class PromoController extends Controller
             'end_date'      => 'required|date|after_or_equal:start_date',
             'is_active'     => 'boolean',
             'usage_limit'   => 'nullable|integer|min:1',
+            'product_ids'   => 'nullable|array',
+            'product_ids.*' => 'integer|exists:products,id',
         ]);
 
         $data['code'] = strtoupper($data['code']);
+        $productIds = $data['product_ids'] ?? [];
+        unset($data['product_ids']);
+
+        // Vérifier qu'aucun produit sélectionné n'a déjà une promo active
+        if (!empty($productIds)) {
+            $today = Carbon::today()->toDateString();
+            $conflicts = DB::table('promo_product')
+                ->join('promos', 'promos.id', '=', 'promo_product.promo_id')
+                ->join('products', 'products.id', '=', 'promo_product.product_id')
+                ->whereIn('promo_product.product_id', $productIds)
+                ->where('promos.is_active', true)
+                ->where('promos.start_date', '<=', $today)
+                ->where('promos.end_date', '>=', $today)
+                ->select('products.name')
+                ->get();
+
+            if ($conflicts->isNotEmpty()) {
+                $names = $conflicts->pluck('name')->join(', ');
+                return response()->json([
+                    'message' => "Ces produits ont déjà une promotion active : {$names}",
+                    'errors'  => ['product_ids' => ["Promotion déjà active sur : {$names}"]],
+                ], 422);
+            }
+        }
+
         $promo = Promo::create($data);
 
-        return response()->json(['data' => $promo], 201);
+        if (!empty($productIds)) {
+            $promo->products()->sync($productIds);
+        }
+
+        $promo->load('products:id,name,image');
+
+        return response()->json(['data' => $promo->makeHidden([])], 201);
     }
 
     /* ── Admin : modifier ── */
@@ -92,10 +141,22 @@ class PromoController extends Controller
             'end_date'      => 'sometimes|date',
             'is_active'     => 'sometimes|boolean',
             'usage_limit'   => 'nullable|integer|min:1',
+            'product_ids'   => 'nullable|array',
+            'product_ids.*' => 'integer|exists:products,id',
         ]);
 
         if (isset($data['code'])) $data['code'] = strtoupper($data['code']);
+
+        $productIds = $data['product_ids'] ?? null;
+        unset($data['product_ids']);
+
         $promo->update($data);
+
+        if ($productIds !== null) {
+            $promo->products()->sync($productIds);
+        }
+
+        $promo->load('products:id,name,image');
 
         return response()->json(['data' => $promo]);
     }

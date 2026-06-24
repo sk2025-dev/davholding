@@ -70,10 +70,11 @@ function Preloader({ onComplete }) {
           alt="DAV Holding"
           ref={logoRef}
           style={{
-            height: 72,
+            height: 110,
             opacity: 0,
             display: "block",
             margin: "0 auto 32px",
+            filter: "brightness(0) invert(1)",
           }}
         />
         <div className="preload-akwaba">

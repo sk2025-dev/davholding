@@ -1,11 +1,34 @@
+function formatPrice(n) {
+  return Number(n).toLocaleString("fr-FR") + " FCFA";
+}
+
+function computeDiscount(rawPrice, promo, productId) {
+  if (!promo || !rawPrice) return null;
+
+  /* Vérifier si la promo s'applique à ce produit */
+  const ids = promo.product_ids || [];
+  if (ids.length > 0 && !ids.includes(productId)) return null;
+
+  let discounted;
+  if (promo.discount_type === "percent") {
+    discounted = rawPrice * (1 - promo.value / 100);
+  } else {
+    discounted = rawPrice - promo.value;
+  }
+
+  if (discounted <= 0) return null;
+
+  const pct = Math.round((1 - discounted / rawPrice) * 100);
+  return { discounted: Math.round(discounted), pct };
+}
+
 function BeautyCard({ variant, item, label, onAddToCart, onViewDetails, activePromo }) {
   if (variant === "product") {
     const isGommage = item.title.toLowerCase().includes("gommage");
+    const discount  = computeDiscount(item.rawPrice, activePromo, item.id);
 
     return (
-      <article
-        className={`beauty-product-card${isGommage ? " beauty-product-card--gommage" : ""}`}
-      >
+      <article className={`beauty-product-card${isGommage ? " beauty-product-card--gommage" : ""}`}>
         <div className="beauty-product-media">
           <div className="beauty-product-media__trigger" aria-hidden="true">
             <div className="beauty-product-img-stack">
@@ -23,11 +46,11 @@ function BeautyCard({ variant, item, label, onAddToCart, onViewDetails, activePr
               )}
             </div>
           </div>
-          {activePromo ? (
+
+          {/* Badge réduction ou badge custom */}
+          {discount ? (
             <span className="beauty-product-badge beauty-product-badge--promo">
-              {activePromo.discount_type === "percent"
-                ? `-${activePromo.value}%`
-                : `-${Number(activePromo.value).toLocaleString("fr-FR")} FCFA`}
+              -{discount.pct}%
             </span>
           ) : item.badge ? (
             <span className="beauty-product-badge">{item.badge}</span>
@@ -38,7 +61,21 @@ function BeautyCard({ variant, item, label, onAddToCart, onViewDetails, activePr
           <p className="beauty-product-type">{item.type}</p>
           <h3>{item.title}</h3>
           <div className="beauty-product-footer">
-            <strong>{item.price}</strong>
+
+            {/* Prix */}
+            {discount ? (
+              <div className="beauty-product-prices">
+                <strong className="beauty-product-price--new">
+                  {formatPrice(discount.discounted)}
+                </strong>
+                <span className="beauty-product-price--old">
+                  {item.price}
+                </span>
+              </div>
+            ) : (
+              <strong>{item.price}</strong>
+            )}
+
             <div className="beauty-product-actions">
               {onViewDetails && (
                 <button

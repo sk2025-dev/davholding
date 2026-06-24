@@ -15,11 +15,22 @@ const fallbackImages = (realisationCategories[1]?.images ?? []).map((img, i) => 
 
 const PER_PAGE = 12;
 
+const CATS = [
+  { key: "all",   label: "Tout" },
+  { key: "twist", label: "Twists" },
+  { key: "natte", label: "Nattes" },
+  { key: "autre", label: "Autres" },
+];
+
+const KNOWN_CATS = ["twist", "natte"];
+
 function BeauteCoiffuresPage() {
   const { requireAuth, openBooking } = useClientAuth();
-  const [photos, setPhotos]   = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [page, setPage]       = useState(1);
+  const [allPhotos, setAllPhotos] = useState([]);
+  const [loading, setLoading]     = useState(true);
+  const [category, setCategory]   = useState("all");
+  const [search, setSearch]       = useState("");
+  const [page, setPage]           = useState(1);
 
   useEffect(() => {
     fetch(`${API_URL}/beauty-services?section_key=coiffures`, {
@@ -28,19 +39,33 @@ function BeauteCoiffuresPage() {
       .then((r) => r.json())
       .then((data) => {
         const coiffures = (data?.data || []).filter((i) => i.is_active);
-        setPhotos(coiffures.length > 0 ? coiffures : fallbackImages);
+        setAllPhotos(coiffures.length > 0 ? coiffures : fallbackImages);
       })
-      .catch(() => setPhotos(fallbackImages))
+      .catch(() => setAllPhotos(fallbackImages))
       .finally(() => setLoading(false));
   }, []);
 
-  const totalPages = Math.max(1, Math.ceil(photos.length / PER_PAGE));
+  const filtered = allPhotos.filter((p) => {
+    const catKey = (p.category_key || "").toLowerCase();
+    const matchCat =
+      category === "all" ||
+      (category === "autre" ? !KNOWN_CATS.includes(catKey) : catKey === category);
+    const matchSearch =
+      !search || (p.title || "").toLowerCase().includes(search.toLowerCase());
+    return matchCat && matchSearch;
+  });
+
+  const resetPage = () => setPage(1);
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
   const safePage   = Math.min(page, totalPages);
-  const paged      = photos.slice((safePage - 1) * PER_PAGE, safePage * PER_PAGE);
+  const paged      = filtered.slice((safePage - 1) * PER_PAGE, safePage * PER_PAGE);
 
   const handleChoose = (photo) => {
     requireAuth(() => openBooking({ title: photo.title, subtitle: photo.title }));
   };
+
+  const handleCat = (key) => { setCategory(key); resetPage(); };
+  const handleSearch = (e) => { setSearch(e.target.value); resetPage(); };
 
   return (
     <BeauteLayout>
@@ -69,9 +94,50 @@ function BeauteCoiffuresPage() {
           </button>
         </div>
 
+        {/* ── Filtres + recherche ── */}
+        <div className="coif-toolbar">
+          <div className="coif-cats">
+            {CATS.map((c) => (
+              <button
+                key={c.key}
+                className={`coif-cat-btn${category === c.key ? " coif-cat-btn--active" : ""}`}
+                onClick={() => handleCat(c.key)}
+              >
+                {c.label}
+                {c.key !== "all" && (
+                  <span className="coif-cat-count">
+                    {allPhotos.filter((p) => {
+                      const ck = (p.category_key || "").toLowerCase();
+                      return c.key === "autre" ? !KNOWN_CATS.includes(ck) : ck === c.key;
+                    }).length}
+                  </span>
+                )}
+              </button>
+            ))}
+          </div>
+          <div className="coif-search-wrap">
+            <span className="coif-search-icon">🔍</span>
+            <input
+              type="text"
+              className="coif-search"
+              placeholder="Rechercher une coiffure…"
+              value={search}
+              onChange={handleSearch}
+            />
+            {search && (
+              <button className="coif-search-clear" onClick={() => { setSearch(""); resetPage(); }}>✕</button>
+            )}
+          </div>
+        </div>
+
         {loading ? (
           <div style={{ textAlign: "center", padding: "60px 0", color: "#aaa", fontSize: 14 }}>
             Chargement…
+          </div>
+        ) : filtered.length === 0 ? (
+          <div className="coif-empty">
+            <span>✂️</span>
+            <p>Aucune coiffure trouvée pour cette recherche.</p>
           </div>
         ) : (
           <>
@@ -124,7 +190,7 @@ function BeauteCoiffuresPage() {
                 >›</button>
 
                 <span className="coif-pag-info">
-                  {photos.length} coiffure{photos.length > 1 ? "s" : ""} — page {safePage}/{totalPages}
+                  {filtered.length} coiffure{filtered.length > 1 ? "s" : ""} — page {safePage}/{totalPages}
                 </span>
               </div>
             )}

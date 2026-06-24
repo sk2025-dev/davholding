@@ -1,25 +1,26 @@
 import { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 
 const projects = [
   {
     emoji: "🖼️",
     img: "/consulting/images/rea.png",
     tag: "Branding",
-    link: "#",
+    link: "/consulting/realisations/branding",
     alt: "Projet Branding",
   },
   {
     emoji: "🌐",
     img: "/consulting/images/saas.png",
     tag: "Développement mobile · web",
-    link: "#",
+    link: "/consulting/realisations/developpement",
     alt: "Plateforme SaaS en React",
   },
   {
     emoji: "🎨",
     img: "/consulting/images/de.png",
     tag: "Design UI/UX",
-    link: "#",
+    link: "/consulting/realisations/design",
     alt: "Design system et identité visuelle",
   },
 ];
@@ -75,7 +76,11 @@ export default function ConsultingRealisations() {
               <div className="c-real-card__overlay" />
               <div className="c-real-card__content">
                 <span className="c-real-card__tag">{p.tag}</span>
-                <a href={p.link} className="c-real-card__btn">Voir →</a>
+                {p.link.startsWith("/") ? (
+                  <Link to={p.link} className="c-real-card__btn">Voir →</Link>
+                ) : (
+                  <a href={p.link} className="c-real-card__btn">Voir →</a>
+                )}
               </div>
             </div>
           ))}

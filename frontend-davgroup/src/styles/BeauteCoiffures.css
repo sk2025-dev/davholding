@@ -1,3 +1,111 @@
+/* ── Toolbar : filtres + recherche ── */
+.coif-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 0 0 32px;
+}
+.coif-cats {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.coif-cat-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: 100px;
+  border: 1.5px solid rgba(26, 15, 10, 0.15);
+  background: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+  color: rgba(26, 15, 10, 0.6);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.coif-cat-btn:hover { border-color: var(--red, #c41420); color: var(--red, #c41420); }
+.coif-cat-btn--active {
+  background: var(--red, #c41420);
+  border-color: var(--red, #c41420);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(196, 20, 32, 0.25);
+}
+.coif-cat-count {
+  font-size: 10px;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 100px;
+  padding: 1px 6px;
+  min-width: 16px;
+  text-align: center;
+}
+.coif-cat-btn:not(.coif-cat-btn--active) .coif-cat-count {
+  background: rgba(26, 15, 10, 0.08);
+  color: rgba(26, 15, 10, 0.5);
+}
+.coif-search-wrap {
+  position: relative;
+  margin-left: auto;
+  min-width: 220px;
+}
+.coif-search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  pointer-events: none;
+}
+.coif-search {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 9px 36px 9px 36px;
+  border: 1.5px solid rgba(26, 15, 10, 0.15);
+  border-radius: 100px;
+  font-size: 13px;
+  font-family: "Inter", sans-serif;
+  background: #fff;
+  color: rgba(26, 15, 10, 0.8);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.coif-search:focus {
+  border-color: var(--red, #c41420);
+  box-shadow: 0 0 0 3px rgba(196, 20, 32, 0.08);
+}
+.coif-search-clear {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: rgba(26, 15, 10, 0.08);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 10px;
+  cursor: pointer;
+  color: rgba(26, 15, 10, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.coif-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: rgba(26, 15, 10, 0.4);
+}
+.coif-empty span { font-size: 40px; display: block; margin-bottom: 12px; }
+.coif-empty p { font-size: 14px; }
+
+@media (max-width: 600px) {
+  .coif-toolbar { flex-direction: column; align-items: stretch; }
+  .coif-search-wrap { margin-left: 0; min-width: unset; }
+}
+
 /* ── Pagination ── */
 .coif-pagination {
   display: flex;

@@ -12,7 +12,7 @@ const SECTIONS = [
 
 const initialForm = {
   section_key:  "coiffures",
-  category_key: "coiffure",
+  category_key: "twist",
   title:        "",
   subtitle:     "",
   duration:     "",
@@ -59,6 +59,23 @@ const BeautyCard = ({ item, onToggle, onDelete, onEdit }) => {
       <div style={{ padding: "12px 14px", display: "flex", flexDirection: "column", gap: "10px" }}>
         <div>
           <div style={{ fontWeight: "600", fontSize: "13px", color: "var(--ink)", lineHeight: 1.3 }}>{item.title}</div>
+          {item.section_key === "coiffures" && (
+            <div style={{ marginTop: "4px" }}>
+              <span style={{
+                fontSize: "10px", fontWeight: "700", padding: "2px 8px", borderRadius: "100px",
+                background: item.category_key === "twist" ? "rgba(59,130,246,.1)" :
+                            item.category_key === "natte" ? "rgba(134,60,168,.1)" :
+                            item.category_key === "autre" ? "rgba(46,170,94,.1)" : "rgba(224,48,48,.12)",
+                color:      item.category_key === "twist" ? "#1d4ed8" :
+                            item.category_key === "natte" ? "#7e22ce" :
+                            item.category_key === "autre" ? "#1a7a3e" : "#c41420",
+              }}>
+                {item.category_key === "twist" ? "✂️ Twist" :
+                 item.category_key === "natte" ? "🪢 Natte" :
+                 item.category_key === "autre" ? "🌟 Autre" : `⚠️ "${item.category_key}" — à corriger`}
+              </span>
+            </div>
+          )}
           {item.duration && <div style={{ fontSize: "11px", color: "var(--ink-m)", marginTop: "2px" }}>⏱ {item.duration}</div>}
           {item.price    && <div style={{ fontSize: "11px", color: "var(--red)", fontWeight: "600", marginTop: "2px" }}>{item.price}</div>}
         </div>
@@ -137,7 +154,11 @@ const BeautyServices = () => {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    if (name === "image") setImagePreview(files?.[0] ? URL.createObjectURL(files[0]) : null);
+    if (name === "image") { setImagePreview(files?.[0] ? URL.createObjectURL(files[0]) : null); }
+    if (name === "section_key") {
+      setForm((cur) => ({ ...cur, section_key: value, category_key: value === "coiffures" ? "twist" : "coiffure" }));
+      return;
+    }
     setForm((cur) => ({ ...cur, [name]: files ? files[0] : value }));
   };
 
@@ -168,9 +189,10 @@ const BeautyServices = () => {
 
   const handleEdit = (item) => {
     setEditItem(item);
+    const defaultCat = item.section_key === "coiffures" ? "twist" : "coiffure";
     setForm({
       section_key:  item.section_key  || "coiffures",
-      category_key: item.category_key || "coiffure",
+      category_key: item.category_key || defaultCat,
       title:        item.title        || "",
       subtitle:     item.subtitle     || "",
       duration:     item.duration     || "",
@@ -374,6 +396,17 @@ const BeautyServices = () => {
                     {SECTIONS.map((s) => <option key={s.value} value={s.value}>{s.emoji} {s.label}</option>)}
                   </select>
                 </div>
+
+                {form.section_key === "coiffures" && (
+                  <div className="admin-field">
+                    <label className="admin-label">Sous-catégorie</label>
+                    <select name="category_key" className="admin-sel" value={form.category_key} onChange={handleChange}>
+                      <option value="twist">✂️ Twist</option>
+                      <option value="natte">🪢 Natte</option>
+                      <option value="autre">🌟 Autre</option>
+                    </select>
+                  </div>
+                )}
 
                 <div className="admin-field">
                   <label className="admin-label">Titre</label>

@@ -318,6 +318,73 @@ class PaymentController extends Controller
         ]);
     }
 
+    public function syncPending()
+    {
+        $pending = Order::where('payment_method', 'paydunya')
+            ->where('payment_status', 'pending')
+            ->whereNotNull('paydunya_token')
+            ->get();
+
+        $updated = 0;
+
+        foreach ($pending as $order) {
+            $response = Http::withHeaders($this->headers)
+                ->get("{$this->baseUrl}/checkout-invoice/confirm/{$order->paydunya_token}");
+
+            $data          = $response->json();
+            $invoiceStatus = data_get($data, 'invoice.status') ?? data_get($data, 'status');
+
+            if ($invoiceStatus === 'completed') {
+                $order->update(['payment_status' => 'paid']);
+                $updated++;
+            }
+        }
+
+        return response()->json([
+            'checked' => $pending->count(),
+            'updated' => $updated,
+        ]);
+    }
+
+    public function verify(Request $request)
+    {
+        $request->validate(['order_number' => 'required|string']);
+
+        $order = Order::where('order_number', $request->input('order_number'))->firstOrFail();
+
+        if ($order->payment_status === 'paid') {
+            return response()->json([
+                'payment_status' => 'paid',
+                'status'         => $order->status,
+            ]);
+        }
+
+        if (!$order->paydunya_token) {
+            return response()->json([
+                'payment_status' => $order->payment_status,
+                'status'         => $order->status,
+            ]);
+        }
+
+        $response = Http::withHeaders($this->headers)
+            ->get("{$this->baseUrl}/checkout-invoice/confirm/{$order->paydunya_token}");
+
+        Log::info('PayDunya verify', ['status' => $response->status(), 'body' => $response->body()]);
+
+        $data          = $response->json();
+        $invoiceStatus = data_get($data, 'invoice.status') ?? data_get($data, 'status');
+
+        if ($invoiceStatus === 'completed') {
+            // On met seulement le paiement à jour — l'admin confirme manuellement la commande
+            $order->update(['payment_status' => 'paid']);
+        }
+
+        return response()->json([
+            'payment_status' => $order->fresh()->payment_status,
+            'status'         => $order->fresh()->status,
+        ]);
+    }
+
     public function ipn(Request $request)
     {
         $hash = $request->input('hash');

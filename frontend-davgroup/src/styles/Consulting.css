@@ -120,7 +120,7 @@
   opacity: 0;
 }
 .c-preload-logo {
-  height: 72px;
+  height: 110px;
   width: auto;
   margin-bottom: 32px;
   opacity: 0;
@@ -1287,25 +1287,22 @@
   gap: 10px;
 }
 .c-social-pill {
-  display: inline-grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.15);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   color: #fff;
-  transition: background 0.18s ease, transform 0.18s ease;
   text-decoration: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  opacity: 0.75;
 }
-.c-social-pill img {
-  width: 18px;
-  height: 18px;
+.c-social-pill svg {
+  width: 22px;
+  height: 22px;
   display: block;
-  object-fit: contain;
-  filter: brightness(0) invert(1);
+  color: #fff;
 }
 .c-social-pill:hover {
-  background: rgba(255, 255, 255, 0.28);
+  opacity: 1;
   transform: translateY(-3px);
 }
 .c-footer .col-title {

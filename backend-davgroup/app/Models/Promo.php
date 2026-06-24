@@ -13,6 +13,24 @@ class Promo extends Model
         'usage_limit', 'used_count',
     ];
 
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'promo_product');
+    }
+
+    /* Vrai si la promo s'applique à tous les produits */
+    public function appliesToAll(): bool
+    {
+        return $this->products()->count() === 0;
+    }
+
+    /* Vérifie si la promo s'applique à un produit donné */
+    public function appliesToProduct(int $productId): bool
+    {
+        if ($this->appliesToAll()) return true;
+        return $this->products()->where('product_id', $productId)->exists();
+    }
+
     protected $casts = [
         'is_active'   => 'boolean',
         'start_date'  => 'date',

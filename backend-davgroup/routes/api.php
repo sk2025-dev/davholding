@@ -28,7 +28,9 @@ Route::get('/', function () {
 });
 
 // IPN PayDunya (webhooks publics)
-Route::post('/payment/ipn', [PaymentController::class, 'ipn']);
+Route::post('/payment/ipn',          [PaymentController::class, 'ipn']);
+Route::post('/payment/verify',       [PaymentController::class, 'verify']);
+Route::post('/payment/sync-pending', [PaymentController::class, 'syncPending']);
 Route::post('/rdv/ipn',     [RdvController::class,     'ipn']);
 
 // Créneaux disponibles (public — pas besoin d'être connecté pour voir)
