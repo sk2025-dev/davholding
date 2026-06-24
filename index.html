@@ -1,0 +1,829 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DAV Holding Group | Dav'Consulting & Dav'Beauté à Abidjan</title>
+  <meta name="description" content="DAV Holding Group à Angré 8ème tranche, Cocody Abidjan : Dav'Consulting pour solutions IT, web, mobile, SIG et branding ; Dav'Beauté pour coiffure, esthétique, soins et cosmétiques.">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="DAV Holding Group">
+  <meta name="keywords" content="DAV Holding Group, Dav'Consulting, Dav'Beauté, Abidjan, Cocody, Angré 8ème tranche, solution IT, développement web, application mobile, SIG, branding, coiffure, esthétique, Micro Twists, soins capillaires, produits cosmétiques">
+  <link rel="canonical" href="https://davholdinggroup.com/">
+  <link rel="icon" type="image/jpeg" href="assets/dav-holding-logo.jpg">
+  <link rel="apple-touch-icon" href="assets/dav-holding-logo.jpg">
+  <meta name="theme-color" content="#ed0000">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_CI">
+  <meta property="og:site_name" content="DAV Holding Group">
+  <meta property="og:title" content="DAV Holding Group | Dav'Consulting & Dav'Beauté">
+  <meta property="og:description" content="Technologie, beauté et services à Angré 8ème tranche, Cocody, Abidjan.">
+  <meta property="og:url" content="https://davholdinggroup.com/">
+  <meta property="og:image" content="https://davholdinggroup.com/assets/dav-holding-logo.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="DAV Holding Group | Dav'Consulting & Dav'Beauté">
+  <meta name="twitter:description" content="Solutions digitales, coiffure, esthétique, soins et cosmétiques à Abidjan.">
+  <meta name="twitter:image" content="https://davholdinggroup.com/assets/dav-holding-logo.jpg">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "DAV Holding Group",
+      "url": "https://davholdinggroup.com/",
+      "logo": "https://davholdinggroup.com/assets/dav-holding-logo.jpg",
+      "email": "contact@davholdinggroup.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Angré 8ème tranche",
+        "addressLocality": "Cocody, Abidjan",
+        "addressCountry": "CI"
+      },
+      "department": [
+        {
+          "@type": "LocalBusiness",
+          "name": "Dav'Beauté",
+          "image": "https://davholdinggroup.com/assets/dav-beaute-salon.jpg",
+          "telephone": "+2250757249390",
+          "description": "Coiffure, esthétique, Micro Twists, tresses, maquillage, onglerie, pédicure, soins de visage et corps, vente de produits cosmétiques Dav'."
+        },
+        {
+          "@type": "ProfessionalService",
+          "name": "Dav'Consulting",
+          "telephone": "+2250566232575",
+          "description": "Solutions IT et infrastructure, solutions web, mobile et SIG, branding et identité visuelle."
+        }
+      ],
+      "sameAs": [
+        "https://www.facebook.com/Cocody-Abidjan-Cote-DIvoire-104979122873204/"
+      ]
+    }
+  </script>
+  <script>
+    window.tailwind = window.tailwind || {};
+    window.tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            dav: {
+              red: '#ed0000',
+              deep: '#15151b',
+              ink: '#2b2b34',
+              muted: '#74747f',
+              soft: '#fff7f4',
+              tech: '#0a6d84',
+              beauty: '#bd3267',
+              gold: '#d7a64a'
+            }
+          },
+          fontFamily: {
+            display: ['Georgia', 'Times New Roman', 'serif'],
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif']
+          },
+          boxShadow: {
+            dav: '0 30px 90px rgba(20,18,18,.16)',
+            soft: '0 18px 45px rgba(20,18,18,.08)'
+          }
+        }
+      }
+    };
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    [v-cloak] {
+      display: none;
+    }
+
+    .page-loader {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: grid;
+      place-items: center;
+      background: #fff;
+    }
+
+    .page-loader.is-hidden {
+      display: none;
+    }
+
+    .loader-card {
+      display: grid;
+      place-items: center;
+      gap: 14px;
+      padding: 26px;
+      border: 1px solid rgba(0, 0, 0, .08);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, .92);
+      box-shadow: 0 20px 50px rgba(20, 18, 18, .1);
+    }
+
+    .loader-card img {
+      width: min(220px, 60vw);
+      height: auto;
+      object-fit: contain;
+      mix-blend-mode: multiply;
+    }
+
+    .loader-text {
+      color: #74747f;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    html,
+    body {
+      height: 100%;
+      background: #fff7f4;
+    }
+
+    body {
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 10% 7%, rgba(237, 0, 0, .12), transparent 24rem),
+        radial-gradient(circle at 88% 20%, rgba(10, 109, 132, .14), transparent 27rem),
+        linear-gradient(135deg, #fff 0%, #fff7f4 48%, #fff 100%);
+    }
+
+    .slides {
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+      overscroll-behavior-y: contain;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .slides::-webkit-scrollbar {
+      display: none;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+    }
+
+    .slides {
+      scroll-behavior: auto;
+    }
+
+    .reveal,
+    .visual-reveal,
+    .card-reveal {
+      opacity: 1;
+      transform: none;
+      filter: none;
+    }
+
+    .hover\:-translate-y-0\.5:hover,
+    .hover\:-translate-y-1:hover {
+      transform: none !important;
+    }
+
+    .slide {
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+    }
+
+    .hero-word {
+      position: absolute;
+      right: -5vw;
+      bottom: 0;
+      color: rgba(237, 0, 0, .055);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(8rem, 27vw, 27rem);
+      font-weight: 900;
+      line-height: .78;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .blob {
+      border-radius: 48% 52% 40% 60% / 48% 38% 62% 52%;
+      background:
+        linear-gradient(135deg, rgba(237, 0, 0, .96), rgba(167, 0, 0, .92)),
+        #ed0000;
+    }
+
+    .focus-layer {
+      opacity: .92;
+      transform: translateY(12px);
+      transition: opacity .24s ease, transform .24s ease;
+    }
+
+    .slide-active .focus-layer {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .slide-active .card-reveal {
+      transition: box-shadow .2s ease, transform .2s ease;
+    }
+
+    .slide-active .card-reveal:hover {
+      transform: translateY(-3px) !important;
+    }
+
+    .mobile-contact-strip,
+    .service-grid {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .mobile-contact-strip::-webkit-scrollbar,
+    .service-grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    .mobile-cta svg,
+    .mobile-dock svg {
+      height: 1.1rem;
+      width: 1.1rem;
+    }
+
+    .mobile-dock button:active,
+    .mobile-dock button:focus-visible,
+    .action-button:active,
+    .action-button:focus-visible {
+      color: #15151b;
+      outline: 2px solid rgba(237, 0, 0, .35);
+      outline-offset: 2px;
+    }
+
+    .brand-card-copy {
+      background: rgba(255, 255, 255, .96);
+      color: #15151b;
+      border: 1px solid rgba(0, 0, 0, .08);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .slides {
+        scroll-behavior: auto;
+      }
+
+      .focus-layer,
+      .slide:not(.slide-active) .focus-layer,
+      .visual-reveal {
+        transform: none;
+        opacity: 1;
+        transition: none;
+      }
+    }
+
+    @media (max-width: 760px) {
+      body {
+        overflow: auto;
+        background:
+          radial-gradient(circle at 14% 7%, rgba(237, 0, 0, .12), transparent 15rem),
+          radial-gradient(circle at 92% 30%, rgba(10, 109, 132, .12), transparent 18rem),
+          linear-gradient(135deg, #fff 0%, #fff7f4 52%, #fff 100%);
+      }
+
+      .slides {
+        height: auto;
+        overflow: visible;
+        scroll-snap-type: none;
+      }
+
+      .slide {
+        align-items: flex-start;
+        min-height: auto;
+        padding-top: 10.5rem;
+        padding-bottom: 7.5rem;
+      }
+
+      .slide + .slide {
+        border-top: 1px solid rgba(0, 0, 0, .08);
+      }
+
+      .focus-layer,
+      .slide:not(.slide-active) .focus-layer,
+      .visual-reveal {
+        transform: none;
+        opacity: 1;
+        transition: none;
+      }
+
+      .focus-layer {
+        width: min(calc(100% - 24px), 34rem);
+        gap: 1.25rem;
+      }
+
+      .hero-word {
+        right: -18vw;
+        top: 8.5rem;
+        bottom: auto;
+        font-size: clamp(8rem, 44vw, 12rem);
+      }
+
+      .slide h1 {
+        font-size: clamp(2.15rem, 11vw, 3.45rem);
+        line-height: .94;
+      }
+
+      .slide p {
+        margin-top: 1rem;
+        font-size: 1rem;
+        line-height: 1.6;
+      }
+
+      .service-grid {
+        display: flex;
+        gap: .75rem;
+        margin-inline: -12px;
+        overflow-x: auto;
+        padding: .15rem 12px 1rem;
+        scroll-padding-inline: 12px;
+        scroll-snap-type: x mandatory;
+      }
+
+      .service-card {
+        min-width: min(78vw, 20rem);
+        scroll-snap-align: start;
+      }
+
+      .visual-panel {
+        min-height: 22rem;
+      }
+
+      .visual-panel .blob {
+        height: min(74vw, 18rem);
+        width: min(74vw, 18rem);
+      }
+
+      .photo-frame {
+        inset-inline: 0;
+        border-radius: 1.5rem;
+      }
+
+      .photo-frame img {
+        height: 11.5rem;
+      }
+
+      .brand-card-shell {
+        inset-inline: 1rem;
+        bottom: .25rem;
+      }
+
+      .brand-card {
+        width: min(100%, 20rem);
+        border-radius: 1.5rem;
+        padding: 1rem;
+      }
+
+      .brand-card img {
+        max-height: 6rem;
+      }
+
+      .brand-card-copy {
+        margin-top: 1rem;
+        border-radius: 1.25rem;
+        padding: 1rem;
+      }
+
+      .action-row {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .action-button {
+        width: 100%;
+      }
+
+      .mobile-dock {
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+    }
+  </style>
+</head>
+<body class="font-sans text-dav-ink antialiased">
+  <div id="app" v-cloak class="relative min-h-screen overflow-visible md:h-screen md:overflow-hidden">
+    <div class="page-loader" :class="{ 'is-hidden': appReady }" aria-label="Chargement">
+      <div class="loader-card">
+        <img src="assets/dav-holding-logo.jpg" alt="Logo DAV Holding Group">
+        <span class="loader-text">Chargement</span>
+      </div>
+    </div>
+
+    <header class="fixed inset-x-0 top-0 z-50 border-b border-black/10 bg-white/85 backdrop-blur-xl">
+      <div class="mx-auto flex min-h-[76px] w-[min(1180px,calc(100%-24px))] items-center justify-between gap-4">
+        <button type="button" class="flex min-w-0 items-center gap-3 text-left" @click="goTo(0)">
+          <img src="assets/dav-holding-logo.jpg" alt="Logo DAV Holding Group" class="h-14 w-20 object-contain mix-blend-multiply">
+          <span class="min-w-0">
+            <strong class="block font-display text-lg leading-none text-dav-deep">DAV Holding Group</strong>
+            <span class="mt-1 block truncate text-[11px] font-black uppercase tracking-[.18em] text-dav-muted">Technologie, beauté et services</span>
+          </span>
+        </button>
+
+        <nav class="hidden items-center gap-3 text-sm font-black text-dav-ink md:flex" aria-label="Email et réseaux sociaux">
+          <a href="mailto:contact@davholdinggroup.com" class="inline-flex min-h-11 items-center gap-2 rounded-full border border-black/10 bg-white px-4 text-dav-deep shadow-soft transition hover:-translate-y-0.5 hover:border-dav-red hover:text-dav-red">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 6h16v12H4V6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>contact@davholdinggroup.com</span>
+          </a>
+          <a href="https://www.facebook.com/Cocody-Abidjan-Cote-DIvoire-104979122873204/" target="_blank" rel="noreferrer" title="Facebook" aria-label="Facebook" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-black/10 bg-white text-dav-deep shadow-soft transition hover:-translate-y-0.5 hover:border-dav-red hover:bg-dav-red hover:text-white">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M14 8.6V7.1c0-.7.5-1.1 1.2-1.1H17V3h-2.7C11.6 3 10 4.6 10 7v1.6H8v3.1h2V21h3.3v-9.3h2.7l.5-3.1H13.3z"/>
+            </svg>
+          </a>
+          <a href="https://wa.me/2250757249390" target="_blank" rel="noreferrer" title="WhatsApp Dav'Beauté" aria-label="WhatsApp Dav'Beauté" class="relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-black/10 bg-white text-dav-beauty shadow-soft transition hover:-translate-y-0.5 hover:border-dav-beauty hover:bg-dav-beauty hover:text-white">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M5.2 19l1-3A7.7 7.7 0 1 1 9 18.2l-3.8.8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M9.2 8.7c.2-.3.4-.4.7-.4h.5c.2 0 .4.1.5.4l.7 1.6c.1.2.1.5-.1.7l-.4.5c.6 1 1.4 1.8 2.4 2.3l.6-.5c.2-.2.5-.2.7-.1l1.5.7c.3.1.4.3.4.6v.5c0 .3-.1.5-.4.7-.4.3-1 .5-1.7.4-2.9-.4-5.5-2.9-6-5.8-.1-.7.1-1.3.4-1.7z" fill="currentColor"/>
+            </svg>
+            <span class="absolute -right-1 -top-1 grid h-5 w-5 place-items-center rounded-full bg-dav-beauty text-[10px] font-black text-white ring-2 ring-white">B</span>
+          </a>
+          <a href="https://wa.me/2250566232575" target="_blank" rel="noreferrer" title="WhatsApp Dav'Consulting" aria-label="WhatsApp Dav'Consulting" class="relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-black/10 bg-white text-dav-tech shadow-soft transition hover:-translate-y-0.5 hover:border-dav-tech hover:bg-dav-tech hover:text-white">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M5.2 19l1-3A7.7 7.7 0 1 1 9 18.2l-3.8.8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M9.2 8.7c.2-.3.4-.4.7-.4h.5c.2 0 .4.1.5.4l.7 1.6c.1.2.1.5-.1.7l-.4.5c.6 1 1.4 1.8 2.4 2.3l.6-.5c.2-.2.5-.2.7-.1l1.5.7c.3.1.4.3.4.6v.5c0 .3-.1.5-.4.7-.4.3-1 .5-1.7.4-2.9-.4-5.5-2.9-6-5.8-.1-.7.1-1.3.4-1.7z" fill="currentColor"/>
+            </svg>
+            <span class="absolute -right-1 -top-1 grid h-5 w-5 place-items-center rounded-full bg-dav-tech text-[10px] font-black text-white ring-2 ring-white">C</span>
+          </a>
+        </nav>
+
+        <a href="mailto:contact@davholdinggroup.com" title="Envoyer un email" aria-label="Envoyer un email" class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-dav-red text-white shadow-soft transition hover:-translate-y-0.5 hover:shadow-dav md:hidden">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 6h16v12H4V6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+      <div class="border-t border-black/10 bg-white/80 md:hidden">
+        <div class="mobile-contact-strip mx-auto flex w-[min(100%-24px,1180px)] gap-2 overflow-x-auto py-2 text-xs font-black text-dav-ink">
+          <a href="mailto:contact@davholdinggroup.com" class="inline-flex shrink-0 items-center gap-2 rounded-full border border-black/10 bg-white px-3 py-2">
+            <svg class="h-4 w-4 text-dav-red" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 6h16v12H4V6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>contact@davholdinggroup.com</span>
+          </a>
+          <a href="https://www.facebook.com/Cocody-Abidjan-Cote-DIvoire-104979122873204/" target="_blank" rel="noreferrer" title="Facebook" aria-label="Facebook" class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-black/10 bg-white">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M14 8.6V7.1c0-.7.5-1.1 1.2-1.1H17V3h-2.7C11.6 3 10 4.6 10 7v1.6H8v3.1h2V21h3.3v-9.3h2.7l.5-3.1H13.3z"/>
+            </svg>
+          </a>
+          <a href="https://wa.me/2250757249390" target="_blank" rel="noreferrer" title="WhatsApp Dav'Beauté" aria-label="WhatsApp Dav'Beauté" class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-black/10 bg-white text-dav-beauty">
+            <span class="text-xs font-black">WB</span>
+          </a>
+          <a href="https://wa.me/2250566232575" target="_blank" rel="noreferrer" title="WhatsApp Dav'Consulting" aria-label="WhatsApp Dav'Consulting" class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-black/10 bg-white text-dav-tech">
+            <span class="text-xs font-black">WC</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <aside class="fixed right-4 top-1/2 z-40 hidden -translate-y-1/2 flex-col items-center gap-3 md:flex" aria-label="Navigation des slides">
+      <button v-for="(slide, index) in slides" :key="slide.key" type="button" class="group relative h-3 rounded-full transition-all" :class="activeIndex === index ? 'h-12 w-3 bg-dav-red' : 'w-3 bg-black/20 hover:bg-black/40'" @click="goTo(index)">
+        <span class="absolute right-6 top-1/2 hidden -translate-y-1/2 whitespace-nowrap rounded-full bg-dav-deep px-3 py-1 text-xs font-black text-white shadow-soft group-hover:block">
+          {{ slide.nav }}
+        </span>
+      </button>
+    </aside>
+
+    <a v-if="mobileCta" :href="mobileCta.href" :target="mobileCta.external ? '_blank' : null" :rel="mobileCta.external ? 'noreferrer' : null" class="mobile-cta fixed bottom-[5.7rem] right-3 z-50 inline-flex min-h-14 items-center gap-2 rounded-full bg-dav-deep px-4 py-3 text-xs font-black uppercase tracking-[.08em] text-white shadow-dav md:hidden">
+      <span v-html="mobileCta.icon"></span>
+      <span>{{ mobileCta.label }}</span>
+    </a>
+
+    <nav class="mobile-dock fixed inset-x-3 bottom-3 z-50 grid grid-cols-3 gap-2 rounded-[1.35rem] border border-black/10 bg-white/90 p-2 shadow-dav backdrop-blur-xl md:hidden" aria-label="Navigation mobile">
+      <button v-for="(slide, index) in slides" :key="slide.key" type="button" class="flex min-h-14 flex-col items-center justify-center gap-1 rounded-2xl border text-[11px] font-black transition" :class="activeIndex === index ? 'border-dav-red bg-white text-dav-red shadow-soft' : 'border-transparent bg-transparent text-dav-muted'" @click="goTo(index)">
+        <span class="grid h-5 w-5 place-items-center" v-html="slide.navIcon"></span>
+        <span>{{ slide.nav }}</span>
+      </button>
+    </nav>
+
+    <main ref="slidesRoot" class="slides h-screen overflow-y-auto" @scroll.passive="syncActiveSlide">
+      <section v-for="(slide, index) in slides" :key="slide.key" :ref="setSlideRef" class="slide relative flex min-h-screen items-center overflow-hidden px-3 pt-36 md:px-0 md:pt-24" :class="[slide.bg, activeIndex === index ? 'slide-active' : '']">
+        <span class="hero-word" v-if="slide.key === 'home'">DAV</span>
+
+        <div class="focus-layer mx-auto grid w-[min(1180px,calc(100%-24px))] gap-8 lg:grid-cols-[.9fr_.86fr] lg:items-center">
+          <div class="relative z-10">
+            <span class="reveal mb-5 inline-flex w-fit items-center gap-3 text-xs font-black uppercase tracking-[.22em]" :class="slide.accentText">
+              <span class="h-0.5 w-10 rounded-full" :class="slide.accentBg"></span>
+              {{ slide.kicker }}
+            </span>
+
+            <h1 class="reveal reveal-2 max-w-3xl font-display text-[clamp(2.75rem,6vw,5.9rem)] leading-[.9] text-dav-deep">
+              {{ slide.title }}
+            </h1>
+
+            <p class="reveal reveal-3 mt-5 max-w-2xl text-lg leading-8 text-dav-muted md:text-xl">
+              {{ slide.text }}
+            </p>
+
+            <div class="reveal reveal-3 mt-6">
+              <span class="mb-3 inline-flex rounded-full border border-black/10 bg-white/80 px-3 py-1 text-[11px] font-black uppercase tracking-[.18em] text-dav-muted shadow-soft">
+                {{ slide.cardsTitle }}
+              </span>
+              <div class="service-grid grid gap-3 sm:grid-cols-3">
+              <div v-for="card in slide.cards" :key="card.label" class="service-card card-reveal rounded-3xl border border-black/10 bg-white p-5 shadow-dav backdrop-blur hover:-translate-y-1">
+                <div class="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl text-white" :class="card.logo ? 'border border-black/10 bg-white p-2' : card.color">
+                  <img v-if="card.logo" :src="card.logo" :alt="card.logoAlt" class="max-h-full max-w-full object-contain mix-blend-multiply">
+                  <span v-else v-html="card.icon"></span>
+                </div>
+                <strong class="block font-display text-2xl leading-none text-dav-deep">{{ card.value }}</strong>
+                <span class="mt-2 block text-sm font-bold text-dav-muted">{{ card.label }}</span>
+              </div>
+              </div>
+            </div>
+
+            <div class="action-row reveal reveal-3 mt-6 flex flex-wrap gap-3">
+              <a v-for="action in slide.actions" :key="action.label" :href="action.href" :target="action.external ? '_blank' : null" :rel="action.external ? 'noreferrer' : null" class="action-button inline-flex min-h-12 items-center justify-center rounded-full px-5 text-sm font-black transition hover:-translate-y-0.5 hover:shadow-dav" :class="action.primary ? 'bg-dav-red text-white' : 'border border-black/10 bg-white text-dav-deep'" @click="handleAction(action, $event)">
+                {{ action.label }}
+              </a>
+            </div>
+          </div>
+
+          <div class="visual-panel relative z-10 min-h-[430px] md:min-h-[590px]">
+            <div class="absolute left-1/2 top-1/2 h-[min(80vw,510px)] w-[min(80vw,510px)] -translate-x-1/2 -translate-y-1/2 blob shadow-dav"></div>
+
+            <figure class="photo-frame visual-reveal absolute inset-x-4 top-0 overflow-hidden rounded-[2rem] border border-white/70 bg-white/85 shadow-dav backdrop-blur md:inset-x-12">
+              <img :src="slide.photo" :alt="slide.photoAlt" class="h-48 w-full object-cover md:h-56">
+              <figcaption class="px-5 py-3 text-xs font-bold text-dav-muted">
+                {{ slide.photoCredit }}
+              </figcaption>
+            </figure>
+
+            <div class="brand-card-shell absolute inset-x-8 bottom-6 grid place-items-center">
+              <div class="brand-card visual-reveal relative w-[min(78vw,390px)] rounded-[2rem] border border-white/60 bg-white/95 p-6 shadow-dav backdrop-blur">
+                <img :src="slide.logo" :alt="slide.logoAlt" class="mx-auto max-h-44 w-full object-contain mix-blend-multiply">
+                <div class="brand-card-copy mt-5 rounded-3xl p-5">
+                  <span class="text-xs font-black uppercase tracking-[.18em] text-dav-red">{{ slide.cardLabel }}</span>
+                  <strong class="mt-2 block font-display text-2xl leading-tight text-dav-deep">{{ slide.cardTitle }}</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="floaty absolute left-0 top-24 hidden w-52 rounded-3xl border border-black/10 bg-white/90 p-4 shadow-dav backdrop-blur md:block">
+              <span v-html="slide.floatIcon"></span>
+              <strong class="mt-3 block text-dav-deep">{{ slide.floatTitle }}</strong>
+              <span class="text-sm font-bold text-dav-muted">{{ slide.floatText }}</span>
+            </div>
+
+            <div class="floaty-delay absolute bottom-12 right-0 hidden w-52 rounded-3xl border border-black/10 bg-white/90 p-4 shadow-dav backdrop-blur md:block">
+              <img :src="slide.floatLogo" :alt="slide.floatAlt" class="h-14 w-auto object-contain mix-blend-multiply">
+              <strong class="mt-3 block text-dav-deep">{{ slide.floatLogoTitle }}</strong>
+              <span class="text-sm font-bold text-dav-muted">{{ slide.floatLogoText }}</span>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </main>
+  </div>
+
+  <noscript>
+    <main style="font-family: Arial, sans-serif; padding: 32px; line-height: 1.6;">
+      <h1>DAV Holding Group - Dav'Consulting & Dav'Beauté à Abidjan</h1>
+      <p>DAV Holding Group est situé à Angré 8ème tranche, Cocody, Abidjan, Côte d'Ivoire.</p>
+      <h2>Dav'Beauté</h2>
+      <p>Coiffure, esthétique, Micro Twists, coiffures et tresses adultes/enfants, maquillage, onglerie, pédicure, soins de visage et corps, vente de produits cosmétiques Dav'. Contacts : +225 07 57 24 93 90 / +225 05 74 21 75 31.</p>
+      <h2>Dav'Consulting</h2>
+      <p>Solutions IT et infrastructure, solutions web, mobile et SIG, branding et identité visuelle. Contact : +225 05 66 23 25 75.</p>
+      <p>Email : <a href="mailto:contact@davholdinggroup.com">contact@davholdinggroup.com</a></p>
+    </main>
+  </noscript>
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script>
+    const { createApp } = Vue;
+
+    const icons = {
+      spark: '<svg width="25" height="25" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2l1.7 6.3L20 10l-6.3 1.7L12 18l-1.7-6.3L4 10l6.3-1.7L12 2z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
+      code: '<svg width="25" height="25" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M14 5l-4 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+      beauty: '<svg width="25" height="25" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 21h10M8 21l1-8h6l1 8M10 13V8a2 2 0 0 1 4 0v5M9 5c1.4-2 4.6-2 6 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+      map: '<svg width="25" height="25" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18l-6 3V6l6-3 6 3 6-3v15l-6 3-6-3zM9 3v15M15 6v15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+      phone: '<svg width="25" height="25" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.4 19.4 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.8a2 2 0 0 1-.4 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+    };
+
+    createApp({
+      data() {
+        return {
+          appReady: false,
+          activeIndex: 0,
+          slideEls: [],
+          slides: [
+            {
+              key: 'home',
+              nav: 'Holding',
+              navIcon: icons.spark,
+              kicker: 'DAV Holding Group',
+              title: 'Un univers de services, plusieurs domaines d’activité.',
+              text: "DAV Holding Group prépare son site officiel. Le groupe réunit des expertises complémentaires portées par des femmes et des hommes engagés : technologie, image, beauté, conseil et services à forte valeur ajoutée.",
+              logo: 'assets/dav-holding-logo.jpg',
+              logoAlt: 'Logo DAV Holding Group',
+              photo: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80',
+              photoAlt: 'Femme et homme travaillant ensemble dans un environnement multi-activités',
+              photoCredit: 'Image temporaire - remplacer par assets/dav-holding-hero.jpg',
+              cardLabel: 'DAV Holding Group',
+              cardTitle: 'Des activités différentes, une même exigence.',
+              floatIcon: icons.spark,
+              floatTitle: 'Dav’Beauté',
+              floatText: 'Beauté, coiffure, soins et cosmétiques.',
+              floatLogo: 'assets/dav-consulting-logo.png',
+              floatAlt: "Logo Dav'Consulting",
+              floatLogoTitle: "Dav'Consulting",
+              floatLogoText: 'Technologie, web, mobile, SIG et branding.',
+              accentText: 'text-dav-red',
+              accentBg: 'bg-dav-red',
+              bg: 'bg-transparent',
+              cardsTitle: 'Les pôles DAV',
+              cards: [
+                { value: 'GROUPE', label: 'Vision holding et services', logo: 'assets/dav-holding-logo.jpg', logoAlt: 'Logo DAV Holding Group', color: 'bg-dav-red' },
+                { value: 'BEAUTÉ', label: 'Dav’Beauté', logo: 'assets/dav-beaute-logo.png', logoAlt: "Logo Dav'Beauté", color: 'bg-dav-beauty' },
+                { value: 'TECH', label: 'Dav’Consulting', logo: 'assets/dav-consulting-logo.png', logoAlt: "Logo Dav'Consulting", color: 'bg-dav-tech' }
+              ],
+              actions: [
+                { label: 'Découvrir Dav’Beauté', href: '#', primary: true, slide: 1 },
+                { label: 'Écrire un email', href: 'mailto:contact@davholdinggroup.com' }
+              ]
+            },
+            {
+              key: 'beaute',
+              nav: 'Beauté',
+              navIcon: icons.beauty,
+              kicker: "Dav'Beauté",
+              title: 'Le professionnalisme au service de votre beauté.',
+              text: "Dav’Beauté vous accompagne en coiffure, esthétique, Micro Twists, tresses adultes et enfants, maquillage, onglerie, pédicure, soins de visage et du corps, ainsi que dans la vente de produits cosmétiques Dav’.",
+              logo: 'assets/dav-beaute-logo.png',
+              logoAlt: "Logo Dav'Beauté",
+              photo: 'assets/dav-beaute-salon.jpg',
+              photoAlt: 'Salon Dav’Beauté avec postes de coiffure et soins',
+              photoCredit: 'Salon Dav’Beauté',
+              cardLabel: "Dav'Beauté",
+              cardTitle: 'Coiffure, esthétique, soins et cosmétiques.',
+              floatIcon: icons.beauty,
+              floatTitle: 'Contacts Dav’Beauté',
+              floatText: '+225 07 57 24 93 90 / 05 74 21 75 31',
+              floatLogo: 'assets/dav-beaute-logo.png',
+              floatAlt: "Logo Dav'Beauté",
+              floatLogoTitle: "Dav'Beauté",
+              floatLogoText: 'Beauté, soin et élégance.',
+              accentText: 'text-dav-beauty',
+              accentBg: 'bg-dav-beauty',
+              bg: 'bg-white/30',
+              cardsTitle: 'Services Dav’Beauté',
+              cards: [
+                { value: 'MICRO', label: 'Spécialistes en Micro Twists', icon: icons.beauty, color: 'bg-dav-beauty' },
+                { value: 'STYLE', label: 'Coiffures & Tresses adultes - enfants', icon: icons.spark, color: 'bg-dav-red' },
+                { value: 'SOINS', label: 'Maquillage, onglerie, pédicure, visage & corps', icon: icons.beauty, color: 'bg-dav-gold' }
+              ],
+              actions: [
+                { label: 'WhatsApp Dav’Beauté', href: 'https://wa.me/2250757249390', primary: true, external: true },
+                { label: '+225 07 57 24 93 90', href: 'tel:+2250757249390' }
+              ]
+            },
+            {
+              key: 'consulting',
+              nav: 'Consulting',
+              navIcon: icons.code,
+              kicker: "Dav'Consulting",
+              title: 'Un partenaire de confiance pour votre transformation digitale.',
+              text: "Dav’Consulting accompagne vos projets technologiques avec des solutions IT et infrastructure, des solutions web, mobile et SIG, ainsi que du branding et de l’identité visuelle.",
+              logo: 'assets/dav-consulting-logo.png',
+              logoAlt: "Logo Dav'Consulting",
+              photo: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80',
+              photoAlt: 'Equipe travaillant sur des ordinateurs pour un projet technologique',
+              photoCredit: 'Image libre de droit via Unsplash',
+              cardLabel: "Dav'Consulting",
+              cardTitle: 'IT, web, mobile, SIG et identité visuelle.',
+              floatIcon: icons.code,
+              floatTitle: 'Contact Dav’Consulting',
+              floatText: '+225 05 66 23 25 75',
+              floatLogo: 'assets/dav-consulting-logo.png',
+              floatAlt: "Logo Dav'Consulting",
+              floatLogoTitle: "Dav'Consulting",
+              floatLogoText: 'Transformation digitale et image de marque.',
+              accentText: 'text-dav-tech',
+              accentBg: 'bg-dav-tech',
+              bg: 'bg-dav-soft/60',
+              cardsTitle: 'Services Dav’Consulting',
+              cards: [
+                { value: 'IT', label: 'Solution IT et infrastructure', icon: icons.code, color: 'bg-dav-tech' },
+                { value: 'WEB', label: 'Solution web, mobile et SIG', icon: icons.map, color: 'bg-dav-red' },
+                { value: 'BRAND', label: 'Branding et identité visuelle', icon: icons.spark, color: 'bg-dav-tech' }
+              ],
+              actions: [
+                { label: "WhatsApp Dav'Consulting", href: 'https://wa.me/2250566232575', primary: true, external: true },
+                { label: 'contact@davholdinggroup.com', href: 'mailto:contact@davholdinggroup.com' }
+              ]
+            }
+          ]
+        };
+      },
+      computed: {
+        mobileCta() {
+          if (this.activeIndex === 1) {
+            return {
+              label: 'WhatsApp Beauté',
+              href: 'https://wa.me/2250757249390',
+              external: true,
+              icon: icons.phone
+            };
+          }
+
+          if (this.activeIndex === 2) {
+            return {
+              label: 'WhatsApp Consulting',
+              href: 'https://wa.me/2250566232575',
+              external: true,
+              icon: icons.phone
+            };
+          }
+
+          return {
+            label: 'Écrire',
+            href: 'mailto:contact@davholdinggroup.com',
+            external: false,
+            icon: icons.spark
+          };
+        }
+      },
+      mounted() {
+        this.$nextTick(this.syncActiveSlide);
+        window.addEventListener('keydown', this.handleKeys);
+        window.addEventListener('scroll', this.syncActiveSlide, { passive: true });
+        window.addEventListener('resize', this.syncActiveSlide);
+        window.setTimeout(() => {
+          this.appReady = true;
+        }, 450);
+      },
+      beforeUpdate() {
+        this.slideEls = [];
+      },
+      beforeUnmount() {
+        window.removeEventListener('keydown', this.handleKeys);
+        window.removeEventListener('scroll', this.syncActiveSlide);
+        window.removeEventListener('resize', this.syncActiveSlide);
+      },
+      methods: {
+        setSlideRef(el) {
+          if (el) this.slideEls.push(el);
+        },
+        syncActiveSlide() {
+          const root = this.$refs.slidesRoot;
+          if (!root) return;
+
+          if (window.matchMedia('(max-width: 760px)').matches) {
+            const referenceLine = window.innerHeight * .45;
+            let nextIndex = this.activeIndex;
+            let closestDistance = Number.POSITIVE_INFINITY;
+
+            this.slideEls.forEach((slide, index) => {
+              const rect = slide.getBoundingClientRect();
+              const distance = Math.abs(rect.top - referenceLine);
+              if (distance < closestDistance) {
+                closestDistance = distance;
+                nextIndex = index;
+              }
+            });
+
+            this.activeIndex = nextIndex;
+            return;
+          }
+
+          const nextIndex = Math.min(this.slides.length - 1, Math.round(root.scrollTop / root.clientHeight));
+          this.activeIndex = nextIndex;
+        },
+        goTo(index) {
+          const root = this.$refs.slidesRoot;
+          if (!root) return;
+          const safeIndex = Math.min(Math.max(index, 0), this.slides.length - 1);
+
+          if (window.matchMedia('(max-width: 760px)').matches) {
+            const slide = this.slideEls[safeIndex];
+            if (slide) {
+              slide.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            this.activeIndex = safeIndex;
+            return;
+          }
+
+          root.scrollTo({ top: safeIndex * root.clientHeight, behavior: 'auto' });
+          this.activeIndex = safeIndex;
+        },
+        handleKeys(event) {
+          if (event.key === 'ArrowDown' || event.key === 'PageDown') {
+            event.preventDefault();
+            this.goTo(Math.min(this.activeIndex + 1, this.slides.length - 1));
+          }
+
+          if (event.key === 'ArrowUp' || event.key === 'PageUp') {
+            event.preventDefault();
+            this.goTo(Math.max(this.activeIndex - 1, 0));
+          }
+        },
+        handleAction(action, event) {
+          if (typeof action.slide === 'number') {
+            event.preventDefault();
+            this.goTo(action.slide);
+          }
+        }
+      }
+    }).mount('#app');
+  </script>
+</body>
+</html>
