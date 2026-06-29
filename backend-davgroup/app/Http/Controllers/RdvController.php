@@ -203,6 +203,16 @@ class RdvController extends Controller
         ], 201);
     }
 
+    // ── Mes RDVs (client connecté) ──────────────────────────────
+    public function myRdvs(Request $request)
+    {
+        $rdvs = Rdv::where('user_id', $request->user()->id)
+            ->orderByDesc('appointment_date')
+            ->get();
+
+        return response()->json(['data' => $rdvs]);
+    }
+
     // ── Créneaux disponibles pour une date ──────────────────────
     public function availableSlots(Request $request)
     {

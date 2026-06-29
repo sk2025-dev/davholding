@@ -32,10 +32,10 @@ const COMMUNES = Object.keys(DELIVERY_FEES);
 
 /* ── Opérateurs Mobile Money ── */
 const OPERATORS = [
-  { id: "wave-ci",         label: "Wave",         color: "#1B74E4", logo: "🌊" },
-  { id: "orange-money-ci", label: "Orange Money", color: "#FF6900", logo: "🟠" },
-  { id: "mtn-ci",          label: "MTN Money",    color: "#FFCC00", logo: "💛" },
-  { id: "moov-ci",         label: "Moov Money",   color: "#004B9B", logo: "🔵" },
+  { id: "wave-ci",         label: "Wave",         color: "#1B74E4", logo: "/images/wave.jpg"  },
+  { id: "orange-money-ci", label: "Orange Money", color: "#FF6900", logo: "/images/om.jpg"    },
+  { id: "mtn-ci",          label: "MTN Money",    color: "#FFCC00", logo: "/images/mtn.png"   },
+  { id: "moov-ci",         label: "Moov Money",   color: "#004B9B", logo: "/images/moov.jpg"  },
 ];
 
 /* ── Helpers carte ── */
@@ -429,7 +429,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, cartTotal, o
                       style={{ "--op-color": op.color }}
                       onClick={() => setMobileOperator(op.id)}
                     >
-                      <span className="co-operator-logo">{op.logo}</span>
+                      <img className="co-operator-logo" src={op.logo} alt={op.label} />
                       <span className="co-operator-name">{op.label}</span>
                     </button>
                   ))}

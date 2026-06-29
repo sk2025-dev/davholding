@@ -78,6 +78,24 @@ class OrderController extends Controller
         return response()->json(['data' => $order->fresh()]);
     }
 
+    /* ── Client : ses propres commandes ── */
+    public function myOrders(Request $request)
+    {
+        $orders = Order::where('user_id', $request->user()->id)
+            ->orderByDesc('created_at')
+            ->get()
+            ->map(function (Order $order) {
+                $items = [];
+                if ($order->notes) {
+                    $decoded = json_decode($order->notes, true);
+                    if (is_array($decoded)) $items = $decoded;
+                }
+                return array_merge($order->toArray(), ['items' => $items]);
+            });
+
+        return response()->json(['data' => $orders]);
+    }
+
     /* ── Client : passer une commande livraison ── */
     public function storeDelivery(Request $request)
     {

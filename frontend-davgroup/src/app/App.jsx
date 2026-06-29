@@ -21,6 +21,7 @@ import BookingModal from "../components/Beaute/BookingModal";
 import AuthCallbackPage from "../pages/AuthCallbackPage";
 import PaymentSuccessPage from "../pages/PaymentSuccessPage";
 import PaymentCancelPage from "../pages/PaymentCancelPage";
+import ProfilePage from "../pages/ProfilePage";
 import "../styles/Variables.css";
 import "../styles/Holding.css";
 import "../styles/Carrousel.css";
@@ -70,6 +71,7 @@ function App() {
         <Route path="/auth/callback" element={<AuthCallbackPage />} />
         <Route path="/paiement/succes" element={<PaymentSuccessPage />} />
         <Route path="/paiement/annule" element={<PaymentCancelPage />} />
+        <Route path="/beaute/profil" element={<ProfilePage />} />
       </Routes>
     </BrowserRouter>
     </ClientAuthProvider>

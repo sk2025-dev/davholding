@@ -551,8 +551,10 @@
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--op-color, #c41420) 18%, transparent);
 }
 .co-operator-logo {
-  font-size: 24px;
-  line-height: 1;
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  border-radius: 10px;
 }
 .co-operator-name {
   font-size: 11px;
@@ -594,7 +596,7 @@
 /* ── Ligne expiry + CVV ────────────────────────────────────── */
 .co-card-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 100px;
   gap: 10px;
 }
 .co-card-number-input {

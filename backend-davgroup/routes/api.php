@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\SocialAuthController;
 use App\Http\Controllers\RdvController;
 use App\Http\Controllers\ProductController;
@@ -38,8 +39,10 @@ Route::get('/rdv/slots', [RdvController::class, 'availableSlots']);
 // Détail RDV après paiement (public)
 Route::get('/rdv/booking/{id}', [RdvController::class, 'show']);
 
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login',           [AuthController::class, 'login']);
+Route::post('/register',        [AuthController::class, 'register']);
+Route::post('/forgot-password', [PasswordResetController::class, 'forgotPassword']);
+Route::post('/reset-password',  [PasswordResetController::class, 'resetPassword']);
 Route::get('/auth/google', [SocialAuthController::class, 'redirect']);
 Route::get('/auth/google/callback', [SocialAuthController::class, 'callback']);
 
@@ -56,8 +59,12 @@ Route::post('/promos/validate',[PromoController::class, 'validate']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/payment/initiate',        [PaymentController::class, 'initiate']);
     Route::post('/payment/mobile-initiate', [PaymentController::class, 'mobileInitiate']);
-    Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('/user', [AuthController::class, 'user']);
+    Route::post('/logout',           [AuthController::class, 'logout']);
+    Route::get('/user',              [AuthController::class, 'user']);
+    Route::put('/user/profile',      [AuthController::class, 'updateProfile']);
+    Route::put('/user/password',     [AuthController::class, 'changePassword']);
+    Route::get('/orders/my',         [OrderController::class, 'myOrders']);
+    Route::get('/rdv/my',            [RdvController::class,   'myRdvs']);
     Route::get('/rdv', [RdvController::class, 'index']);
     Route::post('/rdv', [RdvController::class, 'store']);
     Route::patch('/rdv/{rdv}/status', [RdvController::class, 'updateStatus']);

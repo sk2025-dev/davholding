@@ -17,6 +17,8 @@
   border-radius: 24px;
   padding: 40px 36px 32px;
   width: min(460px, calc(100vw - 32px));
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
   box-shadow: 0 32px 80px -16px rgba(26, 15, 10, 0.3);
   animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
@@ -204,6 +206,56 @@
   margin-top: 18px;
   line-height: 1.5;
 }
+
+/* Mot de passe oublié */
+.auth-forgot-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #c41420;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: right;
+  align-self: flex-end;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  margin-top: -6px;
+}
+.auth-forgot-link:hover { color: #a01018; }
+
+.auth-forgot-desc {
+  font-size: 13.5px;
+  color: rgba(26,15,10,.6);
+  line-height: 1.55;
+  margin: 0 0 4px;
+}
+
+.auth-back-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: rgba(26,15,10,.45);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 4px;
+}
+.auth-back-link:hover { color: #c41420; }
+
+.auth-forgot-sent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  padding: 8px 0;
+}
+.auth-forgot-icon { font-size: 44px; }
+.auth-forgot-sent p { font-size: 14px; color: #1a0f0a; line-height: 1.5; margin: 0; }
+.auth-forgot-hint { font-size: 12px !important; color: rgba(26,15,10,.45) !important; }
+.auth-forgot-sent .auth-submit { width: 100%; margin-top: 8px; }
 
 @keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
 @keyframes slideUp { from { opacity: 0; transform: translate(-50%, calc(-50% + 20px)); } to { opacity: 1; transform: translate(-50%, -50%); } }
