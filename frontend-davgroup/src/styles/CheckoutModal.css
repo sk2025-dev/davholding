@@ -1,0 +1,606 @@
+.checkout-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 15, 10, 0.55);
+  backdrop-filter: blur(4px);
+  z-index: 1200;
+  animation: co-fadeIn 0.2s ease both;
+}
+
+.checkout-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1201;
+  background: #fff;
+  border-radius: 24px;
+  padding: 40px 36px 32px;
+  width: min(440px, calc(100vw - 32px));
+  box-shadow: 0 32px 80px -16px rgba(26, 15, 10, 0.3);
+  animation: co-slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.checkout-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: rgba(26, 15, 10, 0.07);
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 13px;
+  color: rgba(26, 15, 10, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+.checkout-close:hover { background: rgba(196, 20, 32, 0.1); color: #c41420; }
+
+.checkout-icon {
+  font-size: 36px;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.checkout-title {
+  font-family: "Fraunces", serif;
+  font-size: 22px;
+  font-weight: 400;
+  font-style: italic;
+  color: #1a0f0a;
+  text-align: center;
+  margin: 0 0 8px;
+}
+
+.checkout-subtitle {
+  font-size: 13.5px;
+  color: rgba(26, 15, 10, 0.55);
+  text-align: center;
+  margin: 0 0 20px;
+}
+
+.checkout-total {
+  background: #faf6f0;
+  border: 1px solid rgba(201, 160, 96, 0.3);
+  border-radius: 12px;
+  padding: 14px 20px;
+  text-align: center;
+  font-size: 14px;
+  color: rgba(26, 15, 10, 0.7);
+  margin-bottom: 24px;
+}
+.checkout-total strong {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a0f0a;
+  margin-left: 4px;
+}
+
+.checkout-error {
+  background: rgba(196, 20, 32, 0.08);
+  color: #c41420;
+  border: 1px solid rgba(196, 20, 32, 0.2);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+.checkout-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.checkout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 15px 20px;
+  border: none;
+  border-radius: 100px;
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  transition: transform 0.15s, box-shadow 0.2s;
+}
+.checkout-btn:hover:not(:disabled) { transform: translateY(-2px); }
+.checkout-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.checkout-btn--whatsapp {
+  background: #25d366;
+  color: #fff;
+}
+.checkout-btn--whatsapp:hover:not(:disabled) {
+  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.35);
+}
+
+.checkout-btn--pay {
+  background: #c41420;
+  color: #fff;
+}
+.checkout-btn--pay:hover:not(:disabled) {
+  background: #a00e18;
+  box-shadow: 0 8px 24px rgba(196, 20, 32, 0.3);
+}
+
+.checkout-note {
+  font-size: 11px;
+  color: rgba(26, 15, 10, 0.35);
+  text-align: center;
+  margin-top: 18px;
+  margin-bottom: 0;
+}
+
+/* Pages succès / annulation paiement */
+.payment-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80px 20px;
+  max-width: 480px;
+  margin: 0 auto;
+  text-align: center;
+}
+.payment-result__icon { font-size: 64px; margin-bottom: 24px; }
+.payment-result__title {
+  font-family: "Fraunces", serif;
+  font-size: 28px;
+  font-weight: 400;
+  font-style: italic;
+  color: #1a0f0a;
+  margin: 0 0 12px;
+}
+.payment-result__order { color: rgba(26,15,10,.7); margin: 0 0 8px; font-size: 15px; }
+.payment-result__sub { color: rgba(26,15,10,.45); font-size: 13.5px; margin: 0 0 32px; line-height: 1.6; }
+.payment-result__btn {
+  padding: 14px 36px;
+  background: #c41420;
+  color: #fff;
+  border: none;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  transition: background 0.2s, transform 0.15s;
+}
+.payment-result__btn:hover { background: #a00e18; transform: translateY(-1px); }
+
+/* ── Bouton retour ───────────────────────────────────── */
+.checkout-back {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: rgba(26, 15, 10, 0.5);
+  font-family: "Inter", sans-serif;
+  padding: 6px 8px;
+  border-radius: 8px;
+  transition: color 0.15s, background 0.15s;
+}
+.checkout-back:hover {
+  color: #c41420;
+  background: rgba(196, 20, 32, 0.06);
+}
+
+/* ── Grille choix paiement ───────────────────────────── */
+.checkout-method-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.checkout-method-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 22px 14px;
+  border: 2px solid rgba(26, 15, 10, 0.1);
+  border-radius: 18px;
+  background: transparent;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, transform 0.15s, box-shadow 0.2s;
+  text-align: center;
+  font-family: "Inter", sans-serif;
+}
+
+.checkout-method-card:hover {
+  border-color: #c41420;
+  background: rgba(196, 20, 32, 0.03);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(196, 20, 32, 0.12);
+}
+
+.checkout-method-card--online:hover {
+  border-color: #c41420;
+}
+
+.checkout-method-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(196, 20, 32, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #c41420;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+
+.checkout-method-card:hover .checkout-method-icon {
+  background: rgba(196, 20, 32, 0.15);
+}
+
+.checkout-method-card strong {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1a0f0a;
+  display: block;
+}
+
+.checkout-method-card > span:last-child {
+  font-size: 11px;
+  color: rgba(26, 15, 10, 0.45);
+  line-height: 1.4;
+}
+
+/* ── Formulaire livraison ────────────────────────────── */
+.checkout-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.checkout-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.checkout-field label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: rgba(26, 15, 10, 0.6);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.checkout-field input {
+  height: 44px;
+  padding: 0 14px;
+  border: 1.5px solid rgba(26, 15, 10, 0.14);
+  border-radius: 12px;
+  font-size: 14px;
+  font-family: "Inter", sans-serif;
+  color: #1a0f0a;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.checkout-field input:focus {
+  border-color: #c41420;
+  box-shadow: 0 0 0 3px rgba(196, 20, 32, 0.08);
+}
+
+.checkout-field input::placeholder {
+  color: rgba(26, 15, 10, 0.3);
+}
+
+/* ── Redirection en ligne ────────────────────────────── */
+.checkout-online-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.checkout-online-loading p {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a0f0a;
+  margin: 0;
+}
+
+.checkout-online-loading span {
+  font-size: 12px;
+  color: rgba(26, 15, 10, 0.45);
+}
+
+.checkout-spinner {
+  width: 44px;
+  height: 44px;
+  border: 3px solid rgba(196, 20, 32, 0.15);
+  border-top-color: #c41420;
+  border-radius: 50%;
+  animation: co-spin 0.75s linear infinite;
+}
+
+/* ── Succès ──────────────────────────────────────────── */
+.checkout-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 4px 4px;
+  text-align: center;
+}
+
+.checkout-success-icon {
+  font-size: 48px;
+  margin-bottom: 6px;
+}
+
+.checkout-success .checkout-title { margin: 0; }
+.checkout-success .checkout-subtitle { margin: 0; }
+.checkout-success .checkout-btn { margin-top: 8px; width: 100%; }
+
+/* ── Keyframes ───────────────────────────────────────── */
+@keyframes co-fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes co-slideUp {
+  from { opacity: 0; transform: translate(-50%, calc(-50% + 20px)); }
+  to   { opacity: 1; transform: translate(-50%, -50%); }
+}
+@keyframes co-spin { to { transform: rotate(360deg); } }
+
+/* ── Commune selector ──────────────────────────────────── */
+.co-commune-wrap {
+  margin-bottom: 16px;
+}
+.co-commune-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(26,15,10,.55);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.co-commune-select {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid rgba(26,15,10,.15);
+  border-radius: 12px;
+  font-size: 13.5px;
+  font-family: inherit;
+  color: #1a0f0a;
+  background: #faf9f8;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23999' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+  transition: border-color .2s, box-shadow .2s;
+}
+.co-commune-select:focus {
+  border-color: #c41420;
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(196,20,32,.08);
+}
+
+/* ── Récap total ───────────────────────────────────────── */
+.co-breakdown {
+  background: rgba(26,15,10,.03);
+  border: 1.5px solid rgba(26,15,10,.07);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.co-breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: rgba(26,15,10,.6);
+}
+.co-breakdown-delivery span:last-child { color: #c41420; font-weight: 600; }
+.co-breakdown-hint span:last-child { color: rgba(26,15,10,.35); font-style: italic; }
+.co-breakdown-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1.5px solid rgba(26,15,10,.08);
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a0f0a;
+}
+.co-breakdown-total strong { color: #c41420; font-size: 18px; }
+
+/* ── Boutons désactivés ────────────────────────────────── */
+.checkout-method-card--disabled {
+  opacity: .45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ── Champ lecture seule ───────────────────────────────── */
+.co-readonly {
+  background: rgba(26,15,10,.04) !important;
+  color: rgba(26,15,10,.6) !important;
+  cursor: default;
+}
+
+/* ── Modal scrollable sur petits écrans ─────────────────── */
+.checkout-modal {
+  max-height: 92vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(196,20,32,.2) transparent;
+}
+
+/* ── Sélecteur canal de paiement ──────────────────────────── */
+.co-channel-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: rgba(26,15,10,.5);
+  margin-bottom: 10px;
+}
+.co-channel-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.co-channel-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 10px;
+  border-radius: 14px;
+  border: 2px solid rgba(26,15,10,.1);
+  background: #faf9f8;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: center;
+  transition: all .2s;
+}
+.co-channel-card:hover {
+  border-color: #c41420;
+  background: rgba(196,20,32,.04);
+}
+.co-channel-card--active {
+  border-color: #c41420;
+  background: rgba(196,20,32,.06);
+  box-shadow: 0 0 0 3px rgba(196,20,32,.12);
+}
+.co-channel-icon {
+  font-size: 26px;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+.co-channel-card strong {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1a0f0a;
+  display: block;
+}
+.co-channel-card span:last-child {
+  font-size: 10.5px;
+  color: rgba(26,15,10,.45);
+  display: block;
+}
+
+/* ── Grille opérateurs Mobile Money ───────────────────────── */
+.co-operator-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: rgba(26,15,10,.5);
+  margin-bottom: 10px;
+  margin-top: 4px;
+}
+.co-operator-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.co-operator-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 8px;
+  border-radius: 14px;
+  border: 2px solid rgba(26,15,10,.1);
+  background: #faf9f8;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: center;
+  transition: all .2s;
+}
+.co-operator-card:hover {
+  border-color: var(--op-color, #c41420);
+  background: rgba(0,0,0,.03);
+  transform: translateY(-2px);
+}
+.co-operator-card--active {
+  border-color: var(--op-color, #c41420);
+  background: rgba(0,0,0,.04);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--op-color, #c41420) 18%, transparent);
+}
+.co-operator-logo {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  border-radius: 10px;
+}
+.co-operator-name {
+  font-size: 11px;
+  font-weight: 700;
+  color: #1a0f0a;
+}
+
+/* ── Visuel carte bancaire ─────────────────────────────────── */
+.co-card-preview {
+  background: linear-gradient(135deg, #1a0f0a 0%, #3a2010 60%, #c41420 100%);
+  border-radius: 16px;
+  padding: 18px 20px 16px;
+  color: #fff;
+  font-family: "Courier New", monospace;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 24px rgba(196,20,32,.25);
+}
+.co-card-chip {
+  font-size: 22px;
+  margin-bottom: 14px;
+  opacity: .8;
+  letter-spacing: -2px;
+}
+.co-card-num {
+  font-size: 16px;
+  letter-spacing: .15em;
+  margin-bottom: 14px;
+  opacity: .95;
+}
+.co-card-bottom {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  letter-spacing: .08em;
+  opacity: .75;
+  text-transform: uppercase;
+}
+
+/* ── Ligne expiry + CVV ────────────────────────────────────── */
+.co-card-row {
+  display: grid;
+  grid-template-columns: 1fr 100px;
+  gap: 10px;
+}
+.co-card-number-input {
+  font-family: "Courier New", monospace !important;
+  letter-spacing: .08em !important;
+  font-size: 15px !important;
+}

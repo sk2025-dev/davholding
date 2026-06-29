@@ -1,0 +1,236 @@
+/* ── Toolbar : filtres + recherche ── */
+.coif-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 0 0 32px;
+}
+.coif-cats {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.coif-cat-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: 100px;
+  border: 1.5px solid rgba(26, 15, 10, 0.15);
+  background: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+  color: rgba(26, 15, 10, 0.6);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.coif-cat-btn:hover { border-color: var(--red, #c41420); color: var(--red, #c41420); }
+.coif-cat-btn--active {
+  background: var(--red, #c41420);
+  border-color: var(--red, #c41420);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(196, 20, 32, 0.25);
+}
+.coif-cat-count {
+  font-size: 10px;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 100px;
+  padding: 1px 6px;
+  min-width: 16px;
+  text-align: center;
+}
+.coif-cat-btn:not(.coif-cat-btn--active) .coif-cat-count {
+  background: rgba(26, 15, 10, 0.08);
+  color: rgba(26, 15, 10, 0.5);
+}
+.coif-search-wrap {
+  position: relative;
+  margin-left: auto;
+  min-width: 220px;
+}
+.coif-search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  pointer-events: none;
+}
+.coif-search {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 9px 36px 9px 36px;
+  border: 1.5px solid rgba(26, 15, 10, 0.15);
+  border-radius: 100px;
+  font-size: 13px;
+  font-family: "Inter", sans-serif;
+  background: #fff;
+  color: rgba(26, 15, 10, 0.8);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.coif-search:focus {
+  border-color: var(--red, #c41420);
+  box-shadow: 0 0 0 3px rgba(196, 20, 32, 0.08);
+}
+.coif-search-clear {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: rgba(26, 15, 10, 0.08);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 10px;
+  cursor: pointer;
+  color: rgba(26, 15, 10, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.coif-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: rgba(26, 15, 10, 0.4);
+}
+.coif-empty span { font-size: 40px; display: block; margin-bottom: 12px; }
+.coif-empty p { font-size: 14px; }
+
+@media (max-width: 600px) {
+  .coif-toolbar { flex-direction: column; align-items: stretch; }
+  .coif-search-wrap { margin-left: 0; min-width: unset; }
+}
+
+/* ── Pagination ── */
+.coif-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 48px;
+  flex-wrap: wrap;
+}
+.coif-pag-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: 1.5px solid rgba(26, 15, 10, 0.15);
+  background: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(26, 15, 10, 0.6);
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.coif-pag-btn:hover:not(:disabled) {
+  border-color: var(--red, #c41420);
+  color: var(--red, #c41420);
+}
+.coif-pag-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.coif-pag-btn--active {
+  background: var(--red, #c41420);
+  border-color: var(--red, #c41420);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(196, 20, 32, 0.3);
+}
+.coif-pag-info {
+  font-size: 12px;
+  color: rgba(26, 15, 10, 0.45);
+  margin-left: 8px;
+  font-weight: 500;
+}
+
+/* ── Carte coiffure avec overlay ── */
+.coif-card {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  aspect-ratio: 3 / 4;
+  background: var(--gold-pale, #f3e7d0);
+  cursor: pointer;
+}
+
+.coif-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  transition: transform 0.4s cubic-bezier(0.76, 0, 0.24, 1);
+}
+.coif-card:hover .coif-card__img {
+  transform: scale(1.06);
+}
+
+.coif-card__placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--gold-pale, #f3e7d0);
+  z-index: 0;
+}
+.coif-card__img + .coif-card__placeholder { display: none; }
+
+/* Overlay sombre au survol */
+.coif-card__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(to top, rgba(10, 6, 4, 0.82) 0%, rgba(10, 6, 4, 0.1) 55%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 16px 12px;
+  gap: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.coif-card:hover .coif-card__overlay {
+  opacity: 1;
+}
+
+.coif-card__name {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  text-align: center;
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+
+.coif-card__btn {
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: 100px;
+  border: none;
+  background: var(--red, #c41420);
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  transition: background 0.2s, transform 0.2s;
+  box-shadow: 0 4px 16px rgba(196, 20, 32, 0.5);
+}
+.coif-card__btn:hover {
+  background: #a00e18;
+  transform: translateY(-1px);
+}

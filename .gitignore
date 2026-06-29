@@ -1,0 +1,43 @@
+# Environment
+.env
+.env.*
+!.env.example
+*.local
+
+# Dependencies
+node_modules/
+vendor/
+frontend-davgroup/node_modules/
+backend-davgroup/node_modules/
+backend-davgroup/vendor/
+
+# Build outputs and caches
+dist/
+dist-ssr/
+.vite/
+frontend-davgroup/dist/
+frontend-davgroup/dist-ssr/
+frontend-davgroup/.vite/
+backend-davgroup/public/build/
+backend-davgroup/bootstrap/cache/*.php
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# OS and editor files
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
