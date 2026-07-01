@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://davholdinggroup.com/sitemap.xml
