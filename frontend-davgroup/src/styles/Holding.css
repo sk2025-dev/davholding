@@ -101,7 +101,12 @@
   opacity: 0;
   pointer-events: none;
   mix-blend-mode: normal;
-  background: transparent;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.5) 0%,
+    rgba(0, 0, 0, 0.22) 60%,
+    transparent 100%
+  );
 }
 .nav.ready {
   pointer-events: auto;

@@ -466,6 +466,13 @@
   border: 1px solid var(--border);
   padding: 6px 8px;
   border-radius: 100px;
+  max-width: calc(100vw - 32px);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.c-hc__tabs::-webkit-scrollbar {
+  display: none;
 }
 .consulting-root[data-theme="light"] .c-hc__tabs {
   background: rgba(248, 247, 245, 0.75);
@@ -986,7 +993,7 @@
 }
 .c-stack-logos {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 32px 24px;
   align-items: center;
 }
@@ -997,7 +1004,16 @@
 .c-stack-logo-item img {
   max-height: 100px;
   max-width: 120px;
+  width: 100%;
   object-fit: contain;
+}
+@media (max-width: 480px) {
+  .c-stack-logos {
+    gap: 24px 16px;
+  }
+  .c-stack-logo-item img {
+    max-height: 64px;
+  }
 }
 
 /* ══ RÉALISATIONS ══ */
@@ -1521,8 +1537,32 @@
 
 /* ══ RESPONSIVE ══ */
 @media (max-width: 1000px) {
-  .c-hc__inner { grid-template-columns: 1fr; padding-top: 110px; padding-bottom: 40px; align-content: start; }
-  .c-hc__visual { height: 320px; max-height: 320px; margin-top: 20px; }
+  .c-hc {
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+  }
+  .c-hc__slide {
+    position: static;
+    opacity: 1;
+    transform: none;
+    transition: none;
+    pointer-events: none;
+    display: none;
+  }
+  .c-hc__slide--active {
+    display: block;
+    pointer-events: auto;
+  }
+  .c-hc__arrow { display: none; }
+  .c-hc__inner { grid-template-columns: 1fr; height: auto; padding-top: 110px; padding-bottom: 32px; align-content: start; }
+  .c-hc__tabs {
+    position: static;
+    transform: none;
+    margin: 24px auto 28px;
+    width: fit-content;
+  }
+  .c-hc__visual { height: 240px; max-height: 240px; min-height: 240px; margin-top: 16px; }
   .c-hero__content { max-width: 100%; }
   .c-app-mobile-grid { grid-template-columns: 1fr; gap: 36px; }
   .c-what-grid { grid-template-columns: 1fr; gap: 32px; }
@@ -1544,10 +1584,9 @@
   .c-btn-email, .c-btn-wa { width: 100%; justify-content: center; }
   .c-reals__grid { grid-template-columns: 1fr; }
   .c-real-card { min-height: 260px; }
-  .c-hc__tabs { bottom: 16px; }
   .c-hc__tab { padding: 6px 12px; font-size: 11px; }
-  .c-hc__arrow { display: none; }
   .c-numbers__grid { grid-template-columns: 1fr; }
+  .c-hc__visual { height: 200px; max-height: 200px; min-height: 200px; }
 }
 @media (max-width: 640px) {
   .c-container { padding: 0 20px; }
