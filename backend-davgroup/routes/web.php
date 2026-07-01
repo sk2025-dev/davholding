@@ -7,4 +7,4 @@ Route::get('/', function () {
 });
 
 Route::view('/{any}', 'app')
-    ->where('any', '^(?!api).*$');
+    ->where('any', '^(?!api|docs).*$');
