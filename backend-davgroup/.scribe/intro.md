@@ -3,7 +3,7 @@
 Bienvenue sur la documentation officielle de l'API **DAVGROUP**. Cette API permet à l'application mobile et aux interfaces web de communiquer avec le backend.
 
 <aside>
-    <strong>Base URL</strong>: <code>https://davholdinggroup.com/app</code>
+    <strong>Base URL</strong>: <code>https://plateforme.davholdinggroup.com/app</code>
 </aside>
 
 Toutes les requêtes doivent inclure les headers suivants :

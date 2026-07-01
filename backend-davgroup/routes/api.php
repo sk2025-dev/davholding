@@ -10,6 +10,7 @@ use App\Http\Controllers\BeautyServiceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PromoController;
+use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -38,6 +39,8 @@ Route::post('/rdv/ipn',     [RdvController::class,     'ipn']);
 Route::get('/rdv/slots', [RdvController::class, 'availableSlots']);
 // Détail RDV après paiement (public)
 Route::get('/rdv/booking/{id}', [RdvController::class, 'show']);
+
+Route::post('/contact', [ContactController::class, 'send']);
 
 Route::post('/login',           [AuthController::class, 'login']);
 Route::post('/register',        [AuthController::class, 'register']);
