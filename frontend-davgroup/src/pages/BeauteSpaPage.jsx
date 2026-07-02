@@ -5,10 +5,14 @@ import "../styles/BeauteSpa.css";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
 
+const SPA_IMAGES = {
+  "Entretien de mariée": "/images/marrier.png",
+};
+
 const FALLBACK = [
   {
     id: "f1",
-    title: "Spa visage",
+    title: "Soin de visage",
     subtitle: "Soin purifiant & éclat",
     price: "25 000 FCFA",
     duration: "1H00",
@@ -26,12 +30,12 @@ const FALLBACK = [
   },
   {
     id: "f3",
-    title: "Rituel détente",
-    subtitle: "Soin complet corps & visage",
-    price: "45 000 FCFA",
-    duration: "2H00",
-    image_url: "/images/miriam.png",
-    description: "Notre rituel signature alliant soin du visage et massage corps pour une parenthèse de luxe absolue. L'expérience Dav'Beauté.",
+    title: "Entretien de mariée",
+    subtitle: "Soin & mise en beauté",
+    price: "Sur devis",
+    duration: "3H00",
+    image_url: "/images/marrier.png",
+    description: "Un accompagnement beauté complet pour les futures mariées : soin du visage, coiffure et mise en beauté pour un jour inoubliable.",
   },
 ];
 
@@ -46,7 +50,10 @@ function BeauteSpaPage() {
     })
       .then((r) => r.json())
       .then((data) => {
-        const items = (data?.data || []).filter((i) => i.is_active);
+        const items = (data?.data || []).filter((i) => i.is_active).map((i) => ({
+          ...i,
+          image_url: i.image_url || SPA_IMAGES[i.title] || null,
+        }));
         setServices(items.length > 0 ? items : FALLBACK);
       })
       .catch(() => setServices(FALLBACK))

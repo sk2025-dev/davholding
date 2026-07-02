@@ -41,7 +41,7 @@ const TITLES = {
   promos:       "Promotions",
 };
 
-const Topbar = () => {
+const Topbar = ({ onMenuToggle }) => {
   const { currentPanel, switchPanel, notifs } = useAdmin();
   const [open, setOpen] = useState(false);
   const dropRef = useRef(null);
@@ -95,8 +95,17 @@ const Topbar = () => {
 
   return (
     <div className="topbar">
-      <div className="topbar-title">
-        {TITLES[currentPanel] || "Tableau de bord"}
+      <div className="topbar-left">
+        <button className="topbar-menu-btn" onClick={onMenuToggle} aria-label="Menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="18" x2="21" y2="18" />
+          </svg>
+        </button>
+        <div className="topbar-title">
+          {TITLES[currentPanel] || "Tableau de bord"}
+        </div>
       </div>
 
       <div className="topbar-right">

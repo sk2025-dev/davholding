@@ -64,7 +64,7 @@ const icons = {
   ),
 };
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen, onClose }) => {
   const {
     currentUser,
     userProfile,
@@ -74,6 +74,11 @@ const Sidebar = () => {
     setShowProfileModal,
     notifs,
   } = useAdmin();
+
+  const handleNav = (id) => {
+    switchPanel(id);
+    onClose?.();
+  };
 
   const menuItems = [
     { id: "dashboard",    label: "Tableau de bord" },
@@ -86,7 +91,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar${isOpen ? " sidebar--open" : ""}`}>
       <div className="sb-logo">
         <img src="/images/logo.png" alt="DAVGROUP" />
         <div className="sb-logo-sub">Administration</div>
@@ -98,7 +103,7 @@ const Sidebar = () => {
           <button
             key={item.id}
             className={`sb-item ${currentPanel === item.id ? "sb-active" : ""}`}
-            onClick={() => switchPanel(item.id)}
+            onClick={() => handleNav(item.id)}
           >
             {icons[item.id]}
             {item.label}

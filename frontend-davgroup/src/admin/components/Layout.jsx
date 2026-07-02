@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
 import Toast from "./Toast";
@@ -15,6 +16,7 @@ import "../styles/admin.css";
 
 const Layout = () => {
   const { currentPanel } = useAdmin();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const renderPanel = () => {
     switch (currentPanel) {
@@ -41,9 +43,12 @@ const Layout = () => {
 
   return (
     <div className="app-layout">
-      <Sidebar />
+      {sidebarOpen && (
+        <div className="sidebar-backdrop" onClick={() => setSidebarOpen(false)} />
+      )}
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       <main className="main-content">
-        <Topbar />
+        <Topbar onMenuToggle={() => setSidebarOpen((o) => !o)} />
         <div className="content-area">{renderPanel()}</div>
       </main>
       <Toast />

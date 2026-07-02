@@ -48,6 +48,7 @@ const fallbackServices = {
 const fallbackImagesByTitle = Object.values(fallbackServices).flat()
   .reduce((acc, item) => { acc[item.title] = item.image; return acc; }, {});
 
+
 function BeauteRdvSection() {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate  = useNavigate();
