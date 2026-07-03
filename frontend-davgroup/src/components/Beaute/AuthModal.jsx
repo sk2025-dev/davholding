@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useClientAuth } from "../../context/ClientAuthContext";
+import PhoneInput from "../PhoneInput";
 import "../../styles/AuthModal.css";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
@@ -25,6 +26,7 @@ export default function AuthModal() {
 
   const [loginForm, setLoginForm]       = useState({ email: "", password: "" });
   const [registerForm, setRegisterForm] = useState({ name: "", email: "", password: "", confirm: "" });
+  const [registerPhone, setRegisterPhone] = useState("");
 
   if (!modalOpen) return null;
 
@@ -75,7 +77,7 @@ export default function AuthModal() {
     }
     setLoading(true);
     try {
-      await register(registerForm.name, registerForm.email, registerForm.password, registerForm.confirm);
+      await register(registerForm.name, registerForm.email, registerForm.password, registerForm.confirm, registerPhone);
       onAuthSuccess();
     } catch (err) {
       setError(err.message || "Erreur lors de la création du compte.");
@@ -209,6 +211,10 @@ export default function AuthModal() {
                 value={registerForm.email}
                 onChange={(e) => setRegisterForm((p) => ({ ...p, email: e.target.value }))}
               />
+            </div>
+            <div className="auth-field">
+              <label>Numéro de téléphone <span className="auth-optional">(facultatif)</span></label>
+              <PhoneInput onChange={setRegisterPhone} />
             </div>
             <div className="auth-field">
               <label>Mot de passe</label>

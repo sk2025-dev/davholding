@@ -163,6 +163,13 @@
   text-transform: uppercase;
   color: rgba(26, 15, 10, 0.55);
 }
+.auth-optional {
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: 10px;
+  color: rgba(26, 15, 10, 0.35);
+}
 
 .auth-field input {
   padding: 12px 14px;

@@ -133,6 +133,7 @@ function BeauteCapillairesSection({ onAddToCart }) {
           product={selectedProduct}
           onClose={() => setSelectedProduct(null)}
           onAddToCart={onAddToCart}
+          suggestions={inStock.filter((p) => p.id !== selectedProduct.id).slice(0, 3)}
         />
       )}
     </section>

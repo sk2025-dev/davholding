@@ -43,8 +43,8 @@ export function ClientAuthProvider({ children }) {
     return data.user;
   }, []);
 
-  const register = useCallback(async (name, email, password, password_confirmation) => {
-    const data = await apiRequest("/register", { name, email, password, password_confirmation });
+  const register = useCallback(async (name, email, password, password_confirmation, phone) => {
+    const data = await apiRequest("/register", { name, email, phone: phone || undefined, password, password_confirmation });
     saveSession(data.user, data.token);
     return data.user;
   }, []);

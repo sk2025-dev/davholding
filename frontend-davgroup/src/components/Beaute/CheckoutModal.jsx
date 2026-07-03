@@ -103,7 +103,7 @@ function TotalBreakdown({ cartTotal, deliveryFee, commune }) {
 }
 
 /* ══════════════════════════════════════════════════════════════ */
-export default function CheckoutModal({ isOpen, onClose, cartItems, cartTotal, onSuccess }) {
+export default function CheckoutModal({ isOpen, onClose, cartItems, cartTotal, onSuccess, onAddToCart }) {
   const { user } = useClientAuth();
 
   const [step, setStep]               = useState(STEP.CHOICE);
@@ -113,6 +113,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, cartTotal, o
   const [loading, setLoading]         = useState(false);
   const [error, setError]             = useState("");
   const [orderNumber, setOrderNumber] = useState("");
+  const [coSuggestions, setCoSuggestions] = useState([]);
 
   /* Paiement en ligne */
   const [payChannel, setPayChannel]         = useState(""); // "mobile" | "card"
@@ -142,6 +143,14 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, cartTotal, o
   useEffect(() => {
     setDeliveryFee(commune ? (DELIVERY_FEES[commune] ?? 3500) : 0);
   }, [commune]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    fetch(`${API_URL}/products`, { headers: { Accept: "application/json" } })
+      .then((r) => r.json())
+      .then((d) => setCoSuggestions((d?.data || []).filter((p) => p.quantity > 0)))
+      .catch(() => {});
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -311,6 +320,44 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, cartTotal, o
             </div>
 
             <TotalBreakdown cartTotal={cartTotal} deliveryFee={deliveryFee} commune={commune} />
+
+            {(() => {
+              const visible = coSuggestions
+                .filter((s) => !cartItems.find((c) => c.title === s.name))
+                .slice(0, 3);
+              return visible.length > 0 ? (
+                <div className="co-suggestions">
+                  <p className="co-sug-title">✨ Vous aimerez aussi</p>
+                  {visible.map((s) => (
+                    <div key={s.id} className="co-sug-item">
+                      <img
+                        className="co-sug-img"
+                        src={s.image || "/images/placeholder.png"}
+                        alt={s.name}
+                      />
+                      <div className="co-sug-info">
+                        <span className="co-sug-name">{s.name}</span>
+                        <strong className="co-sug-price">
+                          {Number(s.price).toLocaleString("fr-FR")} FCFA
+                        </strong>
+                      </div>
+                      <button
+                        type="button"
+                        className="co-sug-btn"
+                        onClick={() =>
+                          onAddToCart?.({
+                            title: s.name,
+                            price: `${Number(s.price).toLocaleString("fr-FR")} FCFA`,
+                          }, 1)
+                        }
+                      >
+                        + Ajouter
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              ) : null;
+            })()}
 
             {error && <p className="checkout-error">{error}</p>}
 

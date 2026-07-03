@@ -149,6 +149,7 @@ function BeauteCosmetiquesPage() {
         cartItems={cartItems}
         cartTotal={cartTotal}
         onSuccess={handleCheckoutSuccess}
+        onAddToCart={handleAddToCart}
       />
     </BeauteLayout>
   );

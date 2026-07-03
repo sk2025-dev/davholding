@@ -148,6 +148,7 @@ function BeauteCapillairesPage() {
         cartItems={cartItems}
         cartTotal={cartTotal}
         onSuccess={handleCheckoutSuccess}
+        onAddToCart={handleAddToCart}
       />
     </BeauteLayout>
   );

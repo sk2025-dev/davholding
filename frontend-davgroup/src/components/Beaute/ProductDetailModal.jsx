@@ -74,7 +74,7 @@ function StarRow() {
   );
 }
 
-function ProductDetailModal({ product, onClose, onAddToCart }) {
+function ProductDetailModal({ product, onClose, onAddToCart, suggestions = [] }) {
   const [qty, setQty] = useState(1);
   const [activeImg, setActiveImg] = useState(0);
   const [detailsOpen, setDetailsOpen] = useState(true);
@@ -127,6 +127,33 @@ function ProductDetailModal({ product, onClose, onAddToCart }) {
                     <img src={img} alt={`${product.title} — vue ${i + 1}`} />
                   </button>
                 ))}
+              </div>
+            )}
+
+            {suggestions.length > 0 && (
+              <div className="pdm-suggestions">
+                <p className="pdm-sug-title">Vous aimerez aussi</p>
+                <ul className="pdm-sug-list">
+                  {suggestions.map((s) => (
+                    <li key={s.id} className="pdm-sug-row">
+                      <div className="pdm-sug-img">
+                        <img src={s.image || "/images/placeholder.png"} alt={s.title} />
+                      </div>
+                      <div className="pdm-sug-info">
+                        <span className="pdm-sug-name">{s.title}</span>
+                        <span className="pdm-sug-price">{s.price}</span>
+                      </div>
+                      <button
+                        type="button"
+                        className="pdm-sug-btn"
+                        onClick={() => { onAddToCart(s, 1); onClose(); }}
+                        aria-label={`Ajouter ${s.title} au panier`}
+                      >
+                        +
+                      </button>
+                    </li>
+                  ))}
+                </ul>
               </div>
             )}
           </div>
@@ -212,6 +239,7 @@ function ProductDetailModal({ product, onClose, onAddToCart }) {
           </div>
         </div>
       </div>
+
     </>
   );
 }
