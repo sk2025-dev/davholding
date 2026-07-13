@@ -46,7 +46,8 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
-        $token = $user->createToken('admin-session')->plainTextToken;
+        $abilities = $user->role === 'consulting' ? ['consulting'] : ['*'];
+        $token = $user->createToken('admin-session', $abilities)->plainTextToken;
 
         return response()->json([
             'user' => $user,

@@ -144,16 +144,84 @@ export const adminApi = {
   async getPromos() {
     return request('/promos');
   },
-  async createPromo(data) {
-    return request('/promos', { method: 'POST', body: JSON.stringify(data) });
+  async createPromo(formData) {
+    return request('/promos', { method: 'POST', body: formData });
   },
   async updatePromo(id, data) {
-    return request(`/promos/${id}`, { method: 'PUT', body: JSON.stringify(data) });
+    // data peut être un objet JSON simple (toggle is_active) ou un FormData (avec image)
+    if (data instanceof FormData) {
+      data.append('_method', 'PUT');
+      return request(`/promos/${id}`, { method: 'POST', body: data });
+    }
+    return request(`/promos/${id}`, { method: 'POST', body: (() => {
+      const fd = new FormData();
+      Object.entries(data).forEach(([k, v]) => { if (v !== null && v !== undefined) fd.append(k, v); });
+      fd.append('_method', 'PUT');
+      return fd;
+    })() });
   },
   async deletePromo(id) {
     return request(`/promos/${id}`, { method: 'DELETE' });
   },
   async savePromoBar(text) {
     return request('/promos/bar', { method: 'POST', body: JSON.stringify({ text }) });
+  },
+
+  // ── Promo Slides ──
+  async getPromoSlides() {
+    return request('/promo-slides?admin=1');
+  },
+  async createPromoSlide(formData) {
+    return request('/promo-slides', { method: 'POST', body: formData });
+  },
+  async updatePromoSlide(id, formData) {
+    formData.append('_method', 'PUT');
+    return request(`/promo-slides/${id}`, { method: 'POST', body: formData });
+  },
+  async deletePromoSlide(id) {
+    return request(`/promo-slides/${id}`, { method: 'DELETE' });
+  },
+
+  // ── Réalisations Consulting ──
+  async getConsultingRealisations(category) {
+    const params = new URLSearchParams({ admin: '1' });
+    if (category) params.set('category', category);
+    return request(`/consulting-realisations?${params.toString()}`);
+  },
+  async createConsultingRealisation(formData) {
+    return request('/consulting-realisations', { method: 'POST', body: formData });
+  },
+  async updateConsultingRealisation(id, formData) {
+    formData.append('_method', 'PUT');
+    return request(`/consulting-realisations/${id}`, { method: 'POST', body: formData });
+  },
+  async deleteConsultingRealisation(id) {
+    return request(`/consulting-realisations/${id}`, { method: 'DELETE' });
+  },
+
+  // ── Carrousel héro Consulting ──
+  async getConsultingHeroSlides() {
+    return request('/consulting-hero-slides?admin=1');
+  },
+  async createConsultingHeroSlide(formData) {
+    return request('/consulting-hero-slides', { method: 'POST', body: formData });
+  },
+  async updateConsultingHeroSlide(id, formData) {
+    formData.append('_method', 'PUT');
+    return request(`/consulting-hero-slides/${id}`, { method: 'POST', body: formData });
+  },
+  async deleteConsultingHeroSlide(id) {
+    return request(`/consulting-hero-slides/${id}`, { method: 'DELETE' });
+  },
+
+  // ── Photos des sections Consulting ──
+  async getConsultingSectionImages() {
+    return request('/consulting-section-images');
+  },
+  async updateConsultingSectionImage(sectionKey, formData) {
+    return request(`/consulting-section-images/${sectionKey}`, { method: 'POST', body: formData });
+  },
+  async resetConsultingSectionImage(sectionKey) {
+    return request(`/consulting-section-images/${sectionKey}`, { method: 'DELETE' });
   },
 };

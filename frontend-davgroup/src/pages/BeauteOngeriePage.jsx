@@ -19,6 +19,7 @@ function BeauteOngeriePage() {
   const { requireAuth, openBooking } = useClientAuth();
   const [photos, setPhotos]   = useState([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch]   = useState("");
 
   useEffect(() => {
     fetch(`${API_URL}/beauty-services?section_key=ongerie`, {
@@ -48,9 +49,9 @@ function BeauteOngeriePage() {
 
         <div className="beauty-section-heading beauty-real-section-header">
           <div>
-            <p>Nos poses & nail art</p>
+            <p>Nos poses permanents</p>
             <h2>
-              Gel · Résine · <span>Nail art</span> · French
+              <span>Pose ongle permanent</span>
             </h2>
             <span className="beauty-section-subtitle">
               Pose soignée, couleur, forme et finition raffinée.
@@ -64,13 +65,29 @@ function BeauteOngeriePage() {
           </button>
         </div>
 
+        {!loading && (
+          <div className="coif-search-wrap" style={{ marginLeft: 0, marginBottom: 24 }}>
+            <span className="coif-search-icon">🔍</span>
+            <input
+              type="text"
+              className="coif-search"
+              placeholder="Rechercher une pose…"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            {search && (
+              <button className="coif-search-clear" onClick={() => setSearch("")}>✕</button>
+            )}
+          </div>
+        )}
+
         {loading ? (
           <div style={{ textAlign: "center", padding: "60px 0", color: "#aaa", fontSize: 14 }}>
             Chargement…
           </div>
         ) : (
           <div className="beauty-real-grid beauty-coiffures-grid">
-            {photos.map((photo) => (
+            {photos.filter(p => p.title.toLowerCase().includes(search.toLowerCase())).map((photo) => (
               <div className="coif-card" key={photo.id}>
                 {photo.image_url && (
                   <img

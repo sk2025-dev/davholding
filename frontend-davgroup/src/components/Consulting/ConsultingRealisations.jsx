@@ -1,13 +1,16 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
-const projects = [
+const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
+
+const DEFAULT_PROJECTS = [
   {
     emoji: "🖼️",
     img: "/consulting/images/rea.png",
     tag: "Branding",
     link: "/consulting/realisations/branding",
     alt: "Projet Branding",
+    category: "branding",
   },
   {
     emoji: "🌐",
@@ -15,18 +18,36 @@ const projects = [
     tag: "Développement mobile · web",
     link: "/consulting/realisations/developpement",
     alt: "Plateforme SaaS en React",
+    category: "developpement",
   },
   {
-    emoji: "🎨",
-    img: "/consulting/images/de.png",
-    tag: "Design UI/UX",
-    link: "/consulting/realisations/design",
-    alt: "Design system et identité visuelle",
+    emoji: "🔒",
+    img: "/consulting/images/enneu.png",
+    tag: "Hébergement de site & sécurité",
+    link: "/consulting/secure",
+    alt: "Hébergement de site et sécurité",
+    category: "secure",
   },
 ];
 
 export default function ConsultingRealisations() {
+  const [projects, setProjects] = useState(DEFAULT_PROJECTS);
   const gridRef = useRef(null);
+
+  useEffect(() => {
+    fetch(`${API_URL}/consulting-realisations`)
+      .then((res) => res.json())
+      .then((json) => {
+        const data = json?.data || [];
+        setProjects((prev) => prev.map((p) => {
+          const first = data
+            .filter((r) => r.category === p.category)
+            .sort((a, b) => a.sort_order - b.sort_order)[0];
+          return first?.image_url ? { ...p, img: first.image_url } : p;
+        }));
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     const cards = gridRef.current?.querySelectorAll(".c-real-card");

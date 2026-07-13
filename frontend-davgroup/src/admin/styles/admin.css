@@ -1766,6 +1766,184 @@ input:checked ~ .toggle-thumb {
   text-align: right;
 }
 
+/* ====== PANEL (CRUD pages: PromoSlides, ConsultingRealisations…) ====== */
+.panel-wrap {
+  padding: 32px 36px;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.panel-title {
+  font-family: "Fraunces", serif;
+  font-size: 28px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.panel-subtitle {
+  font-size: 13.5px;
+  color: var(--ink-m);
+}
+
+.loading-state,
+.empty-state {
+  margin-top: 32px;
+  padding: 48px 24px;
+  text-align: center;
+  color: var(--ink-m);
+  background: var(--white);
+  border: 1px dashed var(--border);
+  border-radius: var(--r);
+}
+
+.empty-state p {
+  margin-bottom: 16px;
+}
+
+/* ── Buttons ── */
+.btn-primary,
+.btn-ghost,
+.btn-danger {
+  padding: 10px 20px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1.5px solid transparent;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--red);
+  color: #fff;
+  border-color: var(--red);
+}
+
+.btn-primary:hover {
+  background: var(--red-d);
+  border-color: var(--red-d);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-ghost {
+  background: var(--white);
+  color: var(--ink-s);
+  border-color: var(--border);
+}
+
+.btn-ghost:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.btn-danger {
+  background: rgba(224, 48, 48, 0.08);
+  color: var(--danger);
+  border-color: rgba(224, 48, 48, 0.25);
+}
+
+.btn-danger:hover {
+  background: var(--danger);
+  color: #fff;
+  border-color: var(--danger);
+}
+
+/* ── Modal form (PromoSlides, ConsultingRealisations…) ── */
+.modal-header {
+  padding: 22px 28px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  background: var(--white);
+  z-index: 2;
+}
+
+.modal-header h2 {
+  font-family: "Fraunces", serif;
+  font-size: 20px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink);
+}
+
+.modal-form {
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-m);
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-sm);
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--ink);
+  background: var(--white);
+  transition: all 0.2s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px var(--red-pale);
+}
+
+textarea.form-input {
+  resize: vertical;
+  font-family: "Inter", sans-serif;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 18px 28px 24px;
+}
+
+.confirm-box {
+  max-width: 420px;
+}
+
+.confirm-message {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink-s);
+}
+
 .modal-status-row {
   display: flex;
   gap: 8px;

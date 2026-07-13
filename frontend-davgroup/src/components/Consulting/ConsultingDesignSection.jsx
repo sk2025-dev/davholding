@@ -1,11 +1,25 @@
+import { useEffect, useState } from "react";
+
+const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
+const DEFAULT_IMAGE = "/consulting/images/graphiste.png";
+
 export default function ConsultingDesignSection() {
+  const [image, setImage] = useState(DEFAULT_IMAGE);
+
+  useEffect(() => {
+    fetch(`${API_URL}/consulting-section-images`)
+      .then((res) => res.json())
+      .then((json) => setImage(json?.data?.design || DEFAULT_IMAGE))
+      .catch(() => setImage(DEFAULT_IMAGE));
+  }, []);
+
   return (
     <section className="c-section" id="design">
       <div className="c-container">
         <div className="c-what-grid">
           <div>
             <img
-              src="/consulting/images/graphiste.png"
+              src={image}
               alt="Conception graphique"
               className="c-what-img c-reveal-l"
             />

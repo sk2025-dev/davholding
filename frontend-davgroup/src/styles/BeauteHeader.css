@@ -1,7 +1,4 @@
 .site-header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
   background: #fff;
   border-bottom: 1px solid rgba(201, 160, 96, 0.2);
   box-shadow: 0 8px 24px -22px rgba(26, 15, 10, 0.38);
@@ -15,6 +12,9 @@
   letter-spacing: 0.08em;
   color: #1a0f0a;
   font-weight: 500;
+  max-height: 80px;
+  overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.35s ease, opacity 0.25s ease;
 }
 
 .promo-bar span {
@@ -30,6 +30,7 @@
   padding: 20px 16px;
   border-bottom: 1px solid rgba(201, 160, 96, 0.2);
   position: relative;
+  transition: padding 0.35s ease;
 }
 
 .site-logo-wrap {
@@ -51,17 +52,28 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  transition: color 0.25s ease;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(26, 15, 10, 0.15);
+  background: rgba(26, 15, 10, 0.03);
+  transition: color 0.25s ease, background 0.25s ease, border-color 0.25s ease;
   white-space: nowrap;
 }
 
-.back-link::before {
-  content: "←";
+.back-link::after {
+  content: "↗";
   font-size: 14px;
+  transition: transform 0.25s ease;
+}
+
+.back-link:hover::after {
+  transform: translate(2px, -2px);
 }
 
 .back-link:hover {
   color: #c41420;
+  background: rgba(196, 20, 32, 0.06);
+  border-color: rgba(196, 20, 32, 0.3);
 }
 
 .site-logo {
@@ -69,6 +81,7 @@
   width: auto;
   object-fit: contain;
   display: block;
+  transition: height 0.35s ease;
 }
 
 .header-avatar {
@@ -166,5 +179,39 @@
 
   .site-logo {
     height: 74px;
+  }
+}
+
+/* ── Compact on scroll ── */
+.site-header--compact .promo-bar {
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  opacity: 0;
+}
+
+.site-header--compact .logo-zone {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.site-header--compact .site-logo {
+  height: 48px;
+}
+
+@media (max-width: 800px) {
+  .site-header--compact .logo-zone {
+    flex-direction: row;
+    gap: 12px;
+    text-align: left;
+    padding: 8px 16px;
+  }
+
+  .site-header--compact .back-link {
+    display: none;
+  }
+
+  .site-header--compact .site-logo {
+    height: 38px;
   }
 }

@@ -327,6 +327,17 @@
   font-weight: 500;
 }
 
+/* Fraunces italic uniquement pour le slide Contact */
+.slide-glass--contact .slide-desc {
+  font-family: "Fraunces", serif;
+  font-style: italic;
+  font-size: clamp(14px, 1.1vw, 16px);
+  font-weight: 300;
+  line-height: 1.85;
+  color: rgba(255, 255, 255, 0.88);
+  letter-spacing: 0.01em;
+}
+
 .slide-title--contact {
   font-size: clamp(34px, 5vw, 66px);
 }
@@ -390,18 +401,26 @@
 .slide-glass--contact {
   background: rgba(180, 10, 20, 0.24);
   border-color: rgba(255, 120, 120, 0.28);
-  max-width: 580px;
+}
+
+/* ID = spécificité maximale, garantit l'application */
+#glass3 {
+  max-width: 440px;
+  width: min(440px, calc(100vw - 80px));
 }
 
 .slide-cta--contact {
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  color: var(--white);
+  background: #c41420;
+  border: 1.5px solid #c41420;
+  color: #fff;
   font-size: 12px;
+  box-shadow: 0 6px 24px -6px rgba(196, 20, 32, 0.55);
 }
 .slide-cta--contact:hover {
-  background: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 28px -8px rgba(255, 100, 100, 0.25);
+  background: #a8111c;
+  border-color: #a8111c;
+  box-shadow: 0 10px 32px -8px rgba(196, 20, 32, 0.7);
+  transform: translateY(-1px);
 }
 
 .slide-contact-line strong {
@@ -568,6 +587,7 @@
 }
 
 /* Progress indicators */
+/* ── Nav tabs — capsules glassmorphism ─────────────────── */
 .carousel-indicators {
   position: absolute;
   bottom: 44px;
@@ -575,47 +595,84 @@
   transform: translateX(-50%);
   z-index: 20;
   display: flex;
-  gap: 24px;
-  align-items: flex-end;
+  gap: 4px;
+  align-items: center;
+  background: rgba(6, 2, 2, 0.42);
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 100px;
+  padding: 5px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255,255,255,0.06);
 }
+
 .ci-item {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 9px;
   cursor: pointer;
-  padding-bottom: 4px;
   background: transparent;
-  border: 0;
+  border: none;
+  border-radius: 100px;
+  padding: 9px 20px 13px;
+  overflow: hidden;
+  transition: background 0.25s ease;
 }
+
+.ci-item:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.ci-item.active {
+  background: #c41420;
+  box-shadow: 0 4px 16px rgba(196, 20, 32, 0.5);
+}
+
 .ci-label {
   font-family: "JetBrains Mono", monospace;
   font-size: 9.5px;
   font-weight: 700;
-  letter-spacing: 0.36em;
+  letter-spacing: 0.32em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.85);
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.75);
-  transition: color 0.5s;
+  color: rgba(255, 255, 255, 0.7);
+  text-shadow: none;
+  transition: color 0.25s, font-weight 0.25s;
   white-space: nowrap;
 }
+
 .ci-item.active .ci-label {
   color: #ffffff;
+  font-weight: 800;
 }
+
+/* Barre de progression — en bas du pill */
 .ci-bar {
-  width: 72px;
-  height: 1.5px;
-  background: rgba(255, 255, 255, 0.16);
+  position: absolute;
+  bottom: 5px;
+  left: 16px;
+  right: 16px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.14);
   border-radius: 100px;
   overflow: hidden;
 }
+
+.ci-item.active .ci-bar {
+  background: rgba(255, 255, 255, 0.25);
+}
+
 .ci-fill {
   height: 100%;
   width: 0%;
-  background: var(--white);
+  background: rgba(255, 255, 255, 0.5);
   border-radius: 100px;
   transform-origin: left;
   transition: width 6.5s linear;
+}
+
+.ci-item.active .ci-fill {
+  background: rgba(255, 255, 255, 0.9);
 }
 
 /* Slide counter & hint */
@@ -726,7 +783,12 @@
   }
   .slide-glass {
     padding: 32px 24px;
-    max-width: 90vw;
+    max-width: calc(100vw - 48px);
+  }
+  #glass3 {
+    max-width: calc(100vw - 64px);
+    width: calc(100vw - 64px);
+    padding: 26px 20px;
   }
   .slide-counter {
     right: 20px;
@@ -738,14 +800,25 @@
     display: none;
   }
   .ci-bar {
-    width: 54px;
+    left: 10px;
+    right: 10px;
+    bottom: 3px;
+  }
+  .ci-item {
+    padding: 8px 13px 11px;
+  }
+  .ci-label {
+    font-size: 8px;
+    letter-spacing: 0.22em;
   }
   .slide-ghost-text {
     font-size: clamp(70px, 22vw, 150px);
     bottom: 80px;
   }
   .carousel-indicators {
-    gap: 14px;
+    gap: 2px;
+    padding: 4px;
+    bottom: 28px;
   }
   .carousel-dots {
     bottom: 12px;

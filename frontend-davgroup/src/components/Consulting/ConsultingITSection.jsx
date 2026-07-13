@@ -1,4 +1,18 @@
+import { useEffect, useState } from "react";
+
+const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
+const DEFAULT_IMAGE = "/consulting/images/it.png";
+
 export default function ConsultingITSection() {
+  const [image, setImage] = useState(DEFAULT_IMAGE);
+
+  useEffect(() => {
+    fetch(`${API_URL}/consulting-section-images`)
+      .then((res) => res.json())
+      .then((json) => setImage(json?.data?.it || DEFAULT_IMAGE))
+      .catch(() => setImage(DEFAULT_IMAGE));
+  }, []);
+
   return (
     <section className="c-section c-app-mobile-section" id="it">
       <div className="c-container">
@@ -55,7 +69,7 @@ export default function ConsultingITSection() {
             </div>
           </div>
           <div className="c-app-mobile-visual">
-            <img src="/consulting/images/it.png" alt="IT & Surveillance" />
+            <img src={image} alt="IT & Surveillance" />
           </div>
         </div>
       </div>

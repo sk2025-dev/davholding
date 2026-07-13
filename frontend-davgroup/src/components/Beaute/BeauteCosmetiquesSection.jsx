@@ -33,6 +33,7 @@ function BeauteCosmetiquesSection({ onAddToCart }) {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [page, setPage] = useState(1);
   const [activePromo, setActivePromo] = useState(null);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     fetch(`${API_URL}/products?category=Cosmétiques`)
@@ -48,9 +49,10 @@ function BeauteCosmetiquesSection({ onAddToCart }) {
   }, []);
 
   const inStock    = products.filter((p) => p.inStock);
-  const totalPages = Math.max(1, Math.ceil(inStock.length / PER_PAGE));
+  const filtered   = products.filter((p) => p.title.toLowerCase().includes(search.toLowerCase()));
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
   const safePage   = Math.min(page, totalPages);
-  const paged      = inStock.slice((safePage - 1) * PER_PAGE, safePage * PER_PAGE);
+  const paged      = filtered.slice((safePage - 1) * PER_PAGE, safePage * PER_PAGE);
 
   return (
     <section className="products-section beauty-cosmetiques">
@@ -63,11 +65,25 @@ function BeauteCosmetiquesSection({ onAddToCart }) {
         </div>
       </div>
 
+      {!isLoading && (
+        <div className="coif-search-wrap" style={{ marginLeft: 0, marginBottom: 24 }}>
+          <span className="coif-search-icon">🔍</span>
+          <input
+            type="text"
+            className="coif-search"
+            placeholder="Rechercher un produit cosmétique…"
+            value={search}
+            onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+          />
+          {search && <button className="coif-search-clear" onClick={() => { setSearch(""); setPage(1); }}>✕</button>}
+        </div>
+      )}
+
       {isLoading ? (
         <div style={{ textAlign: "center", padding: "60px 0", color: "var(--ink-m, #888)" }}>
           Chargement des produits…
         </div>
-      ) : inStock.length === 0 ? (
+      ) : products.length === 0 ? (
         <div style={{ textAlign: "center", padding: "60px 0", color: "var(--ink-m, #888)" }}>
           Aucun produit disponible pour le moment.
         </div>
@@ -104,7 +120,7 @@ function BeauteCosmetiquesSection({ onAddToCart }) {
                 disabled={safePage === totalPages}>›</button>
 
               <span className="coif-pag-info">
-                {inStock.length} produit{inStock.length > 1 ? "s" : ""} — page {safePage}/{totalPages}
+                {filtered.length} produit{filtered.length > 1 ? "s" : ""} — page {safePage}/{totalPages}
               </span>
             </div>
           )}

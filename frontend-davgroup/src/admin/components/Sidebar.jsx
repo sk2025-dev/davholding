@@ -62,6 +62,26 @@ const icons = {
       <path d="M3 15l4 4 4-4 4 4 4-4" />
     </svg>
   ),
+  "consulting-realisations": (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 4h16v12H4z" />
+      <path d="M4 16l4-4 3 3 5-5 4 4" />
+    </svg>
+  ),
+  "consulting-hero-slides": (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="6" width="20" height="12" rx="2" />
+      <path d="M8 6v12M16 6v12" />
+      <path d="M2 12h2M20 12h2" />
+    </svg>
+  ),
+  "consulting-section-images": (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="3" width="18" height="18" rx="2" />
+      <circle cx="8.5" cy="8.5" r="1.5" />
+      <path d="M21 15l-5-5L5 21" />
+    </svg>
+  ),
 };
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -80,15 +100,22 @@ const Sidebar = ({ isOpen, onClose }) => {
     onClose?.();
   };
 
-  const menuItems = [
-    { id: "dashboard",    label: "Tableau de bord" },
-    { id: "orders",       label: "Commandes",        badge: notifs.pendingOrders },
-    { id: "rdvs",         label: "Rendez-vous",      badge: notifs.awaitingRdvs },
-    { id: "products",     label: "Produits & Stock", badge: notifs.outOfStock },
-    { id: "beauty",       label: "Beauté" },
-    { id: "realisations", label: "Réalisations" },
-    { id: "promos",       label: "Promotions" },
+  const isConsultingOnly = currentUser?.role === "consulting";
+
+  const allMenuItems = [
+    { id: "dashboard",    label: "Tableau de bord",  davgroupOnly: true },
+    { id: "orders",       label: "Commandes",        badge: notifs.pendingOrders, davgroupOnly: true },
+    { id: "rdvs",         label: "Rendez-vous",      badge: notifs.awaitingRdvs,   davgroupOnly: true },
+    { id: "products",     label: "Produits & Stock", badge: notifs.outOfStock,     davgroupOnly: true },
+    { id: "beauty",       label: "Beauté",            davgroupOnly: true },
+    { id: "realisations", label: "Réalisations",      davgroupOnly: true },
+    { id: "promos",       label: "Promotions",        davgroupOnly: true },
+    { id: "consulting-realisations", label: "Réalisations Consulting" },
+    { id: "consulting-hero-slides", label: "Carrousel Consulting" },
+    { id: "consulting-section-images", label: "Photos Consulting" },
   ];
+
+  const menuItems = allMenuItems.filter((item) => !isConsultingOnly || !item.davgroupOnly);
 
   return (
     <aside className={`sidebar${isOpen ? " sidebar--open" : ""}`}>

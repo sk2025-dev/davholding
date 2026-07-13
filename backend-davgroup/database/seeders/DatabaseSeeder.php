@@ -17,11 +17,15 @@ class DatabaseSeeder extends Seeder
         // Executer les seeders pour les donnees de base.
         $this->call([
             AdminUserSeeder::class,
+            ConsultingAdminUserSeeder::class,
             CategorySeeder::class,
             ProductSeeder::class,
             PromotionSeeder::class,
             RdvSeeder::class,
             BeautyServiceSeeder::class,
+            ConsultingRealisationSeeder::class,
+            ConsultingHeroSlideSeeder::class,
+            ConsultingSectionImageSeeder::class,
         ]);
     }
 }

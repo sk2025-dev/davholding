@@ -65,6 +65,9 @@ export const AdminProvider = ({ children }) => {
   const setAuthenticatedUser = useCallback((user) => {
     setCurrentUser(user);
     setUserProfile(buildUserProfile(user));
+    if (user?.role === "consulting") {
+      setCurrentPanel("consulting-realisations");
+    }
   }, []);
 
   useEffect(() => {
@@ -152,7 +155,7 @@ export const AdminProvider = ({ children }) => {
 
   /* Polling notifications RDV toutes les 60 secondes */
   useEffect(() => {
-    if (!currentUser) return;
+    if (!currentUser || currentUser.role === "consulting") return;
     const fetchNotifs = async () => {
       try {
         const res = await adminApi.getRdvNotifications();

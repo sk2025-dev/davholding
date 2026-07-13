@@ -3,6 +3,7 @@ import BeautyCard from "./BeautyCard";
 import ProductDetailModal from "./ProductDetailModal";
 import { useClientAuth } from "../../context/ClientAuthContext";
 import "../../styles/BeauteCapillaires.css";
+import "../../styles/BeauteCoiffures.css";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
 
@@ -29,6 +30,7 @@ function BeauteCapillairesSection({ onAddToCart }) {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     fetch(`${API_URL}/products?category=Soins Capillaires`)
@@ -39,6 +41,9 @@ function BeauteCapillairesSection({ onAddToCart }) {
   }, []);
 
   const inStock = products.filter((p) => p.inStock);
+  const allProducts = products.filter((p) =>
+    p.title.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <section id="capillaires" className="beauty-section beauty-capillaires">
@@ -105,17 +110,31 @@ function BeauteCapillairesSection({ onAddToCart }) {
           </span>
         </div>
 
+        {!isLoading && (
+          <div className="coif-search-wrap" style={{ marginLeft: 0, marginBottom: 24 }}>
+            <span className="coif-search-icon">🔍</span>
+            <input
+              type="text"
+              className="coif-search"
+              placeholder="Rechercher un produit capillaire…"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            {search && <button className="coif-search-clear" onClick={() => setSearch("")}>✕</button>}
+          </div>
+        )}
+
         {isLoading ? (
           <div style={{ textAlign: "center", padding: "60px 0", color: "var(--ink-m, #888)" }}>
             Chargement des produits…
           </div>
-        ) : inStock.length === 0 ? (
+        ) : allProducts.length === 0 ? (
           <div style={{ textAlign: "center", padding: "60px 0", color: "var(--ink-m, #888)" }}>
             Aucun produit disponible pour le moment.
           </div>
         ) : (
           <div className="beauty-product-grid">
-            {inStock.map((product) => (
+            {allProducts.map((product) => (
               <BeautyCard
                 key={product.title}
                 variant="product"

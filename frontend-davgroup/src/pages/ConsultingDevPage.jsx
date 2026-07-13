@@ -4,56 +4,7 @@ import ConsultingLayout from "../components/Consulting/ConsultingLayout";
 import "../styles/Consulting.css";
 import "../styles/ConsultingDev.css";
 
-const ITEMS = [
-  {
-    img: "/consulting/images/home.jpg",
-    title: "Site Vitrine Corporate",
-    cat: "web",
-    tags: ["Vue.js", "PHP"],
-  },
-  {
-    img: "/consulting/images/appvert.jpg",
-    title: "App Mobile Flutter",
-    cat: "mobile",
-    tags: ["Flutter", "Firebase"],
-  },
-  {
-    img: "/consulting/images/commerce.jpg",
-    title: "Boutique en ligne",
-    cat: "web",
-    tags: ["Laravel", "MySQL"],
-  },
-  {
-    img: "/consulting/images/connectviolet.jpg",
-    title: "Application iOS React Native",
-    cat: "mobile",
-    tags: ["React Native", "Node.js"],
-  },
-  {
-    img: "/consulting/images/dahbleu.jpg",
-    title: "Dashboard Analytics",
-    cat: "web",
-    tags: ["Vue JS", "Chart.js"],
-  },
-  {
-    img: "/consulting/images/cartevert.jpg",
-    title: "App de Géolocalisation",
-    cat: "mobile",
-    tags: ["Flutter", "Google Maps"],
-  },
-  {
-    img: "/consulting/images/dashvert.jpg",
-    title: "Plateforme SaaS",
-    cat: "web",
-    tags: ["React JS", "Laravel", "MySQL"],
-  },
-  {
-    img: "/consulting/images/maquettea.jpg",
-    title: "Application Android",
-    cat: "mobile",
-    tags: ["Flutter", "Firebase"],
-  },
-];
+const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
 
 const FILTERS = [
   { key: "all",    label: "Tous" },
@@ -127,16 +78,27 @@ function DevCard({ item, delay, onOpen }) {
 
 /* ════════════════════════════════════ */
 export default function ConsultingDevPage() {
+  const [items, setItems] = useState([]);
   const [lightboxItem, setLightboxItem] = useState(null);
   const [filter, setFilter] = useState("all");
   const heroRef = useRef(null);
 
-  const filtered = filter === "all" ? ITEMS : ITEMS.filter((p) => p.cat === filter);
+  const filtered = filter === "all" ? items : items.filter((p) => p.cat === filter);
 
   useEffect(() => {
     const el = heroRef.current;
     if (!el) return;
     setTimeout(() => el.classList.add("dv-hero-in"), 50);
+  }, []);
+
+  useEffect(() => {
+    fetch(`${API_URL}/consulting-realisations?category=developpement`)
+      .then((res) => res.json())
+      .then((json) => {
+        const mapped = (json?.data || []).map((r) => ({ img: r.image_url, title: r.title, cat: r.tag, tags: r.tags || [] }));
+        setItems(mapped);
+      })
+      .catch(() => setItems([]));
   }, []);
 
   return (
@@ -181,7 +143,7 @@ export default function ConsultingDevPage() {
             >
               {f.label}
               <span className="dv-filter-count">
-                {f.key === "all" ? ITEMS.length : ITEMS.filter((p) => p.cat === f.key).length}
+                {f.key === "all" ? items.length : items.filter((p) => p.cat === f.key).length}
               </span>
             </button>
           ))}

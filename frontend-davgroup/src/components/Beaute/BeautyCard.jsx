@@ -1,3 +1,18 @@
+const BADGE_MAP = {
+  "badge-best":  { label: "Meilleure vente", cls: "beauty-product-badge--best" },
+  "badge-new":   { label: "Nouveau",          cls: "beauty-product-badge--new"  },
+  "badge-promo": { label: "Promo",            cls: "beauty-product-badge--promo-tag" },
+  // anciens textes littéraux stockés avant la migration vers les clés
+  "best-seller": { label: "Meilleure vente", cls: "beauty-product-badge--best" },
+  "nouveau":     { label: "Nouveau",          cls: "beauty-product-badge--new"  },
+  "promo":       { label: "Promo",            cls: "beauty-product-badge--promo-tag" },
+};
+
+function resolveBadge(raw) {
+  if (!raw) return null;
+  return BADGE_MAP[raw.toLowerCase()] || BADGE_MAP[raw] || { label: raw, cls: "" };
+}
+
 function formatPrice(n) {
   return Number(n).toLocaleString("fr-FR") + " FCFA";
 }
@@ -24,11 +39,13 @@ function computeDiscount(rawPrice, promo, productId) {
 
 function BeautyCard({ variant, item, label, onAddToCart, onViewDetails, activePromo }) {
   if (variant === "product") {
-    const isGommage = item.title.toLowerCase().includes("gommage");
-    const discount  = computeDiscount(item.rawPrice, activePromo, item.id);
+    const isGommage   = item.title.toLowerCase().includes("gommage");
+    const discount    = computeDiscount(item.rawPrice, activePromo, item.id);
+    const inStock    = item.inStock !== false;
+    const badge      = resolveBadge(item.badge);
 
     return (
-      <article className={`beauty-product-card${isGommage ? " beauty-product-card--gommage" : ""}`}>
+      <article className={`beauty-product-card${isGommage ? " beauty-product-card--gommage" : ""}${!inStock ? " beauty-product-card--oos" : ""}`}>
         <div className="beauty-product-media">
           <div className="beauty-product-media__trigger" aria-hidden="true">
             <div className="beauty-product-img-stack">
@@ -47,14 +64,23 @@ function BeautyCard({ variant, item, label, onAddToCart, onViewDetails, activePr
             </div>
           </div>
 
-          {/* Badge réduction ou badge custom */}
-          {discount ? (
+          {/* Overlay rupture de stock */}
+          {!inStock && (
+            <div className="beauty-product-oos-overlay">
+              <span className="beauty-product-oos-label">Rupture de stock</span>
+            </div>
+          )}
+
+          {/* Badge réduction ou badge produit (uniquement si en stock) */}
+          {inStock && (discount ? (
             <span className="beauty-product-badge beauty-product-badge--promo">
               -{discount.pct}%
             </span>
-          ) : item.badge ? (
-            <span className="beauty-product-badge">{item.badge}</span>
-          ) : null}
+          ) : badge ? (
+            <span className={`beauty-product-badge ${badge.cls}`}>
+              {badge.label}
+            </span>
+          ) : null)}
         </div>
 
         <div className="beauty-product-body">
@@ -89,11 +115,12 @@ function BeautyCard({ variant, item, label, onAddToCart, onViewDetails, activePr
               <button
                 type="button"
                 className="beauty-product-link"
-                onClick={onAddToCart}
+                onClick={inStock ? onAddToCart : undefined}
+                disabled={!inStock}
                 translate="no"
                 lang="fr"
               >
-                + Panier
+                {inStock ? "+ Panier" : "Indisponible"}
               </button>
             </div>
           </div>

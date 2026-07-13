@@ -4,48 +4,7 @@ import ConsultingLayout from "../components/Consulting/ConsultingLayout";
 import "../styles/Consulting.css";
 import "../styles/ConsultingBranding.css";
 
-const ITEMS = [
-  {
-    src: "https://i.pinimg.com/736x/3f/1b/93/3f1b93539250e243cbeee6004a67b3e4.jpg",
-    title: "Cartes de visite",
-    cat: "Print",
-  },
-  {
-    src: "https://i.pinimg.com/736x/da/7b/ac/da7bac0340ae7acd5b7f2b5346d252c9.jpg",
-    title: "Flyers et Tracts",
-    cat: "Print",
-  },
-  {
-    src: "/consulting/images/dac.png",
-    title: "Identité visuelle DAC",
-    cat: "Branding",
-  },
-  {
-    src: "https://i.pinimg.com/1200x/06/5c/b0/065cb0ec950d3ef9d886df28ce7680e4.jpg",
-    title: "Brochures et Revues",
-    cat: "Édition",
-  },
-  {
-    src: "/consulting/images/ticket.jpeg",
-    title: "Ticket d'entrée",
-    cat: "Print",
-  },
-  {
-    src: "https://i.pinimg.com/1200x/ff/7e/71/ff7e71602d8bd17a4bb102d926428805.jpg",
-    title: "Étiquettes et Autocollants",
-    cat: "Print",
-  },
-  {
-    src: "https://i.pinimg.com/webp/1200x/f4/a5/ef/f4a5ef1819c8e2741cb20b2a9056eb97.webp",
-    title: "Panneaux, Affiches",
-    cat: "Signalétique",
-  },
-  {
-    src: "https://i.pinimg.com/1200x/a9/85/2b/a9852b73cf86318c7b4b4b4631c78056.jpg",
-    title: "Bâches publicitaires",
-    cat: "Signalétique",
-  },
-];
+const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
 
 /* ── Lightbox ── */
 function Lightbox({ item, onClose }) {
@@ -108,6 +67,7 @@ function DesignCard({ item, delay, onOpen }) {
 
 /* ══════════════════════════════════════════════ */
 export default function ConsultingBrandingPage() {
+  const [items, setItems] = useState([]);
   const [lightboxItem, setLightboxItem] = useState(null);
   const heroRef = useRef(null);
 
@@ -115,6 +75,16 @@ export default function ConsultingBrandingPage() {
     const el = heroRef.current;
     if (!el) return;
     setTimeout(() => el.classList.add("br-hero-in"), 50);
+  }, []);
+
+  useEffect(() => {
+    fetch(`${API_URL}/consulting-realisations?category=branding`)
+      .then((res) => res.json())
+      .then((json) => {
+        const mapped = (json?.data || []).map((r) => ({ src: r.image_url, title: r.title, cat: r.tag }));
+        setItems(mapped);
+      })
+      .catch(() => setItems([]));
   }, []);
 
   return (
@@ -147,7 +117,7 @@ export default function ConsultingBrandingPage() {
         </div>
 
         <div className="br-masonry">
-          {ITEMS.map((item, i) => (
+          {items.map((item, i) => (
             <DesignCard key={i} item={item} delay={i * 0.07} onOpen={setLightboxItem} />
           ))}
         </div>

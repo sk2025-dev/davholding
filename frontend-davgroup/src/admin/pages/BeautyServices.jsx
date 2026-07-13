@@ -10,6 +10,25 @@ const SECTIONS = [
   { value: "rendezvous", label: "Services RDV",     emoji: "📅" },
 ];
 
+const DEFAULT_SUBCATS = {
+  coiffures:  [
+    { value: "twist", label: "Twist", emoji: "✂️" },
+    { value: "natte", label: "Natte", emoji: "🪢" },
+    { value: "autre", label: "Autre", emoji: "🌟" },
+  ],
+  ongerie:    [],
+  spa:        [],
+  rendezvous: [],
+};
+
+function loadSubcats() {
+  try {
+    const s = localStorage.getItem("dav_beauty_subcats");
+    const parsed = s ? JSON.parse(s) : {};
+    return { ...DEFAULT_SUBCATS, ...parsed };
+  } catch { return DEFAULT_SUBCATS; }
+}
+
 const initialForm = {
   section_key:  "coiffures",
   category_key: "twist",
@@ -120,6 +139,49 @@ const BeautyServices = () => {
   const [page, setPage]                 = useState(1);
   const PER_PAGE = 10;
 
+  /* ── Sous-catégories dynamiques ── */
+  const [subcats, setSubcats]       = useState(loadSubcats);
+  const [subcatMgr, setSubcatMgr]   = useState(false);
+  const [newSubcat, setNewSubcat]   = useState({ label: "", emoji: "" });
+  const [editSubcat, setEditSubcat] = useState(null); // { value, label, emoji }
+
+  const currentSubcats = subcats[form.section_key] || [];
+
+  const saveSubcats = (next) => {
+    setSubcats(next);
+    localStorage.setItem("dav_beauty_subcats", JSON.stringify(next));
+  };
+
+  const addSubcat = () => {
+    const label = newSubcat.label.trim();
+    if (!label) return;
+    const value = label.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+    const emoji = newSubcat.emoji.trim() || "🌟";
+    const list  = subcats[form.section_key] || [];
+    if (list.find((s) => s.value === value)) return; // déjà existant
+    saveSubcats({ ...subcats, [form.section_key]: [...list, { value, label, emoji }] });
+    setNewSubcat({ label: "", emoji: "" });
+  };
+
+  const deleteSubcat = (value) => {
+    const list = (subcats[form.section_key] || []).filter((s) => s.value !== value);
+    saveSubcats({ ...subcats, [form.section_key]: list });
+    if (form.category_key === value) {
+      setForm((f) => ({ ...f, category_key: list[0]?.value || "" }));
+    }
+  };
+
+  const startEditSubcat = (s) => setEditSubcat({ ...s });
+
+  const saveEditSubcat = () => {
+    if (!editSubcat?.label.trim()) return;
+    const list = (subcats[form.section_key] || []).map((s) =>
+      s.value === editSubcat.value ? { ...s, label: editSubcat.label.trim(), emoji: editSubcat.emoji.trim() || s.emoji } : s
+    );
+    saveSubcats({ ...subcats, [form.section_key]: list });
+    setEditSubcat(null);
+  };
+
   const loadItems = async () => {
     setIsLoading(true);
     try {
@@ -156,7 +218,9 @@ const BeautyServices = () => {
     const { name, value, files } = e.target;
     if (name === "image") { setImagePreview(files?.[0] ? URL.createObjectURL(files[0]) : null); }
     if (name === "section_key") {
-      setForm((cur) => ({ ...cur, section_key: value, category_key: value === "coiffures" ? "twist" : "coiffure" }));
+      const firstCat = (subcats[value] || [])[0]?.value || "";
+      setForm((cur) => ({ ...cur, section_key: value, category_key: firstCat }));
+      setSubcatMgr(false);
       return;
     }
     setForm((cur) => ({ ...cur, [name]: files ? files[0] : value }));
@@ -397,16 +461,109 @@ const BeautyServices = () => {
                   </select>
                 </div>
 
-                {form.section_key === "coiffures" && (
-                  <div className="admin-field">
-                    <label className="admin-label">Sous-catégorie</label>
+                {/* ── Sous-catégories dynamiques ── */}
+                <div className="admin-field">
+                  <label className="admin-label" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <span>Sous-catégorie</span>
+                    <button
+                      type="button"
+                      onClick={() => { setSubcatMgr((v) => !v); setEditSubcat(null); }}
+                      style={{
+                        background: subcatMgr ? "var(--red)" : "rgba(10,10,12,.06)",
+                        color: subcatMgr ? "#fff" : "var(--ink-s)",
+                        border: "none", borderRadius: "8px", fontSize: "11px", fontWeight: "600",
+                        padding: "4px 10px", cursor: "pointer", fontFamily: "'Inter', sans-serif",
+                        transition: "all .2s",
+                      }}
+                    >
+                      ⚙️ {subcatMgr ? "Fermer" : "Gérer"}
+                    </button>
+                  </label>
+
+                  {currentSubcats.length > 0 ? (
                     <select name="category_key" className="admin-sel" value={form.category_key} onChange={handleChange}>
-                      <option value="twist">✂️ Twist</option>
-                      <option value="natte">🪢 Natte</option>
-                      <option value="autre">🌟 Autre</option>
+                      {currentSubcats.map((s) => (
+                        <option key={s.value} value={s.value}>{s.emoji} {s.label}</option>
+                      ))}
                     </select>
-                  </div>
-                )}
+                  ) : (
+                    <div style={{ fontSize: "12px", color: "var(--ink-m)", padding: "10px 14px", background: "rgba(10,10,12,.04)", borderRadius: "10px", border: "1px dashed var(--border)" }}>
+                      Aucune sous-catégorie — cliquez sur Gérer pour en ajouter.
+                    </div>
+                  )}
+
+                  {/* Panel CRUD sous-catégories */}
+                  {subcatMgr && (
+                    <div style={{
+                      marginTop: "12px", background: "#fafafa",
+                      border: "1.5px solid var(--border)", borderRadius: "12px", padding: "14px",
+                    }}>
+                      <div style={{ fontSize: "11.5px", fontWeight: "700", color: "var(--ink-s)", marginBottom: "12px", textTransform: "uppercase", letterSpacing: ".06em" }}>
+                        Sous-catégories — {SECTIONS.find((s) => s.value === form.section_key)?.label}
+                      </div>
+
+                      {/* Liste */}
+                      {currentSubcats.length === 0 && (
+                        <div style={{ fontSize: "12px", color: "var(--ink-m)", marginBottom: "10px" }}>Aucune sous-catégorie.</div>
+                      )}
+                      {currentSubcats.map((s) => (
+                        <div key={s.value} style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "7px" }}>
+                          {editSubcat?.value === s.value ? (
+                            /* Mode édition inline */
+                            <>
+                              <input
+                                value={editSubcat.emoji}
+                                onChange={(e) => setEditSubcat((p) => ({ ...p, emoji: e.target.value }))}
+                                style={{ width: "44px", padding: "5px 8px", border: "1.5px solid var(--red)", borderRadius: "8px", fontSize: "14px", textAlign: "center", fontFamily: "'Inter', sans-serif", outline: "none" }}
+                                placeholder="🌟"
+                              />
+                              <input
+                                value={editSubcat.label}
+                                onChange={(e) => setEditSubcat((p) => ({ ...p, label: e.target.value }))}
+                                style={{ flex: 1, padding: "5px 10px", border: "1.5px solid var(--red)", borderRadius: "8px", fontSize: "13px", fontFamily: "'Inter', sans-serif", outline: "none" }}
+                                onKeyDown={(e) => { if (e.key === "Enter") saveEditSubcat(); if (e.key === "Escape") setEditSubcat(null); }}
+                                autoFocus
+                              />
+                              <button type="button" onClick={saveEditSubcat} style={{ padding: "5px 10px", background: "var(--red)", color: "#fff", border: "none", borderRadius: "8px", fontSize: "12px", cursor: "pointer", fontWeight: "600", fontFamily: "'Inter', sans-serif" }}>✓</button>
+                              <button type="button" onClick={() => setEditSubcat(null)} style={{ padding: "5px 10px", background: "rgba(10,10,12,.07)", color: "var(--ink-s)", border: "none", borderRadius: "8px", fontSize: "12px", cursor: "pointer", fontFamily: "'Inter', sans-serif" }}>✕</button>
+                            </>
+                          ) : (
+                            /* Mode affichage */
+                            <>
+                              <span style={{ flex: 1, fontSize: "13px", color: "var(--ink)" }}>{s.emoji} {s.label}</span>
+                              <button type="button" onClick={() => startEditSubcat(s)} style={{ padding: "4px 8px", background: "rgba(59,130,246,.08)", color: "#1d4ed8", border: "1px solid rgba(59,130,246,.2)", borderRadius: "7px", fontSize: "12px", cursor: "pointer", fontFamily: "'Inter', sans-serif" }}>✏️</button>
+                              <button type="button" onClick={() => deleteSubcat(s.value)} style={{ padding: "4px 8px", background: "rgba(224,48,48,.06)", color: "var(--danger)", border: "1px solid rgba(224,48,48,.15)", borderRadius: "7px", fontSize: "12px", cursor: "pointer", fontFamily: "'Inter', sans-serif" }}>🗑</button>
+                            </>
+                          )}
+                        </div>
+                      ))}
+
+                      {/* Ajouter */}
+                      <div style={{ display: "flex", gap: "6px", marginTop: "12px", paddingTop: "12px", borderTop: "1px solid var(--border)" }}>
+                        <input
+                          value={newSubcat.emoji}
+                          onChange={(e) => setNewSubcat((p) => ({ ...p, emoji: e.target.value }))}
+                          placeholder="🌟"
+                          style={{ width: "44px", padding: "7px 8px", border: "1.5px solid var(--border)", borderRadius: "8px", fontSize: "14px", textAlign: "center", fontFamily: "'Inter', sans-serif", outline: "none" }}
+                        />
+                        <input
+                          value={newSubcat.label}
+                          onChange={(e) => setNewSubcat((p) => ({ ...p, label: e.target.value }))}
+                          placeholder="Nom de la sous-catégorie…"
+                          onKeyDown={(e) => { if (e.key === "Enter") addSubcat(); }}
+                          style={{ flex: 1, padding: "7px 10px", border: "1.5px solid var(--border)", borderRadius: "8px", fontSize: "13px", fontFamily: "'Inter', sans-serif", outline: "none" }}
+                        />
+                        <button
+                          type="button"
+                          onClick={addSubcat}
+                          style={{ padding: "7px 14px", background: "var(--red)", color: "#fff", border: "none", borderRadius: "8px", fontSize: "12px", fontWeight: "700", cursor: "pointer", fontFamily: "'Inter', sans-serif", whiteSpace: "nowrap" }}
+                        >
+                          + Ajouter
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
 
                 <div className="admin-field">
                   <label className="admin-label">Titre</label>

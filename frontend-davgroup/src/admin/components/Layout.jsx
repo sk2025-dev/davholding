@@ -11,6 +11,9 @@ import BeautyServices from "../pages/BeautyServices";
 import Photos from "../pages/Photos";
 import Realisations from "../pages/Realisations";
 import Promos from "../pages/Promos";
+import ConsultingRealisations from "../pages/ConsultingRealisations";
+import ConsultingHeroSlides from "../pages/ConsultingHeroSlides";
+import ConsultingSectionImages from "../pages/ConsultingSectionImages";
 import { useAdmin } from "../hooks/useAdmin";
 import "../styles/admin.css";
 
@@ -36,6 +39,12 @@ const Layout = () => {
         return <Realisations />;
       case "promos":
         return <Promos />;
+      case "consulting-realisations":
+        return <ConsultingRealisations />;
+      case "consulting-hero-slides":
+        return <ConsultingHeroSlides />;
+      case "consulting-section-images":
+        return <ConsultingSectionImages />;
       default:
         return <Dashboard />;
     }

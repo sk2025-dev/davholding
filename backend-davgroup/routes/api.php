@@ -11,6 +11,10 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PromoController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\PromoSlideController;
+use App\Http\Controllers\ConsultingRealisationController;
+use App\Http\Controllers\ConsultingHeroSlideController;
+use App\Http\Controllers\ConsultingSectionImageController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -59,36 +63,71 @@ Route::get('/promos/bar',      [PromoController::class, 'promoBar']);
 Route::get('/promos/active',   [PromoController::class, 'active']);
 Route::post('/promos/validate',[PromoController::class, 'validate']);
 
+// Promo slides — public
+Route::get('/promo-slides', [PromoSlideController::class, 'index']);
+
+// Réalisations Consulting — public
+Route::get('/consulting-realisations', [ConsultingRealisationController::class, 'index']);
+
+// Carrousel héro Consulting — public
+Route::get('/consulting-hero-slides', [ConsultingHeroSlideController::class, 'index']);
+
+// Photos des sections "Ce que nous faisons" Consulting — public
+Route::get('/consulting-section-images', [ConsultingSectionImageController::class, 'index']);
+
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/payment/initiate',        [PaymentController::class, 'initiate']);
-    Route::post('/payment/mobile-initiate', [PaymentController::class, 'mobileInitiate']);
     Route::post('/logout',           [AuthController::class, 'logout']);
     Route::get('/user',              [AuthController::class, 'user']);
     Route::put('/user/profile',      [AuthController::class, 'updateProfile']);
     Route::put('/user/password',     [AuthController::class, 'changePassword']);
-    Route::get('/orders/my',         [OrderController::class, 'myOrders']);
-    Route::get('/rdv/my',            [RdvController::class,   'myRdvs']);
-    Route::get('/rdv', [RdvController::class, 'index']);
-    Route::post('/rdv', [RdvController::class, 'store']);
-    Route::patch('/rdv/{rdv}/status', [RdvController::class, 'updateStatus']);
-    Route::get('/rdv/notifications',  [RdvController::class, 'notifications']);
-    Route::post('/rdv/mark-notified', [RdvController::class, 'markNotified']);
-    Route::post('/beauty-services', [BeautyServiceController::class, 'store']);
-    Route::match(['put', 'post'], '/beauty-services/{beautyService}', [BeautyServiceController::class, 'update']);
-    Route::delete('/beauty-services/{beautyService}', [BeautyServiceController::class, 'destroy']);
 
-    // Promos — admin
-    Route::get('/promos',              [PromoController::class, 'index']);
-    Route::post('/promos',             [PromoController::class, 'store']);
-    Route::put('/promos/{promo}',      [PromoController::class, 'update']);
-    Route::delete('/promos/{promo}',   [PromoController::class, 'destroy']);
-    Route::post('/promos/bar',         [PromoController::class, 'savePromoBar']);
+    // Réalisations Consulting — admin (compte DAVConsulting scopé, ou admin DAVGROUP)
+    Route::middleware('ability:consulting')->group(function () {
+        Route::post('/consulting-realisations', [ConsultingRealisationController::class, 'store']);
+        Route::match(['put', 'post'], '/consulting-realisations/{consultingRealisation}', [ConsultingRealisationController::class, 'update']);
+        Route::delete('/consulting-realisations/{consultingRealisation}', [ConsultingRealisationController::class, 'destroy']);
 
-    Route::get('/orders',                    [OrderController::class, 'index']);
-    Route::get('/orders/{order}',            [OrderController::class, 'show']);
-    Route::patch('/orders/{order}/status',   [OrderController::class, 'updateStatus']);
-    Route::post('/orders/delivery',          [OrderController::class, 'storeDelivery']);
-    Route::post('/products', [ProductController::class, 'store']);
-    Route::match(['put', 'post'], '/products/{product}', [ProductController::class, 'update']);
-    Route::delete('/products/{product}', [ProductController::class, 'destroy']);
+        Route::post('/consulting-hero-slides', [ConsultingHeroSlideController::class, 'store']);
+        Route::match(['put', 'post'], '/consulting-hero-slides/{consultingHeroSlide}', [ConsultingHeroSlideController::class, 'update']);
+        Route::delete('/consulting-hero-slides/{consultingHeroSlide}', [ConsultingHeroSlideController::class, 'destroy']);
+
+        Route::match(['put', 'post'], '/consulting-section-images/{sectionKey}', [ConsultingSectionImageController::class, 'update']);
+        Route::delete('/consulting-section-images/{sectionKey}', [ConsultingSectionImageController::class, 'destroy']);
+    });
+
+    // Tout ce qui suit est réservé à l'admin DAVGROUP (Beauté / e-commerce)
+    Route::middleware('ability:manage-davgroup')->group(function () {
+        Route::post('/payment/initiate',        [PaymentController::class, 'initiate']);
+        Route::post('/payment/mobile-initiate', [PaymentController::class, 'mobileInitiate']);
+        Route::get('/orders/my',         [OrderController::class, 'myOrders']);
+        Route::get('/rdv/my',            [RdvController::class,   'myRdvs']);
+        Route::get('/rdv', [RdvController::class, 'index']);
+        Route::post('/rdv', [RdvController::class, 'store']);
+        Route::patch('/rdv/{rdv}/status', [RdvController::class, 'updateStatus']);
+        Route::get('/rdv/notifications',  [RdvController::class, 'notifications']);
+        Route::post('/rdv/mark-notified', [RdvController::class, 'markNotified']);
+        Route::post('/beauty-services', [BeautyServiceController::class, 'store']);
+        Route::match(['put', 'post'], '/beauty-services/{beautyService}', [BeautyServiceController::class, 'update']);
+        Route::delete('/beauty-services/{beautyService}', [BeautyServiceController::class, 'destroy']);
+
+        // Promos — admin
+        Route::get('/promos',                                    [PromoController::class, 'index']);
+        Route::post('/promos',                                   [PromoController::class, 'store']);
+        Route::match(['put', 'post'], '/promos/{promo}',         [PromoController::class, 'update']);
+        Route::delete('/promos/{promo}',                         [PromoController::class, 'destroy']);
+        Route::post('/promos/bar',                               [PromoController::class, 'savePromoBar']);
+
+        Route::get('/orders',                    [OrderController::class, 'index']);
+        Route::get('/orders/{order}',            [OrderController::class, 'show']);
+        Route::patch('/orders/{order}/status',   [OrderController::class, 'updateStatus']);
+        Route::post('/orders/delivery',          [OrderController::class, 'storeDelivery']);
+        Route::post('/products', [ProductController::class, 'store']);
+        Route::match(['put', 'post'], '/products/{product}', [ProductController::class, 'update']);
+        Route::delete('/products/{product}', [ProductController::class, 'destroy']);
+
+        // Promo slides — admin
+        Route::post('/promo-slides', [PromoSlideController::class, 'store']);
+        Route::match(['put', 'post'], '/promo-slides/{promoSlide}', [PromoSlideController::class, 'update']);
+        Route::delete('/promo-slides/{promoSlide}', [PromoSlideController::class, 'destroy']);
+    });
 });

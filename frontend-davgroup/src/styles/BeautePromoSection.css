@@ -1,0 +1,182 @@
+/* ── Promo Banner ── */
+.bpromo-banner {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  overflow: hidden;
+  background: #1a0f0a;
+}
+
+@media (max-width: 800px) {
+  .bpromo-banner {
+    height: 240px;
+  }
+}
+
+/* Slides */
+.bpromo-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.7s ease;
+  pointer-events: none;
+}
+
+.bpromo-slide--active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.bpromo-slide__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* Gradient overlay — sombre à gauche pour lisibilité du texte */
+.bpromo-slide__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(18, 5, 2, 0.82) 0%,
+    rgba(18, 5, 2, 0.55) 45%,
+    rgba(18, 5, 2, 0.1) 100%
+  );
+}
+
+/* Contenu texte */
+.bpromo-slide__content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 60px;
+  gap: 10px;
+  max-width: 560px;
+}
+
+@media (max-width: 800px) {
+  .bpromo-slide__content {
+    padding: 0 24px;
+  }
+}
+
+/* Badge "PROMOTION" */
+.bpromo-tag {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: #c41420;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+/* Valeur de la réduction */
+.bpromo-discount {
+  font-family: "Fraunces", serif;
+  font-size: clamp(40px, 6vw, 72px);
+  font-weight: 400;
+  color: #fff;
+  margin: 0;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+/* Description */
+.bpromo-desc {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.82);
+  margin: 0;
+  line-height: 1.5;
+  max-width: 380px;
+}
+
+/* Code promo */
+.bpromo-code {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px dashed rgba(255, 255, 255, 0.4);
+  color: #fff;
+  font-size: 13px;
+  align-self: flex-start;
+  margin-top: 4px;
+  backdrop-filter: blur(4px);
+}
+
+.bpromo-code strong {
+  font-family: monospace;
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  color: #f9c5c8;
+}
+
+/* Flèches */
+.bpromo-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s;
+  z-index: 10;
+}
+
+.bpromo-arrow:hover {
+  background: rgba(196, 20, 32, 0.6);
+}
+
+.bpromo-arrow--prev { left: 16px; }
+.bpromo-arrow--next { right: 16px; }
+
+/* Points de navigation */
+.bpromo-dots {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.bpromo-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.25s, transform 0.25s;
+}
+
+.bpromo-dot--active {
+  background: #fff;
+  transform: scale(1.3);
+}

@@ -6,6 +6,7 @@ use App\Models\Promo;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 
 class PromoController extends Controller
@@ -29,9 +30,11 @@ class PromoController extends Controller
             ->map(fn($p) => [
                 'id'            => $p->id,
                 'code'          => $p->code,
+                'description'   => $p->description,
                 'discount_type' => $p->discount_type,
                 'value'         => $p->value,
                 'label'         => $p->label,
+                'image_url'     => $p->image_path ? asset('storage/' . $p->image_path) : null,
                 'product_ids'   => $p->products->pluck('id'),
             ]);
 
@@ -68,7 +71,8 @@ class PromoController extends Controller
             ->orderByDesc('created_at')
             ->get()
             ->map(fn($p) => array_merge($p->toArray(), [
-                'products' => $p->products->map(fn($pr) => [
+                'image_url' => $p->image_path ? asset('storage/' . $p->image_path) : null,
+                'products'  => $p->products->map(fn($pr) => [
                     'id'    => $pr->id,
                     'name'  => $pr->name,
                     'image' => $pr->image,
@@ -83,6 +87,7 @@ class PromoController extends Controller
     {
         $data = $request->validate([
             'code'          => 'required|string|unique:promos,code',
+            'description'   => 'nullable|string|max:500',
             'discount_type' => 'required|in:percent,amount',
             'value'         => 'required|numeric|min:0',
             'start_date'    => 'required|date',
@@ -91,11 +96,17 @@ class PromoController extends Controller
             'usage_limit'   => 'nullable|integer|min:1',
             'product_ids'   => 'nullable|array',
             'product_ids.*' => 'integer|exists:products,id',
+            'image'         => 'nullable|image|max:6144',
         ]);
 
         $data['code'] = strtoupper($data['code']);
         $productIds = $data['product_ids'] ?? [];
         unset($data['product_ids']);
+
+        if ($request->hasFile('image')) {
+            $data['image_path'] = $request->file('image')->store('promos', 'public');
+        }
+        unset($data['image']);
 
         // Vérifier qu'aucun produit sélectionné n'a déjà une promo active
         if (!empty($productIds)) {
@@ -127,7 +138,9 @@ class PromoController extends Controller
 
         $promo->load('products:id,name,image');
 
-        return response()->json(['data' => $promo->makeHidden([])], 201);
+        return response()->json(['data' => array_merge($promo->toArray(), [
+            'image_url' => $promo->image_path ? asset('storage/' . $promo->image_path) : null,
+        ])], 201);
     }
 
     /* ── Admin : modifier ── */
@@ -135,6 +148,7 @@ class PromoController extends Controller
     {
         $data = $request->validate([
             'code'          => 'sometimes|string|unique:promos,code,' . $promo->id,
+            'description'   => 'nullable|string|max:500',
             'discount_type' => 'sometimes|in:percent,amount',
             'value'         => 'sometimes|numeric|min:0',
             'start_date'    => 'sometimes|date',
@@ -143,9 +157,18 @@ class PromoController extends Controller
             'usage_limit'   => 'nullable|integer|min:1',
             'product_ids'   => 'nullable|array',
             'product_ids.*' => 'integer|exists:products,id',
+            'image'         => 'nullable|image|max:6144',
         ]);
 
         if (isset($data['code'])) $data['code'] = strtoupper($data['code']);
+
+        if ($request->hasFile('image')) {
+            if ($promo->image_path) {
+                Storage::disk('public')->delete($promo->image_path);
+            }
+            $data['image_path'] = $request->file('image')->store('promos', 'public');
+        }
+        unset($data['image']);
 
         $productIds = $data['product_ids'] ?? null;
         unset($data['product_ids']);
@@ -158,7 +181,9 @@ class PromoController extends Controller
 
         $promo->load('products:id,name,image');
 
-        return response()->json(['data' => $promo]);
+        return response()->json(['data' => array_merge($promo->toArray(), [
+            'image_url' => $promo->image_path ? asset('storage/' . $promo->image_path) : null,
+        ])]);
     }
 
     /* ── Admin : supprimer ── */

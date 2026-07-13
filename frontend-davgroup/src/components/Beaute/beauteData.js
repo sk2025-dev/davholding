@@ -5,7 +5,6 @@ export const sectionTabs = [
   { label: "Produits cosmétiques", to: "/beaute/cosmetiques" },
   { label: "Onglerie",           to: "/beaute/ongerie" },
   { label: "Spa",                to: "/beaute/spa" },
-  { label: "📅 Rendez-vous",    to: "/beaute/rendezvous" },
   { label: "Qui sommes nous",    to: "/beaute/about" },
 ];
 

@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
+import { useClientAuth } from "../../context/ClientAuthContext";
 
 function BeauteBanner() {
+  const { requireAuth, openBooking } = useClientAuth();
+
   return (
     <section className="beauty-banner" id="univers">
       <div className="beauty-banner-content">
@@ -14,12 +17,13 @@ function BeauteBanner() {
           sublimer chaque rendez-vous.
         </p>
         <div className="beauty-actions">
-          <Link
+          <button
+            type="button"
             className="beauty-btn beauty-btn--primary"
-            to="/beaute/rendezvous"
+            onClick={() => requireAuth(() => openBooking())}
           >
             Prendre rendez-vous
-          </Link>
+          </button>
           <Link
             className="beauty-btn beauty-btn--ghost"
             to="/beaute/realisations"

@@ -8,16 +8,27 @@ const API = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
 const fmtDate = (d) =>
   d ? new Date(d).toLocaleDateString("fr-FR", { day: "2-digit", month: "short", year: "numeric" }) : "—";
 
-const EMPTY_FORM = { code: "", type: "percent", value: "", start: "", end: "", limit: "", productIds: [] };
+const EMPTY_FORM = { code: "", type: "percent", value: "", start: "", end: "", limit: "", description: "", image: null, _imagePreview: null, productIds: [] };
 
 /* ── Sélecteur de produits ── */
 function ProductPicker({ products, selected, onChange, takenIds = [] }) {
   const [search, setSearch] = useState("");
+  const [activeCategory, setActiveCategory] = useState("Tous");
 
-  const filtered = useMemo(() =>
-    products.filter(p =>
-      p.name.toLowerCase().includes(search.toLowerCase())
-    ), [products, search]);
+  const FIXED_CATS = ["Tous", "Cosmétiques", "Soins Capillaires", "Onglerie", "Spa"];
+  const categories = useMemo(() => {
+    const fromProducts = [...new Set(products.map(p => p.category).filter(Boolean))];
+    const extra = fromProducts.filter(c => !FIXED_CATS.includes(c));
+    return [...FIXED_CATS, ...extra];
+  }, [products]);
+
+  const filtered = useMemo(() => {
+    return products.filter(p => {
+      const matchCat = activeCategory === "Tous" || p.category === activeCategory;
+      const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
+      return matchCat && matchSearch;
+    });
+  }, [products, search, activeCategory]);
 
   const toggle = (id) => {
     onChange(selected.includes(id)
@@ -32,6 +43,25 @@ function ProductPicker({ products, selected, onChange, takenIds = [] }) {
 
   return (
     <div style={{ border: "1.5px solid var(--border)", borderRadius: 10, overflow: "hidden" }}>
+
+      {/* Onglets catégories */}
+      <div style={{ display: "flex", gap: 0, overflowX: "auto", borderBottom: "1px solid var(--border)", background: "rgba(10,10,12,.02)", scrollbarWidth: "none" }}>
+        {categories.map(cat => (
+          <button
+            key={cat}
+            onClick={() => setActiveCategory(cat)}
+            style={{
+              padding: "7px 14px", border: "none", borderBottom: activeCategory === cat ? "2px solid #c41420" : "2px solid transparent",
+              background: "none", fontSize: 11, fontWeight: activeCategory === cat ? 700 : 500,
+              color: activeCategory === cat ? "#c41420" : "var(--ink-m)",
+              cursor: "pointer", whiteSpace: "nowrap", fontFamily: "'Inter', sans-serif",
+              transition: "color .15s",
+            }}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
 
       {/* Barre de recherche */}
       <div style={{ padding: "8px 10px", borderBottom: "1px solid var(--border)", background: "rgba(10,10,12,.02)" }}>
@@ -157,6 +187,10 @@ function PromoFormModal({ products, activePromos, onClose, onCreated, showToast 
   const [saving, setSaving] = useState(false);
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
+  const handleImage = (e) => {
+    const file = e.target.files?.[0];
+    if (file) setForm(f => ({ ...f, image: file, _imagePreview: URL.createObjectURL(file) }));
+  };
 
   const handleSubmit = async () => {
     if (!form.code || !form.value || !form.start || !form.end) {
@@ -165,16 +199,19 @@ function PromoFormModal({ products, activePromos, onClose, onCreated, showToast 
     }
     setSaving(true);
     try {
-      const res = await adminApi.createPromo({
-        code:          form.code.toUpperCase(),
-        discount_type: form.type,
-        value:         parseFloat(form.value),
-        start_date:    form.start,
-        end_date:      form.end,
-        is_active:     true,
-        ...(form.limit ? { usage_limit: parseInt(form.limit) } : {}),
-        product_ids:   form.productIds,
-      });
+      const fd = new FormData();
+      fd.append("code",          form.code.toUpperCase());
+      fd.append("discount_type", form.type);
+      fd.append("value",         parseFloat(form.value));
+      fd.append("start_date",    form.start);
+      fd.append("end_date",      form.end);
+      fd.append("is_active",     "1");
+      if (form.description) fd.append("description", form.description);
+      if (form.limit)       fd.append("usage_limit", parseInt(form.limit));
+      form.productIds.forEach(id => fd.append("product_ids[]", id));
+      if (form.image)       fd.append("image", form.image);
+
+      const res = await adminApi.createPromo(fd);
       onCreated(res.data);
       showToast("✓ Code promo créé");
       onClose();
@@ -206,6 +243,35 @@ function PromoFormModal({ products, activePromos, onClose, onCreated, showToast 
               value={form.code}
               onChange={e => set("code", e.target.value.toUpperCase())}
               placeholder="ex: DAVBEAUTE"
+            />
+          </div>
+
+          <div className="admin-field">
+            <label className="admin-label">
+              Image de la promo
+              <span style={{ fontWeight: 400, fontSize: 11, color: "var(--ink-m)", marginLeft: 6 }}>
+                — visible sur le site dans "Offres du moment"
+              </span>
+            </label>
+            <input type="file" className="admin-inp" accept="image/*" onChange={handleImage} />
+            {form._imagePreview && (
+              <img
+                src={form._imagePreview}
+                alt="Aperçu"
+                style={{ marginTop: 8, width: "100%", maxHeight: 160, objectFit: "cover", borderRadius: 8 }}
+              />
+            )}
+          </div>
+
+          <div className="admin-field">
+            <label className="admin-label">
+              Description <span style={{ fontWeight: 400, fontSize: 11, color: "var(--ink-m)" }}>(optionnel)</span>
+            </label>
+            <input
+              type="text" className="admin-inp"
+              value={form.description}
+              onChange={e => set("description", e.target.value)}
+              placeholder="ex: -20% sur tous les soins capillaires"
             />
           </div>
 

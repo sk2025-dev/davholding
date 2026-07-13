@@ -4,56 +4,7 @@ import ConsultingLayout from "../components/Consulting/ConsultingLayout";
 import "../styles/Consulting.css";
 import "../styles/ConsultingDesign.css";
 
-const ITEMS = [
-  {
-    img: "/consulting/images/maquetteb.jpg",
-    title: "Design UI Application",
-    cat: "UI Design",
-    tags: ["Figma", "UI Kit"],
-  },
-  {
-    img: "/consulting/images/maquettec.jpg",
-    title: "Design E-commerce",
-    cat: "UX Design",
-    tags: ["Figma", "Wireframe"],
-  },
-  {
-    img: "/consulting/images/maquetted.jpg",
-    title: "Design Dashboard",
-    cat: "UI Design",
-    tags: ["Figma", "Design System"],
-  },
-  {
-    img: "/consulting/images/maquettee.jpg",
-    title: "Design App Mobile",
-    cat: "UI/UX Design",
-    tags: ["Figma", "Prototype"],
-  },
-  {
-    img: "/consulting/images/maquettei.jpg",
-    title: "Design Site Vitrine",
-    cat: "UX Design",
-    tags: ["Figma", "Wireframe"],
-  },
-  {
-    img: "/consulting/images/maquettex.jpg",
-    title: "Design Plateforme Web",
-    cat: "UI Design",
-    tags: ["Figma", "UI Kit"],
-  },
-  {
-    img: "/consulting/images/maquettey.jpg",
-    title: "Design Interface SaaS",
-    cat: "UI/UX Design",
-    tags: ["Figma", "Design System"],
-  },
-  {
-    img: "/consulting/images/siteweb.png",
-    title: "Design Site Corporate",
-    cat: "UX Design",
-    tags: ["Figma", "Prototype"],
-  },
-];
+const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
 
 const FILTERS = [
   { key: "all",    label: "Tous" },
@@ -128,16 +79,27 @@ function DesignCard({ item, delay, onOpen }) {
 
 /* ════════════════════════════════════ */
 export default function ConsultingDesignPage() {
+  const [items, setItems] = useState([]);
   const [lightboxItem, setLightboxItem] = useState(null);
   const [filter, setFilter] = useState("all");
   const heroRef = useRef(null);
 
-  const filtered = filter === "all" ? ITEMS : ITEMS.filter((p) => p.cat === filter);
+  const filtered = filter === "all" ? items : items.filter((p) => p.cat === filter);
 
   useEffect(() => {
     const el = heroRef.current;
     if (!el) return;
     setTimeout(() => el.classList.add("ds-hero-in"), 50);
+  }, []);
+
+  useEffect(() => {
+    fetch(`${API_URL}/consulting-realisations?category=design`)
+      .then((res) => res.json())
+      .then((json) => {
+        const mapped = (json?.data || []).map((r) => ({ img: r.image_url, title: r.title, cat: r.tag, tags: r.tags || [] }));
+        setItems(mapped);
+      })
+      .catch(() => setItems([]));
   }, []);
 
   return (
@@ -182,7 +144,7 @@ export default function ConsultingDesignPage() {
             >
               {f.label}
               <span className="ds-filter-count">
-                {f.key === "all" ? ITEMS.length : ITEMS.filter((p) => p.cat === f.key).length}
+                {f.key === "all" ? items.length : items.filter((p) => p.cat === f.key).length}
               </span>
             </button>
           ))}

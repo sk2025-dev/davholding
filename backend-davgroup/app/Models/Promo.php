@@ -8,7 +8,8 @@ use Carbon\Carbon;
 class Promo extends Model
 {
     protected $fillable = [
-        'code', 'discount_type', 'value',
+        'code', 'image_path', 'description',
+        'discount_type', 'value',
         'start_date', 'end_date', 'is_active',
         'usage_limit', 'used_count',
     ];

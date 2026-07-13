@@ -240,6 +240,58 @@
   padding: 5px 10px;
   box-shadow: 0 4px 12px rgba(196, 20, 32, 0.35);
 }
+/* Meilleure vente — rouge DAV */
+.beauty-product-badge--best {
+  background: var(--red, #c41420);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  box-shadow: 0 2px 8px rgba(196, 20, 32, 0.35);
+}
+/* Nouveau — vert */
+.beauty-product-badge--new {
+  background: #1a7a3e;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  box-shadow: 0 2px 8px rgba(26, 122, 62, 0.35);
+}
+/* Promo — orange */
+.beauty-product-badge--promo-tag {
+  background: #d97706;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.35);
+}
+/* Overlay rupture de stock — même style que l'admin */
+.beauty-product-oos-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(196, 20, 32, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(2px);
+  z-index: 2;
+}
+.beauty-product-oos-label {
+  color: #fff;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Carte en rupture de stock */
+.beauty-product-card--oos {
+  opacity: 0.75;
+}
+.beauty-product-card--oos .beauty-product-link:last-child {
+  background: #aaa;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
 
 /* Prix avec réduction */
 .beauty-product-prices {
