@@ -82,6 +82,14 @@ const icons = {
       <path d="M21 15l-5-5L5 21" />
     </svg>
   ),
+  "delivery-zones": (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M1 3h15v13H1z" />
+      <path d="M16 8h4l3 3v5h-7V8z" />
+      <circle cx="5.5" cy="18.5" r="2.5" />
+      <circle cx="18.5" cy="18.5" r="2.5" />
+    </svg>
+  ),
 };
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -110,6 +118,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     { id: "beauty",       label: "Beauté",            davgroupOnly: true },
     { id: "realisations", label: "Réalisations",      davgroupOnly: true },
     { id: "promos",       label: "Promotions",        davgroupOnly: true },
+    { id: "delivery-zones", label: "Communes de livraison", davgroupOnly: true },
     { id: "consulting-realisations", label: "Réalisations Consulting" },
     { id: "consulting-hero-slides", label: "Carrousel Consulting" },
     { id: "consulting-section-images", label: "Photos Consulting" },

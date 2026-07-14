@@ -19,13 +19,14 @@ class DatabaseSeeder extends Seeder
             AdminUserSeeder::class,
             ConsultingAdminUserSeeder::class,
             CategorySeeder::class,
-            ProductSeeder::class,
+            // ProductSeeder::class, // désactivé : produits de démo sans image, supprimés du site le 2026-07-14
             PromotionSeeder::class,
             RdvSeeder::class,
             BeautyServiceSeeder::class,
             ConsultingRealisationSeeder::class,
             ConsultingHeroSlideSeeder::class,
             ConsultingSectionImageSeeder::class,
+            DeliveryZoneSeeder::class,
         ]);
     }
 }

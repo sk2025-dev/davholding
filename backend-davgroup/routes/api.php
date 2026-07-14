@@ -15,6 +15,7 @@ use App\Http\Controllers\PromoSlideController;
 use App\Http\Controllers\ConsultingRealisationController;
 use App\Http\Controllers\ConsultingHeroSlideController;
 use App\Http\Controllers\ConsultingSectionImageController;
+use App\Http\Controllers\DeliveryZoneController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -75,6 +76,9 @@ Route::get('/consulting-hero-slides', [ConsultingHeroSlideController::class, 'in
 // Photos des sections "Ce que nous faisons" Consulting — public
 Route::get('/consulting-section-images', [ConsultingSectionImageController::class, 'index']);
 
+// Communes de livraison — public
+Route::get('/delivery-zones', [DeliveryZoneController::class, 'index']);
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout',           [AuthController::class, 'logout']);
     Route::get('/user',              [AuthController::class, 'user']);
@@ -129,5 +133,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/promo-slides', [PromoSlideController::class, 'store']);
         Route::match(['put', 'post'], '/promo-slides/{promoSlide}', [PromoSlideController::class, 'update']);
         Route::delete('/promo-slides/{promoSlide}', [PromoSlideController::class, 'destroy']);
+
+        // Communes de livraison — admin
+        Route::post('/delivery-zones', [DeliveryZoneController::class, 'store']);
+        Route::match(['put', 'post'], '/delivery-zones/{deliveryZone}', [DeliveryZoneController::class, 'update']);
+        Route::delete('/delivery-zones/{deliveryZone}', [DeliveryZoneController::class, 'destroy']);
     });
 });

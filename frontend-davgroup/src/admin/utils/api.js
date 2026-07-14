@@ -224,4 +224,18 @@ export const adminApi = {
   async resetConsultingSectionImage(sectionKey) {
     return request(`/consulting-section-images/${sectionKey}`, { method: 'DELETE' });
   },
+
+  // ── Communes de livraison ──
+  async getDeliveryZones() {
+    return request('/delivery-zones?admin=1');
+  },
+  async createDeliveryZone(data) {
+    return request('/delivery-zones', { method: 'POST', body: JSON.stringify(data) });
+  },
+  async updateDeliveryZone(id, data) {
+    return request(`/delivery-zones/${id}`, { method: 'PUT', body: JSON.stringify(data) });
+  },
+  async deleteDeliveryZone(id) {
+    return request(`/delivery-zones/${id}`, { method: 'DELETE' });
+  },
 };

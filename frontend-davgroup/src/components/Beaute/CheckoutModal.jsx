@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useClientAuth } from "../../context/ClientAuthContext";
 import "../../styles/CheckoutModal.css";
 
@@ -7,8 +7,8 @@ const STORAGE_KEY = "dav_client_token";
 
 const STEP = { CHOICE: "choice", DELIVERY: "delivery", ONLINE_FORM: "online_form", PAYING: "paying", SUCCESS: "success" };
 
-/* ── Tarifs livraison par commune ── */
-const DELIVERY_FEES = {
+/* ── Tarifs livraison par commune (repli si l'API est indisponible) ── */
+const FALLBACK_DELIVERY_FEES = {
   "Plateau":        1000,
   "Treichville":    1000,
   "Marcory":        1500,
@@ -27,8 +27,6 @@ const DELIVERY_FEES = {
   "Grand-Bassam":   3000,
   "Autre":          3500,
 };
-
-const COMMUNES = Object.keys(DELIVERY_FEES);
 
 /* ── Opérateurs Mobile Money ── */
 const OPERATORS = [
@@ -102,6 +100,71 @@ function TotalBreakdown({ cartTotal, deliveryFee, commune }) {
   );
 }
 
+/* ── Sélecteur de commune avec recherche ── */
+function CommuneSelect({ communes, deliveryFees, value, onChange }) {
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const wrapRef = useRef(null);
+
+  useEffect(() => {
+    const onClickOutside = (e) => {
+      if (wrapRef.current && !wrapRef.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onClickOutside);
+    return () => document.removeEventListener("mousedown", onClickOutside);
+  }, []);
+
+  const filtered = communes.filter((c) =>
+    c.toLowerCase().includes(query.trim().toLowerCase())
+  );
+
+  const selectCommune = (c) => {
+    onChange(c);
+    setQuery("");
+    setOpen(false);
+  };
+
+  return (
+    <div className="co-commune-combobox" ref={wrapRef}>
+      <input
+        type="text"
+        className="co-commune-input"
+        placeholder="Rechercher votre commune…"
+        value={open ? query : value}
+        onFocus={() => { setOpen(true); setQuery(""); }}
+        onChange={(e) => setQuery(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && filtered.length > 0) {
+            e.preventDefault();
+            selectCommune(filtered[0]);
+          } else if (e.key === "Escape") {
+            setOpen(false);
+          }
+        }}
+      />
+      {open && (
+        <div className="co-commune-dropdown">
+          {filtered.length === 0 ? (
+            <div className="co-commune-option co-commune-option--empty">Aucune commune trouvée</div>
+          ) : (
+            filtered.map((c) => (
+              <button
+                type="button"
+                key={c}
+                className={`co-commune-option${c === value ? " co-commune-option--active" : ""}`}
+                onClick={() => selectCommune(c)}
+              >
+                <span>{c}</span>
+                <span className="co-commune-option-fee">{deliveryFees[c].toLocaleString("fr-FR")} FCFA</span>
+              </button>
+            ))
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 /* ══════════════════════════════════════════════════════════════ */
 export default function CheckoutModal({ isOpen, onClose, cartItems, cartTotal, onSuccess, onAddToCart }) {
   const { user } = useClientAuth();
@@ -109,6 +172,8 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, cartTotal, o
   const [step, setStep]               = useState(STEP.CHOICE);
   const [commune, setCommune]         = useState("");
   const [deliveryFee, setDeliveryFee] = useState(0);
+  const [deliveryFees, setDeliveryFees] = useState(FALLBACK_DELIVERY_FEES);
+  const communes = Object.keys(deliveryFees);
   const [form, setForm]               = useState({ name: "", phone: "", address: "" });
   const [loading, setLoading]         = useState(false);
   const [error, setError]             = useState("");
@@ -141,8 +206,21 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, cartTotal, o
   }, [isOpen, user]);
 
   useEffect(() => {
-    setDeliveryFee(commune ? (DELIVERY_FEES[commune] ?? 3500) : 0);
-  }, [commune]);
+    fetch(`${API_URL}/delivery-zones`)
+      .then((res) => res.json())
+      .then((json) => {
+        const zones = json?.data || [];
+        if (zones.length === 0) return;
+        const map = {};
+        zones.forEach((z) => { map[z.name] = Number(z.fee); });
+        setDeliveryFees(map);
+      })
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    setDeliveryFee(commune ? (deliveryFees[commune] ?? deliveryFees["Autre"] ?? 3500) : 0);
+  }, [commune, deliveryFees]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -305,18 +383,12 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, cartTotal, o
 
             <div className="co-commune-wrap">
               <label className="co-commune-label">📍 Commune de livraison</label>
-              <select
-                className="co-commune-select"
+              <CommuneSelect
+                communes={communes}
+                deliveryFees={deliveryFees}
                 value={commune}
-                onChange={(e) => setCommune(e.target.value)}
-              >
-                <option value="">— Sélectionner votre commune —</option>
-                {COMMUNES.map((c) => (
-                  <option key={c} value={c}>
-                    {c} — {DELIVERY_FEES[c].toLocaleString("fr-FR")} FCFA
-                  </option>
-                ))}
-              </select>
+                onChange={setCommune}
+              />
             </div>
 
             <TotalBreakdown cartTotal={cartTotal} deliveryFee={deliveryFee} commune={commune} />

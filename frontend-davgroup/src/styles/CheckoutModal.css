@@ -401,6 +401,79 @@
   box-shadow: 0 0 0 3px rgba(196,20,32,.08);
 }
 
+/* ── Sélecteur de commune avec recherche ── */
+.co-commune-combobox {
+  position: relative;
+}
+.co-commune-input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid rgba(26,15,10,.15);
+  border-radius: 12px;
+  font-size: 13.5px;
+  font-family: inherit;
+  color: #1a0f0a;
+  background: #faf9f8;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+.co-commune-input:focus {
+  border-color: #c41420;
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(196,20,32,.08);
+}
+.co-commune-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  max-height: 260px;
+  overflow-y: auto;
+  background: #fff;
+  border: 1.5px solid rgba(26,15,10,.12);
+  border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(26,15,10,.15);
+  z-index: 20;
+  padding: 6px;
+}
+.co-commune-option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border: none;
+  background: none;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-family: inherit;
+  color: #1a0f0a;
+  text-align: left;
+  cursor: pointer;
+  transition: background .15s;
+}
+.co-commune-option:hover {
+  background: rgba(196,20,32,.06);
+}
+.co-commune-option--active {
+  background: rgba(196,20,32,.1);
+  font-weight: 600;
+}
+.co-commune-option-fee {
+  color: rgba(26,15,10,.5);
+  font-size: 12.5px;
+  white-space: nowrap;
+}
+.co-commune-option--empty {
+  color: rgba(26,15,10,.4);
+  cursor: default;
+  justify-content: center;
+}
+.co-commune-option--empty:hover {
+  background: none;
+}
+
 /* ── Récap total ───────────────────────────────────────── */
 .co-breakdown {
   background: rgba(26,15,10,.03);

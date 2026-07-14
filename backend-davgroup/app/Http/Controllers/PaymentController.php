@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DeliveryZone;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -35,7 +36,6 @@ class PaymentController extends Controller
             'items.*.quantity'  => 'required|integer|min:1',
             'items.*.unitPrice' => 'required|numeric|min:0',
             'commune'           => 'nullable|string|max:100',
-            'delivery_fee'      => 'nullable|numeric|min:0',
             'client_name'       => 'nullable|string|max:255',
             'client_phone'      => 'nullable|string|max:30',
             'shipping_address'  => 'nullable|string|max:500',
@@ -45,9 +45,9 @@ class PaymentController extends Controller
         $user        = $request->user();
         $items       = $request->input('items');
         $subtotal    = collect($items)->sum(fn($i) => $i['unitPrice'] * $i['quantity']);
-        $deliveryFee    = (float) ($request->input('delivery_fee', 0));
-        $total          = $subtotal + $deliveryFee;
         $commune        = $request->input('commune');
+        $deliveryFee    = DeliveryZone::feeFor($commune);
+        $total          = $subtotal + $deliveryFee;
         $paymentChannel = $request->input('payment_channel'); // 'mobile' | 'card' | null
 
         $order = Order::create([
@@ -173,7 +173,6 @@ class PaymentController extends Controller
             'items.*.quantity'  => 'required|integer|min:1',
             'items.*.unitPrice' => 'required|numeric|min:0',
             'commune'           => 'nullable|string|max:100',
-            'delivery_fee'      => 'nullable|numeric|min:0',
             'client_name'       => 'required|string|max:255',
             'client_phone'      => 'required|string|max:30',
             'shipping_address'  => 'nullable|string|max:500',
@@ -183,9 +182,9 @@ class PaymentController extends Controller
         $user        = $request->user();
         $items       = $request->input('items');
         $subtotal    = collect($items)->sum(fn($i) => $i['unitPrice'] * $i['quantity']);
-        $deliveryFee = (float) ($request->input('delivery_fee', 0));
-        $total       = $subtotal + $deliveryFee;
         $commune     = $request->input('commune');
+        $deliveryFee = DeliveryZone::feeFor($commune);
+        $total       = $subtotal + $deliveryFee;
         $network     = $request->input('network');
         $phone       = $request->input('client_phone');
 

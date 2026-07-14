@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DeliveryZone;
 use App\Models\Order;
 use Illuminate\Http\Request;
 
@@ -108,13 +109,12 @@ class OrderController extends Controller
             'client_phone'     => 'required|string|max:30',
             'shipping_address' => 'required|string|max:500',
             'commune'          => 'nullable|string|max:100',
-            'delivery_fee'     => 'nullable|numeric|min:0',
         ]);
 
         $user        = $request->user();
         $items       = $request->input('items');
         $subtotal    = collect($items)->sum(fn($i) => $i['unitPrice'] * $i['quantity']);
-        $deliveryFee = (float) ($request->input('delivery_fee', 0));
+        $deliveryFee = DeliveryZone::feeFor($request->input('commune'));
         $total       = $subtotal + $deliveryFee;
 
         $order = Order::create([
