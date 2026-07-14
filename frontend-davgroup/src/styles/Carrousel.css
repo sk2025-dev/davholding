@@ -327,19 +327,25 @@
   font-weight: 500;
 }
 
+.slide-desc--contact {
+  max-width: 400px;
+}
+
 /* Fraunces italic uniquement pour le slide Contact */
 .slide-glass--contact .slide-desc {
   font-family: "Fraunces", serif;
   font-style: italic;
-  font-size: clamp(14px, 1.1vw, 16px);
+  font-size: clamp(12px, 0.95vw, 14px);
   font-weight: 300;
-  line-height: 1.85;
+  line-height: 1.5;
   color: rgba(255, 255, 255, 0.88);
   letter-spacing: 0.01em;
+  margin-bottom: 12px;
 }
 
 .slide-title--contact {
-  font-size: clamp(34px, 5vw, 66px);
+  font-size: clamp(26px, 3.6vw, 46px);
+  margin-bottom: 10px;
 }
 .slide-title--contact .st-italic {
   color: #ffb3b3;
@@ -407,6 +413,10 @@
 #glass3 {
   max-width: 440px;
   width: min(440px, calc(100vw - 80px));
+  padding: 28px 34px;
+}
+#glass3 .slide-tag {
+  margin-bottom: 12px;
 }
 
 .slide-cta--contact {
@@ -414,6 +424,7 @@
   border: 1.5px solid #c41420;
   color: #fff;
   font-size: 12px;
+  padding: 11px 28px;
   box-shadow: 0 6px 24px -6px rgba(196, 20, 32, 0.55);
 }
 .slide-cta--contact:hover {
@@ -431,9 +442,9 @@
 .slide-contact-card {
   display: flex;
   align-items: flex-start;
-  gap: 14px;
-  padding: 16px 18px;
-  margin-top: 18px;
+  gap: 10px;
+  padding: 12px 14px;
+  margin-top: 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.06);
@@ -456,25 +467,25 @@
   stroke: #fff;
 }
 .slide-contact-title {
-  font-size: 11px;
+  font-size: 10px;
   letter-spacing: 0.26em;
   text-transform: uppercase;
   color: rgba(255, 230, 225, 0.75);
-  margin-bottom: 8px;
+  margin-bottom: 5px;
 }
 .slide-contact-line {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 14px;
-  line-height: 1.6;
+  font-size: 12.5px;
+  line-height: 1.3;
   color: rgba(255, 255, 255, 0.92);
 }
 .slide-contact-line strong {
   color: #fff;
 }
 .slide-contact-line + .slide-contact-line {
-  margin-top: 4px;
+  margin-top: 2px;
 }
 .slide-contact-miniicon {
   width: 18px;
@@ -482,6 +493,10 @@
   flex-shrink: 0;
   color: rgba(255, 255, 255, 0.88);
 }
+.slide-contact-cta-wrap {
+  margin-top: 12px;
+}
+
 .contact-email-display {
   font-family: "Fraunces", serif;
   font-style: italic;
@@ -788,7 +803,49 @@
   #glass3 {
     max-width: calc(100vw - 64px);
     width: calc(100vw - 64px);
-    padding: 26px 20px;
+    padding: 20px 18px;
+  }
+  #glass3 .slide-tag {
+    margin-bottom: 12px;
+  }
+  .slide-title--contact {
+    font-size: clamp(20px, 6vw, 30px);
+    margin-bottom: 6px;
+  }
+  .slide-desc--contact {
+    max-width: 100%;
+  }
+  .slide-glass--contact .slide-desc {
+    font-size: 11px;
+    line-height: 1.35;
+    margin-bottom: 8px;
+  }
+  .slide-contact-card {
+    padding: 10px 12px;
+    margin-top: 6px;
+    gap: 8px;
+  }
+  .slide-contact-title {
+    font-size: 8px;
+    margin-bottom: 4px;
+  }
+  .slide-contact-line {
+    font-size: 11px;
+    line-height: 1.25;
+  }
+  .slide-contact-line + .slide-contact-line {
+    margin-top: 2px;
+  }
+  .slide-contact-miniicon {
+    width: 15px;
+    height: 15px;
+  }
+  .slide-contact-cta-wrap {
+    margin-top: 10px;
+  }
+  #glass3 .slide-cta--contact {
+    padding: 10px 24px;
+    font-size: 10px;
   }
   .slide-counter {
     right: 20px;

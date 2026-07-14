@@ -1,0 +1,111 @@
+.c-quicknav__backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 499;
+}
+
+.c-quicknav {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 500;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.consulting-root .c-quicknav__btn {
+  height: 52px;
+  padding: 0 22px 0 18px;
+  border-radius: 999px;
+  border: 1px solid #ff1a2a;
+  background: #c41420;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 10px 28px -8px rgba(196, 20, 32, 0.55);
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  transition:
+    transform 0.25s,
+    background 0.25s;
+}
+.c-quicknav__btn svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+.c-quicknav__btn-label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.c-quicknav__btn:hover {
+  transform: translateY(-2px);
+}
+.consulting-root .c-quicknav__btn--open {
+  background: #a8111c;
+  border-color: #a8111c;
+}
+
+.c-quicknav__panel {
+  position: absolute;
+  right: 0;
+  bottom: 68px;
+  min-width: 240px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  opacity: 0;
+  transform: translateY(12px) scale(0.96);
+  pointer-events: none;
+  transition:
+    opacity 0.22s,
+    transform 0.22s;
+}
+.c-quicknav__panel--open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.consulting-root .c-quicknav__link {
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: "Inter", sans-serif;
+  color: var(--text-m);
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.consulting-root .c-quicknav__link:hover {
+  background: var(--red-soft);
+  color: var(--text);
+}
+.consulting-root .c-quicknav__link.active {
+  background: var(--red);
+  color: #fff;
+  font-weight: 600;
+}
+
+@media (max-width: 480px) {
+  .c-quicknav {
+    right: 14px;
+    bottom: 14px;
+  }
+  .c-quicknav__panel {
+    min-width: 210px;
+  }
+}

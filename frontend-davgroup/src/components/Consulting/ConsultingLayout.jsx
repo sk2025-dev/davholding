@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import ConsultingNav from "./ConsultingNav";
 import ConsultingFooter from "./ConsultingFooter";
+import ConsultingQuickNav from "./ConsultingQuickNav";
 import ConstellationCanvas from "./ConstellationCanvas";
 
 export default function ConsultingLayout({ children, hideNav = false }) {
@@ -64,6 +65,7 @@ export default function ConsultingLayout({ children, hideNav = false }) {
       )}
       <main>{children}</main>
       <ConsultingFooter />
+      <ConsultingQuickNav />
     </div>
   );
 }

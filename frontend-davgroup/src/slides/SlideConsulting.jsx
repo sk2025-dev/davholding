@@ -7,7 +7,7 @@ function SlideConsulting() {
         <div
           className="slide-bg"
           id="bg2"
-          style={{ backgroundImage: 'url("/images/dcv.png")' }}
+          style={{ backgroundImage: 'url("/images/devequipe.png")' }}
         ></div>
         <div className="slide-overlay slide-overlay--tech"></div>
         <div className="slide-streak" style={{ left: "55%" }}></div>

@@ -25,7 +25,7 @@ function SlideContact({ onOpen }) {
               <span className="st-line">Travaillons</span>
               <span className="st-line st-italic">ensemble</span>
             </h2>
-            <p className="slide-desc" style={{ maxWidth: "400px" }}>
+            <p className="slide-desc slide-desc--contact">
               Un projet, une idée, une ambition.
               <br />
               Notre équipe est à votre écoute pour donner forme à ce que vous
@@ -92,7 +92,7 @@ function SlideContact({ onOpen }) {
                 </div>
               </div>
             </div>
-            <div style={{ marginTop: 20 }}>
+            <div className="slide-contact-cta-wrap">
               <button
                 type="button"
                 className="slide-cta slide-cta--outline slide-cta--contact"
