@@ -32,7 +32,7 @@ export default function ConsultingCTA() {
           </p>
           <div className="c-cta__actions">
             <a
-              href="https://wa.me/2250757249390?text=Bonjour%20DAV%20Consulting%2C%20j%27ai%20un%20projet%20%C3%A0%20vous%20soumettre."
+              href="https://wa.me/2250758863765?text=Bonjour%20DAV%20Consulting%2C%20j%27ai%20un%20projet%20%C3%A0%20vous%20soumettre."
               target="_blank"
               rel="noopener noreferrer"
               className="c-btn-wa"

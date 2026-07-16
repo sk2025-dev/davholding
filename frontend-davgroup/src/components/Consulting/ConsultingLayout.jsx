@@ -1,18 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import ConsultingNav from "./ConsultingNav";
 import ConsultingFooter from "./ConsultingFooter";
 import ConsultingQuickNav from "./ConsultingQuickNav";
 import ConstellationCanvas from "./ConstellationCanvas";
 
-export default function ConsultingLayout({ children, hideNav = false }) {
-  const [theme, setTheme] = useState("dark");
-  const scrollBarRef = useRef(null);
+const THEME = "dark";
 
-  const toggleTheme = () => {
-    const next = theme === "dark" ? "light" : "dark";
-    setTheme(next);
-    localStorage.setItem("dav-consulting-theme", next);
-  };
+export default function ConsultingLayout({ children, hideNav = false }) {
+  const scrollBarRef = useRef(null);
 
   useEffect(() => {
     const bar = scrollBarRef.current;
@@ -41,28 +36,10 @@ export default function ConsultingLayout({ children, hideNav = false }) {
   }, []);
 
   return (
-    <div className="consulting-root" data-theme={theme}>
-      <ConstellationCanvas theme={theme} />
+    <div className="consulting-root" data-theme={THEME}>
+      <ConstellationCanvas theme={THEME} />
       <div ref={scrollBarRef} className="c-scroll-bar" />
-      {!hideNav && <ConsultingNav theme={theme} onThemeToggle={toggleTheme} />}
-      {hideNav && (
-        <>
-          <button
-            onClick={toggleTheme}
-            aria-label="Changer de thème"
-            style={{
-              position: "fixed", top: 24, right: 28, zIndex: 100,
-              background: "rgba(255,255,255,.12)", border: "1px solid rgba(255,255,255,.18)",
-              backdropFilter: "blur(8px)", borderRadius: "50%",
-              width: 40, height: 40, cursor: "pointer",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              color: "#fff", transition: "background .2s",
-            }}
-          >
-            {theme === "dark" ? "☀️" : "🌙"}
-          </button>
-        </>
-      )}
+      {!hideNav && <ConsultingNav />}
       <main>{children}</main>
       <ConsultingFooter />
       <ConsultingQuickNav />

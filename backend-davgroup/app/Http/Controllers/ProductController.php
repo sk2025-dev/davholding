@@ -28,6 +28,20 @@ class ProductController extends Controller
         return response()->json(['data' => $this->transform($p)]);
     }
 
+    /**
+     * Produit vedette à suggérer aux visiteurs (popup d'accueil Beauté).
+     */
+    public function featured()
+    {
+        $p = Product::with('category')
+            ->where('is_active', true)
+            ->where('is_featured', true)
+            ->latest('updated_at')
+            ->first();
+
+        return response()->json(['data' => $p ? $this->transform($p) : null]);
+    }
+
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -41,6 +55,7 @@ class ProductController extends Controller
             'sku' => ['required', 'string', 'max:100', 'unique:products,sku'],
             'badge' => ['nullable', 'string', 'max:50'],
             'is_active' => ['nullable', 'boolean'],
+            'is_featured' => ['nullable', 'boolean'],
             'image' => ['nullable', 'image', 'max:4096'],
             'image2' => ['nullable', 'image', 'max:4096'],
         ]);
@@ -67,6 +82,7 @@ class ProductController extends Controller
             'sku' => $data['sku'],
             'badge' => $data['badge'] ?? null,
             'is_active' => $request->boolean('is_active', true),
+            'is_featured' => $request->boolean('is_featured', false),
             'image' => $imagePath,
             'image2' => $image2Path,
         ]);
@@ -87,6 +103,7 @@ class ProductController extends Controller
             'sku' => ['sometimes', 'string', 'max:100', 'unique:products,sku,' . $product->id],
             'badge' => ['nullable', 'string', 'max:50'],
             'is_active' => ['sometimes', 'boolean'],
+            'is_featured' => ['sometimes', 'boolean'],
             'image' => ['nullable', 'image', 'max:4096'],
             'image2' => ['nullable', 'image', 'max:4096'],
         ]);
@@ -136,6 +153,7 @@ class ProductController extends Controller
             'image2' => $p->image2 ? (preg_match('/^https?:\/\//', $p->image2) ? $p->image2 : url($p->image2)) : null,
             'category' => $p->category ? $p->category->name : null,
             'is_active' => (bool) $p->is_active,
+            'is_featured' => (bool) $p->is_featured,
         ];
     }
 }

@@ -13,6 +13,7 @@ class ConsultingRealisation extends Model
         'category',
         'tag',
         'title',
+        'description',
         'image_path',
         'tags',
         'sort_order',

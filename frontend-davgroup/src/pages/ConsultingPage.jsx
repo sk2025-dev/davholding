@@ -15,18 +15,11 @@ import ConsultingCTA from "../components/Consulting/ConsultingCTA";
 import ConsultingFooter from "../components/Consulting/ConsultingFooter";
 import "../styles/Consulting.css";
 
+const THEME = "dark";
+
 export default function ConsultingPage() {
   const [loaded, setLoaded] = useState(false);
-  const [theme, setTheme] = useState(
-    () => localStorage.getItem("dav-consulting-theme") || "dark"
-  );
   const scrollBarRef = useRef(null);
-
-  const toggleTheme = () => {
-    const next = theme === "dark" ? "light" : "dark";
-    setTheme(next);
-    localStorage.setItem("dav-consulting-theme", next);
-  };
 
   /* Scroll progress bar */
   useEffect(() => {
@@ -62,20 +55,20 @@ export default function ConsultingPage() {
   }, [loaded]);
 
   return (
-    <div className="consulting-root" data-theme={theme}>
+    <div className="consulting-root" data-theme={THEME}>
       {!loaded && <ConsultingPreloader onComplete={() => setLoaded(true)} />}
 
-      <ConstellationCanvas theme={theme} />
+      <ConstellationCanvas theme={THEME} />
       <div ref={scrollBarRef} className="c-scroll-bar" />
 
-      <ConsultingNav theme={theme} onThemeToggle={toggleTheme} />
+      <ConsultingNav />
       <ConsultingHeroCarousel />
       <ConsultingClientsStrip />
       <ConsultingNumbers />
+      <ConsultingProcess />
       <ConsultingMobileSection />
       <ConsultingDesignSection />
       <ConsultingITSection />
-      <ConsultingProcess />
       <ConsultingStack />
       <ConsultingRealisations />
       <ConsultingCTA />

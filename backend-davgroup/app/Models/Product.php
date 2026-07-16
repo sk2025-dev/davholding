@@ -23,6 +23,7 @@ class Product extends Model
         'image2',
         'sku',
         'is_active',
+        'is_featured',
         'badge',
     ];
 
@@ -30,6 +31,7 @@ class Product extends Model
         'price' => 'decimal:2',
         'cost' => 'decimal:2',
         'is_active' => 'boolean',
+        'is_featured' => 'boolean',
     ];
 
     /**

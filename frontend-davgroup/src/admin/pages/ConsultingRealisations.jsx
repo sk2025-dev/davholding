@@ -15,6 +15,7 @@ const EMPTY_FORM = {
   title: "",
   tag: "",
   tags: "",
+  description: "",
   sort_order: 0,
   is_active: true,
   image: null,
@@ -59,6 +60,7 @@ export default function ConsultingRealisations() {
       title: item.title || "",
       tag: item.tag || "",
       tags: (item.tags || []).join(", "),
+      description: item.description || "",
       sort_order: item.sort_order ?? 0,
       is_active: item.is_active,
       image: null,
@@ -86,6 +88,7 @@ export default function ConsultingRealisations() {
       fd.append("category", form.category);
       fd.append("title", form.title);
       if (form.tag) fd.append("tag", form.tag);
+      if (form.description) fd.append("description", form.description);
       form.tags.split(",").map(t => t.trim()).filter(Boolean).forEach(t => fd.append("tags[]", t));
       fd.append("sort_order", form.sort_order);
       fd.append("is_active", form.is_active ? "1" : "0");
@@ -181,6 +184,9 @@ export default function ConsultingRealisations() {
                 {item.tags?.length > 0 && (
                   <p className="promo-slide-desc">{item.tags.join(" · ")}</p>
                 )}
+                {item.description && (
+                  <p className="promo-slide-desc">{item.description}</p>
+                )}
               </div>
               <div className="promo-slide-actions">
                 <button className="btn-ghost btn-sm" onClick={() => toggleActive(item)}>
@@ -218,10 +224,14 @@ export default function ConsultingRealisations() {
                   <input name="tag" className="form-input" value={form.tag} onChange={handleChange} />
                 </label>
                 <label className="form-label">
-                  Tags (séparés par virgule)
-                  <input name="tags" className="form-input" value={form.tags} onChange={handleChange} placeholder="Figma, UI Kit" />
+                  Stack utilisé (séparés par virgule)
+                  <input name="tags" className="form-input" value={form.tags} onChange={handleChange} placeholder="Laravel, React, MySQL" />
                 </label>
               </div>
+              <label className="form-label">
+                Description / fonctionnement du projet
+                <textarea name="description" className="form-input" rows={4} value={form.description} onChange={handleChange} placeholder="Ce que fait le projet, comment il fonctionne…" />
+              </label>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                 <label className="form-label">
                   Ordre d'affichage

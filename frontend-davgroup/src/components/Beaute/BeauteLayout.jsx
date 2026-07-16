@@ -3,6 +3,7 @@ import BeauteHeader from "./BeauteHeader";
 import BeauteMainNav from "./BeauteMainNav";
 import BeautePromoSection from "./BeautePromoSection";
 import BeauteQuickNav from "./BeauteQuickNav";
+import SuggestedProductModal from "./SuggestedProductModal";
 import { sectionTabs } from "./beauteData";
 import "../../styles/BeautePage.css";
 import "../../styles/BeauteHeader.css";
@@ -21,6 +22,7 @@ function BeauteLayout({ children, cartCount = 0, onCartClick }) {
       {children}
       <BeauteFooter />
       <BeauteQuickNav />
+      <SuggestedProductModal />
     </main>
   );
 }

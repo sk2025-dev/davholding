@@ -26,6 +26,12 @@ function Lightbox({ item, onClose }) {
         <div className="br-lightbox-info">
           <div className="br-lightbox-title">{item.title}</div>
           <div className="br-lightbox-cat">{item.cat}</div>
+          {item.tags?.length > 0 && (
+            <div className="br-lightbox-stack">
+              {item.tags.map((t) => <span key={t}>{t}</span>)}
+            </div>
+          )}
+          {item.description && <p className="br-lightbox-desc">{item.description}</p>}
         </div>
       </div>
     </div>
@@ -81,7 +87,7 @@ export default function ConsultingBrandingPage() {
     fetch(`${API_URL}/consulting-realisations?category=branding`)
       .then((res) => res.json())
       .then((json) => {
-        const mapped = (json?.data || []).map((r) => ({ src: r.image_url, title: r.title, cat: r.tag }));
+        const mapped = (json?.data || []).map((r) => ({ src: r.image_url, title: r.title, cat: r.tag, tags: r.tags || [], description: r.description }));
         setItems(mapped);
       })
       .catch(() => setItems([]));

@@ -94,7 +94,7 @@ const ProductForm = ({ form, categories, imagePreview, image2Preview, onChange, 
 );
 
 /* ── Composant carte produit ── */
-const ProductCard = ({ p, categories, onPriceChange, onPriceCommit, onStockToggle, onBadgeChange, onEdit, onDelete }) => {
+const ProductCard = ({ p, categories, onPriceChange, onPriceCommit, onStockToggle, onBadgeChange, onFeaturedToggle, onEdit, onDelete }) => {
   const inStock = p.quantity > 0;
   return (
     <div style={{
@@ -201,6 +201,20 @@ const ProductCard = ({ p, categories, onPriceChange, onPriceCommit, onStockToggl
             {BADGE_OPTIONS.map((b) => <option key={b.value} value={b.value}>{b.label}</option>)}
           </select>
         </div>
+
+        {/* Vedette (popup produit suggéré) */}
+        <button
+          onClick={() => onFeaturedToggle(p)}
+          style={{
+            padding: "6px 0", borderRadius: "8px", border: "none", cursor: "pointer",
+            fontFamily: "'Inter', sans-serif", fontWeight: "600", fontSize: "11.5px",
+            background: p.is_featured ? "rgba(224,144,32,.14)" : "rgba(10,10,12,.05)",
+            color: p.is_featured ? "#b07010" : "var(--ink-s)",
+            transition: "all .2s",
+          }}
+        >
+          {p.is_featured ? "★ Produit vedette" : "☆ Mettre en vedette"}
+        </button>
 
         {/* Actions */}
         <div style={{ display: "flex", gap: "6px", marginTop: "auto" }}>
@@ -363,6 +377,7 @@ const Products = () => {
   const handlePriceCommit  = async (id, v) => { try { const fd = new FormData(); fd.append("price", v); await adminApi.updateProduct(id, fd); showToast("✓ Prix mis à jour"); } catch (e) { showToast(e.message, 3000); } };
   const handleStockToggle  = async (product) => { const q = product.quantity > 0 ? 0 : (product.min_quantity || 0) + 10; try { const fd = new FormData(); fd.append("quantity", q); await adminApi.updateProduct(product.id, fd); setProducts((c) => c.map((p) => p.id === product.id ? { ...p, quantity: q } : p)); showToast("✓ Stock mis à jour"); } catch (e) { showToast(e.message, 3000); } };
   const handleBadgeChange  = async (product, badge) => { try { const fd = new FormData(); fd.append("badge", badge); await adminApi.updateProduct(product.id, fd); setProducts((c) => c.map((p) => p.id === product.id ? { ...p, badge } : p)); showToast("✓ Badge mis à jour"); } catch (e) { showToast(e.message, 3000); } };
+  const handleFeaturedToggle = async (product) => { const next = !product.is_featured; try { const fd = new FormData(); fd.append("is_featured", next ? "1" : "0"); await adminApi.updateProduct(product.id, fd); setProducts((c) => c.map((p) => p.id === product.id ? { ...p, is_featured: next } : p)); showToast(next ? "✓ Produit mis en vedette" : "✓ Produit retiré de la vedette"); } catch (e) { showToast(e.message, 3000); } };
   const handleDelete       = async (id) => { try { await adminApi.deleteProduct(id); setProducts((c) => c.filter((p) => p.id !== id)); showToast("✓ Produit supprimé"); } catch (e) { showToast(e.message, 3000); } };
 
   /* ── Ajout ── */
@@ -525,6 +540,7 @@ const Products = () => {
                 onPriceCommit={handlePriceCommit}
                 onStockToggle={handleStockToggle}
                 onBadgeChange={handleBadgeChange}
+                onFeaturedToggle={handleFeaturedToggle}
                 onEdit={openEdit}
                 onDelete={handleDelete}
               />

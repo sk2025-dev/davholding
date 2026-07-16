@@ -40,6 +40,7 @@ class ConsultingRealisationController extends Controller
             'category'    => ['required', 'string', 'in:branding,developpement,design,secure'],
             'tag'         => ['nullable', 'string', 'max:100'],
             'title'       => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:2000'],
             'tags'        => ['nullable', 'array'],
             'tags.*'      => ['string', 'max:50'],
             'sort_order'  => ['nullable', 'integer', 'min:0'],
@@ -52,13 +53,14 @@ class ConsultingRealisationController extends Controller
         }
 
         $item = ConsultingRealisation::create([
-            'category'   => $data['category'],
-            'tag'        => $data['tag'] ?? null,
-            'title'      => $data['title'],
-            'image_path' => $imagePath,
-            'tags'       => $data['tags'] ?? null,
-            'sort_order' => $data['sort_order'] ?? 0,
-            'is_active'  => true,
+            'category'    => $data['category'],
+            'tag'         => $data['tag'] ?? null,
+            'title'       => $data['title'],
+            'description' => $data['description'] ?? null,
+            'image_path'  => $imagePath,
+            'tags'        => $data['tags'] ?? null,
+            'sort_order'  => $data['sort_order'] ?? 0,
+            'is_active'   => true,
         ]);
 
         return response()->json(['data' => $this->transform($item)], 201);
@@ -70,6 +72,7 @@ class ConsultingRealisationController extends Controller
             'category'    => ['sometimes', 'string', 'in:branding,developpement,design,secure'],
             'tag'         => ['nullable', 'string', 'max:100'],
             'title'       => ['sometimes', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:2000'],
             'tags'        => ['nullable', 'array'],
             'tags.*'      => ['string', 'max:50'],
             'sort_order'  => ['nullable', 'integer', 'min:0'],
@@ -106,14 +109,15 @@ class ConsultingRealisationController extends Controller
         $isStaticAsset = $item->image_path && Str::startsWith($item->image_path, ['http://', 'https://', '/']);
 
         return [
-            'id'         => $item->id,
-            'category'   => $item->category,
-            'tag'        => $item->tag,
-            'title'      => $item->title,
-            'tags'       => $item->tags ?? [],
-            'sort_order' => $item->sort_order,
-            'is_active'  => $item->is_active,
-            'image_url'  => $item->image_path
+            'id'          => $item->id,
+            'category'    => $item->category,
+            'tag'         => $item->tag,
+            'title'       => $item->title,
+            'description' => $item->description,
+            'tags'        => $item->tags ?? [],
+            'sort_order'  => $item->sort_order,
+            'is_active'   => $item->is_active,
+            'image_url'   => $item->image_path
                 ? ($isStaticAsset ? $item->image_path : asset('storage/' . $item->image_path))
                 : null,
         ];

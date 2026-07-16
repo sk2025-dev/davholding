@@ -33,6 +33,12 @@ function Lightbox({ item, onClose }) {
         <div className="ds-lightbox-info">
           <div className="ds-lightbox-title">{item.title}</div>
           <div className="ds-lightbox-cat">{item.cat}</div>
+          {item.tags?.length > 0 && (
+            <div className="ds-lightbox-stack">
+              {item.tags.map((t) => <span key={t}>{t}</span>)}
+            </div>
+          )}
+          {item.description && <p className="ds-lightbox-desc">{item.description}</p>}
         </div>
       </div>
     </div>
@@ -96,7 +102,7 @@ export default function ConsultingDesignPage() {
     fetch(`${API_URL}/consulting-realisations?category=design`)
       .then((res) => res.json())
       .then((json) => {
-        const mapped = (json?.data || []).map((r) => ({ img: r.image_url, title: r.title, cat: r.tag, tags: r.tags || [] }));
+        const mapped = (json?.data || []).map((r) => ({ img: r.image_url, title: r.title, cat: r.tag, tags: r.tags || [], description: r.description }));
         setItems(mapped);
       })
       .catch(() => setItems([]));

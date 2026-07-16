@@ -5,9 +5,10 @@ const logos = [
   { src: "/consulting/images/flutterre.png", alt: "Flutter" },
   { src: "/consulting/images/mysql d.png", alt: "MySQL" },
   { src: "/consulting/images/py.png", alt: "Python" },
-  { src: "/consulting/images/phpa.png", alt: "PHP" },
+  { src: "/images/php.png", alt: "PHP" },
   { src: "/consulting/images/vue c.png", alt: "Vue.js" },
   { src: "/consulting/images/post.png", alt: "PostgreSQL" },
+  { src: "/images/OIP.png", alt: "Microsoft SQL Server" },
 ];
 
 export default function ConsultingStack() {
