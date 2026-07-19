@@ -414,6 +414,123 @@
   font-family: "Inter", sans-serif;
 }
 
+/* La modale peut être ouverte depuis la page Consulting sombre.
+   Ces règles isolent sa palette claire des couleurs héritées de la page. */
+.consulting-root .contact-modal {
+  --text: #0a0a0c;
+  --text-m: #3f3f46;
+  --text-s: #62626b;
+  color: #0a0a0c;
+  background: #fff;
+}
+.consulting-root .contact-modal-head {
+  color: #fff;
+}
+.consulting-root .contact-modal-title {
+  color: #fff;
+}
+.consulting-root .contact-modal-sub {
+  color: rgba(255, 255, 255, 0.7);
+}
+.consulting-root .contact-modal-body {
+  background: #fff;
+}
+.consulting-root .contact-tab {
+  border: 1.5px solid #d8d3cb;
+  background: #f6f3ee;
+  color: #17171a;
+}
+.consulting-root .contact-tab.active {
+  border-color: #c41420;
+  background: #fff5f5;
+  box-shadow: 0 0 0 3px rgba(196, 20, 32, 0.1);
+}
+.consulting-root .contact-tab-name {
+  color: #17171a;
+}
+.consulting-root .contact-tab-desc {
+  color: #62626b;
+}
+.consulting-root .contact-modal .cf-label {
+  color: #303038;
+  font-size: 11px;
+  font-weight: 800;
+}
+.consulting-root .contact-modal .cf-input {
+  border-color: #cbc6bd;
+  background: #f5f1ea;
+  color: #111114;
+  font-size: 14px;
+  font-weight: 500;
+}
+.consulting-root .contact-modal .cf-input:hover {
+  border-color: #aaa49b;
+}
+.consulting-root .contact-modal .cf-input:focus {
+  border-color: #c41420;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(196, 20, 32, 0.12);
+}
+.consulting-root .contact-modal .cf-input::placeholder {
+  color: #777780;
+  opacity: 1;
+}
+.consulting-root .contact-modal .phone-row {
+  border-color: #cbc6bd;
+  background: #f5f1ea;
+}
+.consulting-root .contact-modal .phone-dial,
+.consulting-root .contact-modal .phone-digits {
+  color: #111114;
+}
+.consulting-root .contact-modal .phone-chevron {
+  color: #4f4f57;
+}
+.consulting-root .contact-modal .phone-hint,
+.consulting-root .contact-modal .phone-hint--idle {
+  color: #62626b;
+  font-size: 11px;
+}
+.consulting-root .contact-modal .phone-hint--ok {
+  color: #147a38;
+}
+.consulting-root .contact-modal .cf-error {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border: 1px solid rgba(180, 20, 32, 0.2);
+  border-left: 4px solid #b41420;
+  background: #fff0f1;
+  color: #8f101a !important;
+  font-size: 12.5px !important;
+  font-weight: 650 !important;
+  line-height: 1.55 !important;
+}
+.consulting-root .contact-modal .contact-submit-btn {
+  min-height: 48px;
+  margin-top: 20px;
+  border: none;
+  background: #c41420;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  box-shadow: 0 12px 26px rgba(196, 20, 32, 0.22);
+}
+.consulting-root .contact-modal .contact-submit-btn:hover {
+  background: #a90f19;
+}
+.consulting-root .contact-modal .contact-submit-btn:disabled {
+  background: #c9c5c1;
+  color: #5d5960;
+  box-shadow: none;
+}
+.consulting-root .contact-modal .cf-success-title {
+  color: #17171a;
+}
+.consulting-root .contact-modal .cf-success-sub {
+  color: #62626b;
+  font-size: 14px !important;
+}
+
 /* WhatsApp */
 .wa-box {
   background: linear-gradient(135deg, #128c7e 0%, #075e54 100%);

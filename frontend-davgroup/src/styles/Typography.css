@@ -1,0 +1,225 @@
+/*
+ * Garde-fous de lisibilité communs aux univers DAV.
+ * Les titres conservent leurs styles propres ; seuls les textes fonctionnels
+ * et secondaires reçoivent ici une taille et un rythme minimums.
+ */
+:where(p, li) {
+  text-wrap: pretty;
+}
+
+:where(h1, h2, h3) {
+  text-wrap: balance;
+}
+
+:where(button, input, select, textarea) {
+  font-family: var(--font-body);
+}
+
+:where(
+  [class*="eyebrow"],
+  [class*="kicker"],
+  [class*="label"],
+  [class*="tag"],
+  [class*="badge"]
+) {
+  font-size: max(12px, var(--text-label-size)) !important;
+  letter-spacing: var(--text-label-tracking) !important;
+  line-height: 1.4;
+}
+
+:where(
+  .nav-links,
+  .c-nav-links,
+  .beauty-btn,
+  .c-btn,
+  .admin-nav,
+  .sidebar-nav,
+  table,
+  input,
+  select,
+  textarea
+) {
+  font-size: max(13px, 0.8125rem) !important;
+}
+
+:where(.beauty-lead, .beauty-page p, .consulting-root p, .legal-page p) {
+  line-height: var(--text-body-leading);
+}
+
+/* Holding : le texte descriptif devient nettement plus confortable. */
+.slide-desc {
+  font-size: clamp(16px, 1.15vw, 17px) !important;
+  font-weight: 400 !important;
+  line-height: 1.7 !important;
+}
+
+.slide-tag,
+.slide-features span,
+.carousel-indicator .ci-label,
+.nav-links {
+  font-size: 12px !important;
+  letter-spacing: 0.12em !important;
+  line-height: 1.4;
+}
+
+/* Beauté : corps éditorial plus généreux et navigation plus nette. */
+.beauty-page p,
+.beauty-lead,
+.beauty-capillaires__lead,
+.about-value__text,
+.spa3-item__desc {
+  font-size: 16px !important;
+  line-height: 1.7 !important;
+}
+
+.promo-bar {
+  font-size: 14px !important;
+}
+
+.back-link,
+.nav-item,
+.nav-item--rendezvous {
+  font-size: 13px !important;
+  letter-spacing: 0.08em !important;
+}
+
+/*
+ * Consulting : hiérarchie inspirée du langage éditorial PROMIRE.
+ * Poppins porte les titres et les actions ; Inter reste réservé à la lecture.
+ */
+.consulting-root {
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.75;
+}
+
+.consulting-root :where(h1, h2, h3, h4, summary),
+.c-nav__logo,
+.c-nav__links,
+.c-nav__back,
+.c-nav__cta,
+.c-btn-primary,
+.c-btn-ghost {
+  font-family: var(--font-consulting) !important;
+}
+
+.consulting-root :where(h1, h2, h3, h4) {
+  letter-spacing: -0.025em !important;
+}
+
+.c-hero__headline {
+  font-family: var(--font-consulting) !important;
+  font-size: clamp(42px, 3.65vw, 58px) !important;
+  font-weight: 800 !important;
+  line-height: 1.06 !important;
+  letter-spacing: -0.035em !important;
+  text-transform: none;
+}
+
+.c-section-heading,
+.c-cta__title {
+  font-family: var(--font-consulting) !important;
+  font-size: clamp(38px, 4vw, 56px) !important;
+  font-weight: 800 !important;
+  line-height: 1.15 !important;
+}
+
+.consulting-root :where(h3, summary),
+.c-card-title,
+.c-process-title {
+  font-family: var(--font-consulting) !important;
+  font-size: clamp(20px, 1.7vw, 24px);
+  font-weight: 700 !important;
+  line-height: 1.3 !important;
+}
+
+.consulting-root p,
+.c-hero__sub,
+.c-section-desc {
+  font-family: var(--font-body) !important;
+  font-size: clamp(17px, 1.25vw, 19px) !important;
+  font-weight: 400 !important;
+  line-height: 1.7 !important;
+}
+
+.c-section-tag,
+.c-hc__tag,
+.c-clients__label {
+  font-family: var(--font-consulting) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.11em !important;
+}
+
+.c-nav__links a,
+.c-nav__back,
+.c-nav__cta,
+.c-hc__tab,
+.c-brand-logo {
+  font-family: var(--font-consulting) !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+}
+
+.c-btn-primary,
+.c-btn-ghost {
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+}
+
+/* Administration : densité conservée sans sacrifier la lecture. */
+.app-layout :where(p, td, th, label, input, select, textarea, button) {
+  font-size: 13px !important;
+  line-height: 1.45;
+}
+
+.app-layout :where(.page-title, .modal-title, .section-title) {
+  line-height: 1.15;
+}
+
+@media (min-width: 768px) {
+  .beauty-page p,
+  .legal-page p {
+    font-size: 17px !important;
+  }
+}
+
+@media (max-width: 767px) {
+  :where(.beauty-page p, .consulting-root p, .legal-page p) {
+    font-size: max(15px, 0.9375rem) !important;
+  }
+
+  :where(button, input, select, textarea) {
+    font-size: 16px !important;
+  }
+
+  .slide-desc {
+    font-size: 15px !important;
+  }
+
+  .slide-title {
+    font-size: clamp(34px, 9vw, 46px) !important;
+  }
+
+  .consulting-root {
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  .c-hero__headline {
+    font-size: clamp(36px, 9.5vw, 48px) !important;
+  }
+
+  .c-section-heading,
+  .c-cta__title {
+    font-size: clamp(32px, 8vw, 42px) !important;
+  }
+
+  .consulting-root p,
+  .c-hero__sub,
+  .c-section-desc {
+    font-size: 16px !important;
+  }
+}

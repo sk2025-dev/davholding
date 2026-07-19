@@ -4,6 +4,7 @@ import Preloader from "../components/Preloader";
 import Navbar from "../components/Navbar";
 import Carousel from "../components/Carousel";
 import ContactModal from "../components/ContactModal";
+import DavAssistant from "../components/DavAssistant";
 
 function HoldingPage() {
   const [loaded, setLoaded] = useState(false);
@@ -50,6 +51,7 @@ function HoldingPage() {
       </div>
       <Carousel onContactSlide={() => setModalOpen(true)} />
       <ContactModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+      {loaded && <DavAssistant onContactClick={() => setModalOpen(true)} />}
     </>
   );
 }

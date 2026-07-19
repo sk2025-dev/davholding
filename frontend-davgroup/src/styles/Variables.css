@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Inter:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,400;0,600;0,700;0,800;0,900;1,800;1,900&family=Bebas+Neue&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500;1,9..144,600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Poppins:wght@500;600;700;800&display=swap");
 
 :root {
   --red: #c41420;
@@ -9,9 +9,17 @@
   --off-white: #f0ebe2;
   --ink: #0a0a0c;
   --ink-soft: #2a2a32;
-  --ink-mute: rgba(10, 10, 12, 0.55);
+  --ink-mute: rgba(10, 10, 12, 0.68);
   --line: rgba(10, 10, 12, 0.08);
   --line-white: rgba(255, 255, 255, 0.15);
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-consulting: "Poppins", "Inter", system-ui, sans-serif;
+  --text-body-size: clamp(1rem, 0.975rem + 0.125vw, 1.0625rem);
+  --text-body-leading: 1.65;
+  --text-label-size: 0.75rem;
+  --text-label-tracking: 0.12em;
   --easing: cubic-bezier(0.76, 0, 0.24, 1);
   --easing-soft: cubic-bezier(0.25, 0.1, 0.25, 1);
   --easing-power: cubic-bezier(0.83, 0, 0.17, 1);
@@ -29,10 +37,19 @@ html,
 body {
   background: var(--ink);
   color: var(--ink);
-  font-family: "Inter", sans-serif;
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: var(--text-body-leading);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
 }
 body.loading {
   overflow: hidden;

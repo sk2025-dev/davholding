@@ -1,29 +1,6 @@
-// src/app/App.jsx
+import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import HoldingPage from "../pages/HoldingPage";
-import BeautePage from "../pages/BeautePage";
-import BeauteRealisationsPage from "../pages/BeauteRealisationsPage";
-import BeauteCapillairesPage from "../pages/BeauteCapillairesPage";
-import BeauteCoiffuresPage from "../pages/BeauteCoiffuresPage";
-import BeauteCosmetiquesPage from "../pages/BeauteCosmetiquesPage";
-import BeauteSpaPage from "../pages/BeauteSpaPage";
-import BeauteOngeriePage from "../pages/BeauteOngeriePage";
-import BeauteAboutPage from "../pages/BeauteAboutPage";
-import ConsultingPage from "../pages/ConsultingPage";
-import ConsultingBrandingPage from "../pages/ConsultingBrandingPage";
-import ConsultingDevPage from "../pages/ConsultingDevPage";
-import ConsultingDesignPage from "../pages/ConsultingDesignPage";
-import ConsultingSecurePage from "../pages/ConsultingSecurePage";
-import Admin from "../admin/Admin";
 import { ClientAuthProvider, useClientAuth } from "../context/ClientAuthContext";
-import AuthModal from "../components/Beaute/AuthModal";
-import BookingModal from "../components/Beaute/BookingModal";
-import AuthCallbackPage from "../pages/AuthCallbackPage";
-import PaymentSuccessPage from "../pages/PaymentSuccessPage";
-import PaymentCancelPage from "../pages/PaymentCancelPage";
-import ProfilePage from "../pages/ProfilePage";
-import PrivacyPolicyPage from "../pages/PrivacyPolicyPage";
-import TermsOfUsePage from "../pages/TermsOfUsePage";
 import CookieConsent from "../components/CookieConsent";
 import "../styles/Variables.css";
 import "../styles/Holding.css";
@@ -35,15 +12,69 @@ import "../styles/BeauteMainNav.css";
 import "../styles/BeauteFooter.css";
 import "../styles/BeauteCapillaires.css";
 import "../styles/CheckoutModal.css";
+import "../styles/Typography.css";
+
+function lazyWithVersionRecovery(importer, name) {
+  return lazy(() =>
+    importer()
+      .then((module) => {
+        sessionStorage.removeItem(`dav_chunk_retry_${name}`);
+        return module;
+      })
+      .catch((error) => {
+        const retryKey = `dav_chunk_retry_${name}`;
+        if (!sessionStorage.getItem(retryKey)) {
+          sessionStorage.setItem(retryKey, "1");
+          window.location.reload();
+          return new Promise(() => {});
+        }
+        sessionStorage.removeItem(retryKey);
+        throw error;
+      }),
+  );
+}
+
+const HoldingPage = lazyWithVersionRecovery(() => import("../pages/HoldingPage"), "holding");
+const BeauteRealisationsPage = lazyWithVersionRecovery(() => import("../pages/BeauteRealisationsPage"), "beaute-realisations");
+const BeauteCapillairesPage = lazyWithVersionRecovery(() => import("../pages/BeauteCapillairesPage"), "beaute-capillaires");
+const BeauteCoiffuresPage = lazyWithVersionRecovery(() => import("../pages/BeauteCoiffuresPage"), "beaute-coiffures");
+const BeauteCosmetiquesPage = lazyWithVersionRecovery(() => import("../pages/BeauteCosmetiquesPage"), "beaute-cosmetiques");
+const BeauteSpaPage = lazyWithVersionRecovery(() => import("../pages/BeauteSpaPage"), "beaute-spa");
+const BeauteOngeriePage = lazyWithVersionRecovery(() => import("../pages/BeauteOngeriePage"), "beaute-ongerie");
+const BeauteAboutPage = lazyWithVersionRecovery(() => import("../pages/BeauteAboutPage"), "beaute-about");
+const ConsultingPage = lazyWithVersionRecovery(() => import("../pages/ConsultingPage"), "consulting");
+const ConsultingBrandingPage = lazyWithVersionRecovery(() => import("../pages/ConsultingBrandingPage"), "consulting-branding");
+const ConsultingDevPage = lazyWithVersionRecovery(() => import("../pages/ConsultingDevPage"), "consulting-dev");
+const ConsultingDesignPage = lazyWithVersionRecovery(() => import("../pages/ConsultingDesignPage"), "consulting-design");
+const ConsultingSecurePage = lazyWithVersionRecovery(() => import("../pages/ConsultingSecurePage"), "consulting-secure");
+const Admin = lazyWithVersionRecovery(() => import("../admin/Admin"), "admin");
+const AuthModal = lazyWithVersionRecovery(() => import("../components/Beaute/AuthModal"), "auth-modal");
+const BookingModal = lazyWithVersionRecovery(() => import("../components/Beaute/BookingModal"), "booking-modal");
+const AuthCallbackPage = lazyWithVersionRecovery(() => import("../pages/AuthCallbackPage"), "auth-callback");
+const PaymentSuccessPage = lazyWithVersionRecovery(() => import("../pages/PaymentSuccessPage"), "payment-success");
+const PaymentCancelPage = lazyWithVersionRecovery(() => import("../pages/PaymentCancelPage"), "payment-cancel");
+const ProfilePage = lazyWithVersionRecovery(() => import("../pages/ProfilePage"), "profile");
+const PrivacyPolicyPage = lazyWithVersionRecovery(() => import("../pages/PrivacyPolicyPage"), "privacy");
+const TermsOfUsePage = lazyWithVersionRecovery(() => import("../pages/TermsOfUsePage"), "terms");
+
+function PageLoader() {
+  return (
+    <div role="status" aria-live="polite" style={{ minHeight: "40vh", display: "grid", placeItems: "center" }}>
+      Chargement…
+    </div>
+  );
+}
 
 /* Wrapper qui a accès au contexte pour le BookingModal */
 function AppModals() {
-  const { bookingOpen, bookingService, closeBooking } = useClientAuth();
+  const { modalOpen, bookingOpen, bookingService, closeBooking } = useClientAuth();
   return (
-    <>
-      <AuthModal />
-      <BookingModal isOpen={bookingOpen} onClose={closeBooking} preService={bookingService} />
-    </>
+    <Suspense fallback={null}>
+      {modalOpen && <AuthModal />}
+      {bookingOpen && (
+        <BookingModal isOpen onClose={closeBooking} preService={bookingService} />
+      )}
+    </Suspense>
   );
 }
 
@@ -53,7 +84,8 @@ function App() {
     <BrowserRouter>
       <AppModals />
       <CookieConsent />
-      <Routes>
+      <Suspense fallback={<PageLoader />}>
+        <Routes>
           <Route path="/" element={<HoldingPage />} />
           <Route path="/admin" element={<Admin />} />
         <Route path="/beaute" element={<Navigate to="/beaute/realisations" replace />} />
@@ -78,7 +110,8 @@ function App() {
         <Route path="/beaute/profil" element={<ProfilePage />} />
         <Route path="/politique-de-confidentialite" element={<PrivacyPolicyPage />} />
         <Route path="/conditions-utilisation" element={<TermsOfUsePage />} />
-      </Routes>
+        </Routes>
+      </Suspense>
     </BrowserRouter>
     </ClientAuthProvider>
   );

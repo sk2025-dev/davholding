@@ -5,6 +5,9 @@ import ConsultingNav from "../components/Consulting/ConsultingNav";
 import ConsultingHeroCarousel from "../components/Consulting/ConsultingHeroCarousel";
 import ConsultingClientsStrip from "../components/Consulting/ConsultingClientsStrip";
 import ConsultingNumbers from "../components/Consulting/ConsultingNumbers";
+import ConsultingServicesOverview from "../components/Consulting/ConsultingServicesOverview";
+import ConsultingAbout from "../components/Consulting/ConsultingAbout";
+import ConsultingLaunchOffers from "../components/Consulting/ConsultingLaunchOffers";
 import ConsultingMobileSection from "../components/Consulting/ConsultingMobileSection";
 import ConsultingDesignSection from "../components/Consulting/ConsultingDesignSection";
 import ConsultingITSection from "../components/Consulting/ConsultingITSection";
@@ -13,6 +16,8 @@ import ConsultingStack from "../components/Consulting/ConsultingStack";
 import ConsultingRealisations from "../components/Consulting/ConsultingRealisations";
 import ConsultingCTA from "../components/Consulting/ConsultingCTA";
 import ConsultingFooter from "../components/Consulting/ConsultingFooter";
+import ConsultingSeo from "../components/Consulting/ConsultingSeo";
+import ConsultingFaq from "../components/Consulting/ConsultingFaq";
 import "../styles/Consulting.css";
 
 const THEME = "dark";
@@ -56,6 +61,7 @@ export default function ConsultingPage() {
 
   return (
     <div className="consulting-root" data-theme={THEME}>
+      <ConsultingSeo />
       {!loaded && <ConsultingPreloader onComplete={() => setLoaded(true)} />}
 
       <ConstellationCanvas theme={THEME} />
@@ -63,14 +69,18 @@ export default function ConsultingPage() {
 
       <ConsultingNav />
       <ConsultingHeroCarousel />
-      <ConsultingClientsStrip />
       <ConsultingNumbers />
-      <ConsultingProcess />
+      <ConsultingClientsStrip />
+      <ConsultingServicesOverview />
+      <ConsultingLaunchOffers />
       <ConsultingMobileSection />
       <ConsultingDesignSection />
       <ConsultingITSection />
-      <ConsultingStack />
       <ConsultingRealisations />
+      <ConsultingProcess />
+      <ConsultingAbout />
+      <ConsultingStack />
+      <ConsultingFaq />
       <ConsultingCTA />
       <ConsultingFooter />
     </div>

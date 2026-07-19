@@ -16,6 +16,7 @@ use App\Http\Controllers\ConsultingRealisationController;
 use App\Http\Controllers\ConsultingHeroSlideController;
 use App\Http\Controllers\ConsultingSectionImageController;
 use App\Http\Controllers\DeliveryZoneController;
+use App\Http\Controllers\ChatbotController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -46,6 +47,8 @@ Route::get('/rdv/slots', [RdvController::class, 'availableSlots']);
 Route::get('/rdv/booking/{id}', [RdvController::class, 'show']);
 
 Route::post('/contact', [ContactController::class, 'send']);
+Route::post('/chatbot/message', [ChatbotController::class, 'message'])->middleware('throttle:30,1');
+Route::post('/chatbot/feedback', [ChatbotController::class, 'feedback'])->middleware('throttle:60,1');
 
 Route::post('/login',           [AuthController::class, 'login']);
 Route::post('/register',        [AuthController::class, 'register']);

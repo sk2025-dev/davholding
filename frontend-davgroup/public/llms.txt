@@ -1,0 +1,17 @@
+# Dav'Holding Group SARL
+
+Dav'Holding Group SARL est la structure juridique du groupe. Dav'Consulting est son pôle technologique opérationnel, aux côtés de Dav'Beauté et Dav'Market.
+
+## Dav'Consulting
+
+- Présentation, services, offres et contact : https://davholdinggroup.com/consulting
+- Développement web et mobile : https://davholdinggroup.com/consulting/realisations/developpement
+- Branding : https://davholdinggroup.com/consulting/realisations/branding
+- Design UI/UX : https://davholdinggroup.com/consulting/realisations/design
+- Infrastructure IT et sécurité : https://davholdinggroup.com/consulting/secure
+
+Dav'Consulting intervient en développement web et mobile, applications métier, design et identité visuelle, systèmes d'information géographique, infrastructure IT et sécurité.
+
+Le pôle est dirigé par Serge-Olivier Kouakou Kassi, ingénieur informaticien spécialisé en génie logiciel, développement, systèmes d'information géographique et pilotage de projets.
+
+Contact : contact@davconsulting.ci — +225 07 58 86 37 65
