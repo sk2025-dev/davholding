@@ -17,5 +17,12 @@ export default defineConfig([
       globals: globals.browser,
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
+    rules: {
+      // Les modales synchronisent volontairement leur ouverture et leurs
+      // chargements API dans des effects.
+      'react-hooks/set-state-in-effect': 'off',
+      // Le contexte public exporte son Provider et son hook dans le même module.
+      'react-refresh/only-export-components': 'off',
+    },
   },
 ])

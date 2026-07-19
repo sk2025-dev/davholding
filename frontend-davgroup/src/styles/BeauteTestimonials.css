@@ -1,0 +1,16 @@
+.beauty-testimonials { padding: 72px clamp(20px,6vw,88px); background:#fff; color:#1a0f0a; }
+.beauty-testimonials > header { max-width:760px; margin-bottom:32px; }
+.beauty-testimonials > header > span { color:#c41420; font-size:11px; font-weight:800; letter-spacing:.18em; text-transform:uppercase; }
+.beauty-testimonials h2 { margin:8px 0; font-family:"Fraunces",serif; font-size:clamp(34px,4.5vw,58px); font-weight:500; line-height:1.08; }
+.beauty-testimonials header p { color:rgba(26,15,10,.65); }
+.beauty-testimonials__grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+.beauty-testimonial { padding:26px; border:1px solid rgba(196,20,32,.13); border-radius:20px; background:#fffaf6; }
+.beauty-testimonial__head { display:flex; align-items:center; gap:12px; }
+.beauty-testimonial__head > img,.beauty-testimonial__head > span { width:48px; height:48px; border-radius:50%; object-fit:cover; display:grid; place-items:center; background:#c41420; color:#fff; font-weight:800; }
+.beauty-testimonial__head div { display:flex; flex-direction:column; gap:3px; }
+.beauty-testimonial__head small,.beauty-testimonial > small { color:rgba(26,15,10,.58); }
+.beauty-testimonial__stars { margin-top:18px; color:#c41420; letter-spacing:.12em; }
+.beauty-testimonial__stars span { color:#dccfca; }
+.beauty-testimonial blockquote { margin:14px 0 18px; color:rgba(26,15,10,.78); font-size:16px; line-height:1.7; }
+.beauty-testimonial a { color:#c41420; font-size:12px; font-weight:700; }
+@media(max-width:800px){.beauty-testimonials{padding:48px 18px}.beauty-testimonials__grid{grid-template-columns:1fr}}

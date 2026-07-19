@@ -21,7 +21,7 @@
   display: grid;
   grid-template-columns: 360px 1fr 1fr 320px;
   gap: 36px 40px;
-  align-items: center;
+  align-items: start;
 }
 .dav-footer .brand {
   display: flex;
@@ -147,8 +147,15 @@
   color: rgba(255, 255, 255, 0.9);
 }
 .dav-footer__bar .right {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
   font-size: 14px;
   color: rgba(255, 255, 255, 0.9);
+}
+
+.dav-footer__bar .right a {
+  font-size: 13px;
 }
 
 /* Slightly nudge columns content above watermark */

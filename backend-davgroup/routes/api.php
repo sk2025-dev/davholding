@@ -17,6 +17,8 @@ use App\Http\Controllers\ConsultingHeroSlideController;
 use App\Http\Controllers\ConsultingSectionImageController;
 use App\Http\Controllers\DeliveryZoneController;
 use App\Http\Controllers\ChatbotController;
+use App\Http\Controllers\TestimonialController;
+use App\Http\Controllers\PageStatController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -82,6 +84,8 @@ Route::get('/consulting-section-images', [ConsultingSectionImageController::clas
 
 // Communes de livraison — public
 Route::get('/delivery-zones', [DeliveryZoneController::class, 'index']);
+Route::get('/testimonials', [TestimonialController::class, 'index']);
+Route::post('/page-stats/record', [PageStatController::class, 'record'])->middleware('throttle:120,1');
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout',           [AuthController::class, 'logout']);
@@ -142,5 +146,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/delivery-zones', [DeliveryZoneController::class, 'store']);
         Route::match(['put', 'post'], '/delivery-zones/{deliveryZone}', [DeliveryZoneController::class, 'update']);
         Route::delete('/delivery-zones/{deliveryZone}', [DeliveryZoneController::class, 'destroy']);
+
+        Route::post('/testimonials', [TestimonialController::class, 'store']);
+        Route::match(['put', 'post'], '/testimonials/{testimonial}', [TestimonialController::class, 'update']);
+        Route::delete('/testimonials/{testimonial}', [TestimonialController::class, 'destroy']);
+        Route::get('/page-stats', [PageStatController::class, 'index']);
     });
 });

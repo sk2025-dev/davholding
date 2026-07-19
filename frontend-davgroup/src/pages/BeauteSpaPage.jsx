@@ -6,7 +6,7 @@ import "../styles/BeauteSpa.css";
 const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
 
 const SPA_IMAGES = {
-  "Entretien de mariée": "/images/marrier.png",
+  "Entretien de mariée": "/images/marrier.webp",
 };
 
 const FALLBACK = [
@@ -16,7 +16,7 @@ const FALLBACK = [
     subtitle: "Soin purifiant & éclat",
     price: "25 000 FCFA",
     duration: "1H00",
-    image_url: "/images/madame k.png",
+    image_url: "/images/madame k.webp",
     description: "Un soin visage sur-mesure pour purifier, hydrater et révéler l'éclat naturel de votre peau. Diagnostic personnalisé inclus.",
   },
   {
@@ -34,13 +34,13 @@ const FALLBACK = [
     subtitle: "Soin & mise en beauté",
     price: "Sur devis",
     duration: "3H00",
-    image_url: "/images/marrier.png",
+    image_url: "/images/marrier.webp",
     description: "Un accompagnement beauté complet pour les futures mariées : soin du visage, coiffure et mise en beauté pour un jour inoubliable.",
   },
 ];
 
 function BeauteSpaPage() {
-  const { requireAuth, openBooking } = useClientAuth();
+  const { openBooking } = useClientAuth();
   const [services, setServices] = useState([]);
   const [loading,  setLoading]  = useState(true);
 
@@ -61,7 +61,7 @@ function BeauteSpaPage() {
   }, []);
 
   const handleBook = (service) => {
-    requireAuth(() => openBooking({ title: service.title, subtitle: service.subtitle || service.title }));
+    openBooking({ title: service.title, subtitle: service.subtitle || service.title });
   };
 
   return (
@@ -90,7 +90,7 @@ function BeauteSpaPage() {
                 {/* Photo ronde */}
                 <div className="spa3-item__circle">
                   <img
-                    src={s.image_url || "/images/placeholder.png"}
+                    src={s.image_url || "/images/placeholder.svg"}
                     alt={s.title}
                     onError={(e) => { e.currentTarget.style.display = "none"; }}
                   />

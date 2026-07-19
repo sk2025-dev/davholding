@@ -404,7 +404,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, cartTotal, o
                     <div key={s.id} className="co-sug-item">
                       <img
                         className="co-sug-img"
-                        src={s.image || "/images/placeholder.png"}
+                        src={s.image || "/images/placeholder.svg"}
                         alt={s.name}
                       />
                       <div className="co-sug-info">

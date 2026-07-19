@@ -55,6 +55,13 @@ const icons = {
       <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2z" />
     </svg>
   ),
+  "promo-slides": (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="M7 15l3-3 2 2 3-4 2 3" />
+      <circle cx="8" cy="9" r="1" />
+    </svg>
+  ),
   realisations: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
       <rect x="3" y="3" width="18" height="18" rx="2" />
@@ -90,6 +97,17 @@ const icons = {
       <circle cx="18.5" cy="18.5" r="2.5" />
     </svg>
   ),
+  testimonials: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 15a4 4 0 01-4 4H8l-5 3V7a4 4 0 014-4h10a4 4 0 014 4z" />
+      <path d="M8 9h8M8 13h5" />
+    </svg>
+  ),
+  "page-stats": (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 20V10M10 20V4M16 20v-7M22 20H2" />
+    </svg>
+  ),
 };
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -117,7 +135,10 @@ const Sidebar = ({ isOpen, onClose }) => {
     { id: "products",     label: "Produits & Stock", badge: notifs.outOfStock,     davgroupOnly: true },
     { id: "beauty",       label: "Beauté",            davgroupOnly: true },
     { id: "realisations", label: "Réalisations",      davgroupOnly: true },
-    { id: "promos",       label: "Promotions",        davgroupOnly: true },
+    { id: "promos",       label: "Codes promotionnels", davgroupOnly: true },
+    { id: "promo-slides", label: "Publicités & bannières", davgroupOnly: true },
+    { id: "testimonials", label: "Témoignages clients", davgroupOnly: true },
+    { id: "page-stats", label: "Vues & partages", davgroupOnly: true },
     { id: "delivery-zones", label: "Communes de livraison", davgroupOnly: true },
     { id: "consulting-realisations", label: "Réalisations Consulting" },
     { id: "consulting-hero-slides", label: "Carrousel Consulting" },

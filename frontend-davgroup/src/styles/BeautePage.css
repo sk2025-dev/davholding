@@ -11,6 +11,7 @@
 }
 
 .beauty-hero {
+  position: relative;
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
   gap: 42px;
@@ -18,6 +19,34 @@
   padding: 58px 32px 28px;
   max-width: 1320px;
   margin: 0 auto;
+  isolation: isolate;
+}
+
+.beauty-hero::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 8%;
+  right: -11%;
+  width: min(48vw, 680px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(196, 20, 32, 0.16), rgba(196, 20, 32, 0.04) 58%, transparent 70%);
+}
+
+.beauty-hero::after {
+  content: "DAV'BEAUTÉ";
+  position: absolute;
+  z-index: -1;
+  left: 26px;
+  bottom: 6px;
+  color: rgba(196, 20, 32, 0.045);
+  font-family: "Poppins", sans-serif;
+  font-size: clamp(64px, 10vw, 150px);
+  font-weight: 900;
+  letter-spacing: -0.07em;
+  line-height: 0.8;
+  white-space: nowrap;
 }
 
 .beauty-eyebrow,
@@ -55,8 +84,10 @@
 
 .beauty-hero h1 {
   max-width: 760px;
-  font-size: clamp(52px, 7vw, 98px);
-  margin-bottom: 20px;
+  font-size: clamp(48px, 6.4vw, 92px);
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  line-height: 0.96;
 }
 
 .beauty-hero h1 span,
@@ -64,6 +95,11 @@
 .beauty-offers-copy h2 span {
   color: #c41420;
   font-style: italic;
+}
+
+.beauty-hero h1 span {
+  display: inline-block;
+  font-weight: 800;
 }
 
 .beauty-lead,
@@ -84,6 +120,8 @@
 .beauty-lead {
   max-width: 600px;
   margin-bottom: 28px;
+  padding-left: 20px;
+  border-left: 3px solid #c41420;
 }
 
 .beauty-actions,
@@ -104,6 +142,8 @@
   font-size: 12px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
   transition:
     transform 0.25s ease,
     background 0.25s ease,
@@ -156,6 +196,14 @@
   border-radius: 28px;
   box-shadow: 0 32px 90px -36px rgba(18, 11, 8, 0.4);
   border: 1px solid rgba(196, 20, 32, 0.12);
+}
+
+.beauty-hero-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(145deg, transparent 52%, rgba(196, 20, 32, 0.18));
 }
 
 .beauty-hero-card img,
@@ -211,19 +259,37 @@
   border: 1px solid rgba(196, 20, 32, 0.1);
   border-radius: 22px;
   padding: 22px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.beauty-intro-strip > div::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #c41420, #d6aa68);
 }
 
 .beauty-intro-strip strong {
   display: block;
-  font-family: "Fraunces", serif;
-  font-size: 30px;
-  font-weight: 400;
+  font-family: "Poppins", sans-serif;
+  font-size: 42px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.05em;
   color: #c41420;
   margin-bottom: 4px;
 }
 
 .beauty-intro-strip span {
+  display: block;
+  margin-top: 8px;
+  font-family: "Poppins", sans-serif;
   font-size: 12px;
+  font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: rgba(18, 11, 8, 0.68);
@@ -762,5 +828,38 @@
 
   .beauty-real-cat-title {
     font-size: 22px;
+  }
+}
+.beauty-skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 10000;
+  padding: 12px 18px;
+  border-radius: 8px;
+  background: #1a0f0a;
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  transform: translateY(-150%);
+  transition: transform 0.2s ease;
+}
+
+.beauty-skip-link:focus {
+  transform: translateY(0);
+}
+
+.beauty-page:focus {
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .beauty-page *,
+  .beauty-page *::before,
+  .beauty-page *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

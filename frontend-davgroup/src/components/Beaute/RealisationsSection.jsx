@@ -29,7 +29,7 @@ const buildFallback = () =>
 
 function RealisationsSection() {
   const navigate = useNavigate();
-  const { requireAuth, openBooking } = useClientAuth();
+  const { openBooking } = useClientAuth();
   const [items, setItems]       = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [lightbox, setLightbox]   = useState(null); /* { items: [], idx: number } */
@@ -92,7 +92,7 @@ function RealisationsSection() {
         </div>
         <button
           className="rl-rdv-cta"
-          onClick={() => requireAuth(() => openBooking())}
+          onClick={() => openBooking()}
         >
           📅 Prendre un rendez-vous
         </button>
@@ -152,6 +152,7 @@ function RealisationsSection() {
                       alt={photo.title}
                       className="rl-img"
                       loading="lazy"
+                      decoding="async"
                       onError={(e) => { e.currentTarget.style.display = "none"; }}
                     />
                   ) : null}
@@ -187,6 +188,7 @@ function RealisationsSection() {
               src={currentItem.image_url}
               alt={currentItem.title}
               className="rl-lb-img"
+              decoding="async"
             />
             <div className="rl-lb-footer">
               <div className="rl-lb-info">
@@ -196,7 +198,7 @@ function RealisationsSection() {
               </div>
               <button
                 className="rl-lb-rdv-btn"
-                onClick={() => { closeLightbox(); requireAuth(() => openBooking()); }}
+                onClick={() => { closeLightbox(); openBooking(currentItem); }}
               >
                 📅 Réserver ce soin
               </button>

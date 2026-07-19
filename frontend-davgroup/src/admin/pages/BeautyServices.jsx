@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAdmin } from "../hooks/useAdmin";
 import { adminApi } from "../utils/api";
 import "../styles/admin.css";
@@ -182,7 +182,7 @@ const BeautyServices = () => {
     setEditSubcat(null);
   };
 
-  const loadItems = async () => {
+  const loadItems = useCallback(async () => {
     setIsLoading(true);
     try {
       /* Charger toutes les sections en parallèle */
@@ -195,9 +195,9 @@ const BeautyServices = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [showToast]);
 
-  useEffect(() => { loadItems(); }, []);
+  useEffect(() => { loadItems(); }, [loadItems]);
 
   const filtered = useMemo(() => {
     let r = filterSection === "all" ? items : items.filter((i) => i.section_key === filterSection);

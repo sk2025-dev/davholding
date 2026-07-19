@@ -25,15 +25,31 @@ function BeauteQuickNav() {
       <div className="beaute-quicknav">
         <div className={`beaute-quicknav__panel${open ? " beaute-quicknav__panel--open" : ""}`}>
           {sectionTabs.map((tab) => (
-            <NavLink
-              key={tab.to}
-              to={tab.to}
-              end
-              className={({ isActive }) => `beaute-quicknav__link${isActive ? " active" : ""}`}
-              onClick={close}
-            >
-              {tab.label}
-            </NavLink>
+            tab.children ? (
+              <div className="beaute-quicknav__group" key={tab.label}>
+                <span>{tab.label}</span>
+                {tab.children.map((child) => (
+                  <NavLink
+                    key={child.to}
+                    to={child.to}
+                    className={({ isActive }) => `beaute-quicknav__link${isActive ? " active" : ""}`}
+                    onClick={close}
+                  >
+                    {child.label}
+                  </NavLink>
+                ))}
+              </div>
+            ) : (
+              <NavLink
+                key={tab.to}
+                to={tab.to}
+                end
+                className={({ isActive }) => `beaute-quicknav__link${isActive ? " active" : ""}`}
+                onClick={close}
+              >
+                {tab.label}
+              </NavLink>
+            )
           ))}
         </div>
 

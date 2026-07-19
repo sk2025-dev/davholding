@@ -11,10 +11,13 @@ import BeautyServices from "../pages/BeautyServices";
 import Photos from "../pages/Photos";
 import Realisations from "../pages/Realisations";
 import Promos from "../pages/Promos";
+import PromoSlides from "../pages/PromoSlides";
 import ConsultingRealisations from "../pages/ConsultingRealisations";
 import ConsultingHeroSlides from "../pages/ConsultingHeroSlides";
 import ConsultingSectionImages from "../pages/ConsultingSectionImages";
 import DeliveryZones from "../pages/DeliveryZones";
+import Testimonials from "../pages/Testimonials";
+import PageStats from "../pages/PageStats";
 import { useAdmin } from "../hooks/useAdmin";
 import "../styles/admin.css";
 
@@ -40,6 +43,8 @@ const Layout = () => {
         return <Realisations />;
       case "promos":
         return <Promos />;
+      case "promo-slides":
+        return <PromoSlides />;
       case "consulting-realisations":
         return <ConsultingRealisations />;
       case "consulting-hero-slides":
@@ -48,6 +53,10 @@ const Layout = () => {
         return <ConsultingSectionImages />;
       case "delivery-zones":
         return <DeliveryZones />;
+      case "testimonials":
+        return <Testimonials />;
+      case "page-stats":
+        return <PageStats />;
       default:
         return <Dashboard />;
     }

@@ -63,6 +63,28 @@
 }
 
 /* Beauté : corps éditorial plus généreux et navigation plus nette. */
+.beauty-page {
+  --font-beauty-display: "Poppins", "Inter", system-ui, sans-serif;
+}
+
+.beauty-page :where(h1, h2, h3, h4),
+.beauty-page :where(.rl-section-title, .rl-cat-title, .bpromo-discount) {
+  font-family: var(--font-beauty-display) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.035em !important;
+}
+
+.beauty-page :where(
+  .beauty-eyebrow,
+  .beauty-section-kicker,
+  .rl-section-eyebrow,
+  .nav-item,
+  .beauty-btn
+) {
+  font-family: var(--font-beauty-display) !important;
+  font-weight: 700 !important;
+}
+
 .beauty-page p,
 .beauty-lead,
 .beauty-capillaires__lead,

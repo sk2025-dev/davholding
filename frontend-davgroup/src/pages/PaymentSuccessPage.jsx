@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import BeauteLayout from "../components/Beaute/BeauteLayout";
 
@@ -6,7 +6,6 @@ export default function PaymentSuccessPage() {
   const [params]      = useSearchParams();
   const navigate      = useNavigate();
   const orderNumber   = params.get("order");
-  const [verified, setVerified] = useState(false);
 
   /* Vérifier le statut auprès du backend dès l'arrivée sur la page */
   useEffect(() => {
@@ -19,10 +18,8 @@ export default function PaymentSuccessPage() {
           headers: { "Content-Type": "application/json", "Accept": "application/json" },
           body:    JSON.stringify({ order_number: orderNumber }),
         });
-      } catch (_) {
+      } catch {
         // silencieux — la page de succès reste affichée même si la vérif échoue
-      } finally {
-        setVerified(true);
       }
     };
 

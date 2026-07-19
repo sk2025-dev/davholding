@@ -1,0 +1,5 @@
+.page-tools{position:fixed;left:18px;bottom:18px;z-index:850;display:flex;gap:8px}
+.page-tools button{display:flex;align-items:center;gap:7px;min-height:42px;padding:10px 14px;border:1px solid rgba(255,255,255,.2);border-radius:999px;background:rgba(26,15,10,.92);box-shadow:0 12px 30px rgba(0,0,0,.24);color:#fff;font:700 12px Inter,sans-serif;cursor:pointer;backdrop-filter:blur(10px)}
+.page-tools button:hover{background:#c41420;transform:translateY(-2px)}
+.page-tools__message{position:absolute;left:0;bottom:52px;min-width:190px;padding:10px 13px;border-radius:10px;background:#fff;color:#1a0f0a;box-shadow:0 12px 30px rgba(0,0,0,.2);font-size:12px;font-weight:700}
+@media(max-width:600px){.page-tools{left:12px;bottom:12px}.page-tools button{width:44px;padding:0;justify-content:center}.page-tools button span{display:none}}

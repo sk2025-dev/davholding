@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useAdmin } from "../hooks/useAdmin";
 import { adminApi } from "../utils/api";
 import "../styles/admin.css";
@@ -9,13 +9,13 @@ const fmtDate = (d) =>
   d ? new Date(d).toLocaleDateString("fr-FR", { day: "2-digit", month: "short", year: "numeric" }) : "—";
 
 const EMPTY_FORM = { code: "", type: "percent", value: "", start: "", end: "", limit: "", description: "", image: null, _imagePreview: null, productIds: [] };
+const FIXED_CATS = ["Tous", "Cosmétiques", "Soins Capillaires", "Onglerie", "Spa"];
 
 /* ── Sélecteur de produits ── */
 function ProductPicker({ products, selected, onChange, takenIds = [] }) {
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("Tous");
 
-  const FIXED_CATS = ["Tous", "Cosmétiques", "Soins Capillaires", "Onglerie", "Spa"];
   const categories = useMemo(() => {
     const fromProducts = [...new Set(products.map(p => p.category).filter(Boolean))];
     const extra = fromProducts.filter(c => !FIXED_CATS.includes(c));

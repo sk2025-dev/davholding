@@ -16,7 +16,7 @@ const FALLBACK = [
 ];
 
 function BeauteOngeriePage() {
-  const { requireAuth, openBooking } = useClientAuth();
+  const { openBooking } = useClientAuth();
   const [photos, setPhotos]   = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch]   = useState("");
@@ -35,7 +35,7 @@ function BeauteOngeriePage() {
   }, []);
 
   const handleChoose = (photo) => {
-    requireAuth(() => openBooking({ title: photo.title, subtitle: photo.title }));
+    openBooking({ title: photo.title, subtitle: photo.title });
   };
 
   return (
@@ -59,7 +59,7 @@ function BeauteOngeriePage() {
           </div>
           <button
             className="beauty-btn beauty-btn--primary"
-            onClick={() => requireAuth(() => openBooking())}
+            onClick={() => openBooking()}
           >
             📅 Prendre un rendez-vous
           </button>

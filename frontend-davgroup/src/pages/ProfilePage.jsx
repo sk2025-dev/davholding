@@ -351,7 +351,7 @@ export default function ProfilePage() {
       requireAuth(() => {});
       navigate("/beaute/cosmetiques", { replace: true });
     }
-  }, [user]);
+  }, [navigate, requireAuth, user]);
 
   if (!user) return null;
 

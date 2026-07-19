@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useClientAuth } from "../../context/ClientAuthContext";
 
 function BeauteBanner() {
-  const { requireAuth, openBooking } = useClientAuth();
+  const { openBooking } = useClientAuth();
 
   return (
     <section className="beauty-banner" id="univers">
@@ -20,7 +20,7 @@ function BeauteBanner() {
           <button
             type="button"
             className="beauty-btn beauty-btn--primary"
-            onClick={() => requireAuth(() => openBooking())}
+            onClick={() => openBooking()}
           >
             Prendre rendez-vous
           </button>

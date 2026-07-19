@@ -203,7 +203,7 @@ const RdvCard = ({ r, onView }) => {
 
 /* ══════════════════════════════════════════════════════════════════════════ */
 const Rdvs = () => {
-  const { showToast, setNewRdvCount } = useAdmin();
+  const { setNewRdvCount } = useAdmin();
   const [rdvs, setRdvs]           = useLocalStorage("dav_rdvs", MOCK_RDVS);
   const [filter, setFilter]       = useState("all");
   const [catFilter, setCatFilter] = useState("all");

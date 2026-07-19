@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { adminApi } from "../utils/api";
 import { useAdmin } from "../hooks/useAdmin";
 import ConfirmModal from "../components/ConfirmModal";
@@ -33,7 +33,7 @@ export default function ConsultingRealisations() {
   const [saving, setSaving] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState(null);
 
-  const load = async () => {
+  const load = useCallback(async () => {
     setIsLoading(true);
     try {
       const res = await adminApi.getConsultingRealisations(activeCategory);
@@ -43,9 +43,9 @@ export default function ConsultingRealisations() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [activeCategory, showToast]);
 
-  useEffect(() => { load(); }, [activeCategory]);
+  useEffect(() => { load(); }, [load]);
 
   const openAdd = () => {
     setEditItem(null);

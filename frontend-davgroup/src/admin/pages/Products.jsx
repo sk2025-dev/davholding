@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useCallback, useState, useMemo, useEffect } from "react";
 import { useAdmin } from "../hooks/useAdmin";
 import { BADGE_OPTIONS } from "../utils/constants";
 import { adminApi } from "../utils/api";
@@ -94,7 +94,7 @@ const ProductForm = ({ form, categories, imagePreview, image2Preview, onChange, 
 );
 
 /* ── Composant carte produit ── */
-const ProductCard = ({ p, categories, onPriceChange, onPriceCommit, onStockToggle, onBadgeChange, onFeaturedToggle, onEdit, onDelete }) => {
+const ProductCard = ({ p, onPriceChange, onPriceCommit, onStockToggle, onBadgeChange, onFeaturedToggle, onEdit, onDelete }) => {
   const inStock = p.quantity > 0;
   return (
     <div style={{
@@ -331,7 +331,7 @@ const Products = () => {
   const [editImagePreview, setEditImagePreview]   = useState(null);
   const [editImage2Preview, setEditImage2Preview] = useState(null);
 
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     try {
       const [pr, cr] = await Promise.all([adminApi.getProducts(), adminApi.getCategories()]);
       setProducts(pr?.data || []);
@@ -341,9 +341,9 @@ const Products = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [showToast]);
 
-  useEffect(() => { loadData(); }, []);
+  useEffect(() => { loadData(); }, [loadData]);
 
   /* ── Filtres ── */
   const filteredProducts = useMemo(() => {

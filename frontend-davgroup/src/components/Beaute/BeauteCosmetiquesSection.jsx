@@ -18,7 +18,7 @@ function toCardItem(p) {
     price: formatPrice(p.price),
     rawPrice: Number(p.price),
     badge: p.badge || null,
-    image: p.image || "/images/placeholder.png",
+    image: p.image || "/images/placeholder.svg",
     image2: p.image2 || null,
     description: p.description || "",
     inStock: p.quantity > 0,

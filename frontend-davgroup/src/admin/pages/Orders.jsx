@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import { useAdmin } from "../hooks/useAdmin";
 import { adminApi } from "../utils/api";
 import "../styles/admin.css";
@@ -156,7 +156,7 @@ const Orders = () => {
   const [page, setPage]         = useState(1);
   const [syncing, setSyncing]   = useState(false);
 
-  const loadOrders = async () => {
+  const loadOrders = useCallback(async () => {
     setLoading(true);
     try {
       const res = await adminApi.getOrders();
@@ -166,9 +166,9 @@ const Orders = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [showToast]);
 
-  useEffect(() => { loadOrders(); }, []);
+  useEffect(() => { loadOrders(); }, [loadOrders]);
 
   const handleSync = async () => {
     setSyncing(true);

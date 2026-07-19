@@ -96,6 +96,32 @@
   font-weight: 600;
 }
 
+.beaute-quicknav__group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 5px;
+  border-top: 1px solid rgba(26, 15, 10, 0.08);
+}
+
+.beaute-quicknav__group:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.beaute-quicknav__group > span {
+  padding: 6px 16px 3px;
+  color: rgba(26, 15, 10, 0.42);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.beaute-quicknav__group .beaute-quicknav__link {
+  padding-left: 20px;
+}
+
 @media (max-width: 480px) {
   .beaute-quicknav {
     right: 14px;

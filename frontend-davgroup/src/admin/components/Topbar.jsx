@@ -38,7 +38,10 @@ const TITLES = {
   beauty:       "Beauté",
   photos:       "Galerie Photos",
   realisations: "Nos Réalisations",
-  promos:       "Promotions",
+  promos:       "Codes promotionnels",
+  "promo-slides": "Publicités & bannières",
+  testimonials: "Témoignages clients",
+  "page-stats": "Vues & partages",
 };
 
 const Topbar = ({ onMenuToggle }) => {

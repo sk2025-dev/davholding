@@ -25,7 +25,7 @@ const CATS = [
 const KNOWN_CATS = ["twist", "natte"];
 
 function BeauteCoiffuresPage() {
-  const { requireAuth, openBooking } = useClientAuth();
+  const { openBooking } = useClientAuth();
   const [allPhotos, setAllPhotos] = useState([]);
   const [loading, setLoading]     = useState(true);
   const [category, setCategory]   = useState("all");
@@ -61,7 +61,7 @@ function BeauteCoiffuresPage() {
   const paged      = filtered.slice((safePage - 1) * PER_PAGE, safePage * PER_PAGE);
 
   const handleChoose = (photo) => {
-    requireAuth(() => openBooking({ title: photo.title, subtitle: photo.title }));
+    openBooking({ title: photo.title, subtitle: photo.title });
   };
 
   const handleCat = (key) => { setCategory(key); resetPage(); };
@@ -88,7 +88,7 @@ function BeauteCoiffuresPage() {
           </div>
           <button
             className="beauty-btn beauty-btn--primary"
-            onClick={() => requireAuth(() => openBooking())}
+            onClick={() => openBooking()}
           >
             📅 Prendre un rendez-vous
           </button>

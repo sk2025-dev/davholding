@@ -1,6 +1,4 @@
 import { createContext, useCallback, useContext, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-
 const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
 const STORAGE_KEY = "dav_client_token";
 const USER_KEY    = "dav_client_user";

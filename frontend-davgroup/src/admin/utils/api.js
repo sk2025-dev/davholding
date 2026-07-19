@@ -181,6 +181,22 @@ export const adminApi = {
   async deletePromoSlide(id) {
     return request(`/promo-slides/${id}`, { method: 'DELETE' });
   },
+  async getTestimonials() {
+    return request('/testimonials?admin=1');
+  },
+  async createTestimonial(formData) {
+    return request('/testimonials', { method: 'POST', body: formData });
+  },
+  async updateTestimonial(id, formData) {
+    formData.append('_method', 'PUT');
+    return request(`/testimonials/${id}`, { method: 'POST', body: formData });
+  },
+  async deleteTestimonial(id) {
+    return request(`/testimonials/${id}`, { method: 'DELETE' });
+  },
+  async getPageStats() {
+    return request('/page-stats');
+  },
 
   // ── Réalisations Consulting ──
   async getConsultingRealisations(category) {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { adminApi } from "../utils/api";
 import { useAdmin } from "../hooks/useAdmin";
 import ConfirmModal from "../components/ConfirmModal";
@@ -25,7 +25,7 @@ export default function PromoSlides() {
   const [saving, setSaving] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState(null);
 
-  const load = async () => {
+  const load = useCallback(async () => {
     setIsLoading(true);
     try {
       const res = await adminApi.getPromoSlides();
@@ -35,9 +35,9 @@ export default function PromoSlides() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [showToast]);
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => { load(); }, [load]);
 
   const openAdd = () => {
     setEditSlide(null);
@@ -131,18 +131,20 @@ export default function PromoSlides() {
     <div className="panel-wrap">
       <div className="panel-header">
         <div>
-          <h1 className="panel-title">Bannières promotionnelles</h1>
-          <p className="panel-subtitle">Gérez les offres affichées sur la page Beauté</p>
+          <h1 className="panel-title">Publicités & bannières</h1>
+          <p className="panel-subtitle">
+            Créez les visuels publicitaires, campagnes et annonces affichés sur la page Beauté.
+          </p>
         </div>
-        <button className="btn-primary" onClick={openAdd}>+ Ajouter une slide</button>
+        <button className="btn-primary" onClick={openAdd}>+ Nouvelle publicité</button>
       </div>
 
       {isLoading ? (
         <div className="loading-state">Chargement…</div>
       ) : slides.length === 0 ? (
         <div className="empty-state">
-          <p>Aucune slide pour le moment.</p>
-          <button className="btn-primary" onClick={openAdd}>Ajouter la première</button>
+          <p>Aucune publicité pour le moment.</p>
+          <button className="btn-primary" onClick={openAdd}>Créer la première publicité</button>
         </div>
       ) : (
         <div className="promo-slides-grid">
@@ -184,7 +186,7 @@ export default function PromoSlides() {
         <div className="modal-overlay open" onClick={(e) => e.target === e.currentTarget && closeModal()}>
           <div className="modal-box" style={{ maxWidth: 560 }}>
             <div className="modal-header">
-              <h2>{editSlide ? "Modifier la slide" : "Nouvelle slide"}</h2>
+              <h2>{editSlide ? "Modifier la publicité" : "Nouvelle publicité"}</h2>
               <button className="modal-close" onClick={closeModal}>✕</button>
             </div>
             <form className="modal-form" onSubmit={handleSubmit}>

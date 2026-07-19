@@ -22,7 +22,7 @@ export default function AuthCallbackPage() {
     } catch {
       navigate("/beaute/cosmetiques?auth=error", { replace: true });
     }
-  }, []);
+  }, [navigate, onGoogleSuccess]);
 
   return (
     <div style={{

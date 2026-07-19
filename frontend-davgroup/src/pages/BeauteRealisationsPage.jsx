@@ -3,7 +3,7 @@ import RealisationsSection from "../components/Beaute/RealisationsSection";
 
 function BeauteRealisationsPage() {
   return (
-    <BeauteLayout>
+    <BeauteLayout showHomeHero>
       <RealisationsSection />
     </BeauteLayout>
   );

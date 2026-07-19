@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { adminApi } from "../utils/api";
 import { useAdmin } from "../hooks/useAdmin";
 import ConfirmModal from "../components/ConfirmModal";
@@ -17,7 +17,7 @@ export default function ConsultingSectionImages() {
   const [previews, setPreviews] = useState({});
   const [resetTarget, setResetTarget] = useState(null);
 
-  const load = async () => {
+  const load = useCallback(async () => {
     setIsLoading(true);
     try {
       const res = await adminApi.getConsultingSectionImages();
@@ -27,9 +27,9 @@ export default function ConsultingSectionImages() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [showToast]);
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => { load(); }, [load]);
 
   const handleFileChange = (sectionKey, file) => {
     if (!file) return;

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAdmin } from "../hooks/useAdmin";
 import { adminApi } from "../utils/api";
 import "../styles/admin.css";
@@ -27,7 +27,7 @@ const Photos = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [filterCat, setFilterCat] = useState("all");
 
-  const loadItems = async () => {
+  const loadItems = useCallback(async () => {
     try {
       const res = await adminApi.getBeautyServices("galerie");
       setItems(res?.data || []);
@@ -36,11 +36,11 @@ const Photos = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [showToast]);
 
   useEffect(() => {
     loadItems();
-  }, []);
+  }, [loadItems]);
 
   const filtered = useMemo(() => {
     if (filterCat === "all") return items;

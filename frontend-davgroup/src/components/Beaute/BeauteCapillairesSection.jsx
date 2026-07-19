@@ -18,7 +18,7 @@ function toCardItem(p) {
     type: p.category || "Capillaire",
     price: formatPrice(p.price),
     badge: p.badge || null,
-    image: p.image || "/images/placeholder.png",
+    image: p.image || "/images/placeholder.svg",
     image2: p.image2 || null,
     description: p.description || "",
     inStock: p.quantity > 0,
@@ -26,7 +26,7 @@ function toCardItem(p) {
 }
 
 function BeauteCapillairesSection({ onAddToCart }) {
-  const { requireAuth, openBooking } = useClientAuth();
+  const { openBooking } = useClientAuth();
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -79,7 +79,7 @@ function BeauteCapillairesSection({ onAddToCart }) {
 
           <button
             className="beauty-btn beauty-btn--primary beauty-capillaires__cta"
-            onClick={() => requireAuth(() => openBooking())}
+            onClick={() => openBooking()}
           >
             📅 Prendre un rendez-vous
           </button>
@@ -87,11 +87,11 @@ function BeauteCapillairesSection({ onAddToCart }) {
 
         <div className="beauty-capillaires__photos" aria-label="Photos soin">
           <figure>
-            <img src="/images/CASKI.png" alt="Lavage des cheveux" />
+            <img src="/images/CASKI.webp" alt="Lavage des cheveux" loading="lazy" decoding="async" />
             <figcaption>sous casque thermique</figcaption>
           </figure>
           <figure>
-            <img src="/images/MII.png" alt="Résultat après soin" />
+            <img src="/images/MII.webp" alt="Résultat après soin" loading="lazy" decoding="async" />
             <figcaption>Shampoing et Démêlage</figcaption>
           </figure>
         </div>

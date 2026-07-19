@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { adminApi } from "../utils/api";
 import { useAdmin } from "../hooks/useAdmin";
 import ConfirmModal from "../components/ConfirmModal";
@@ -30,7 +30,7 @@ export default function ConsultingHeroSlides() {
   const [saving, setSaving] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState(null);
 
-  const load = async () => {
+  const load = useCallback(async () => {
     setIsLoading(true);
     try {
       const res = await adminApi.getConsultingHeroSlides();
@@ -40,9 +40,9 @@ export default function ConsultingHeroSlides() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [showToast]);
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => { load(); }, [load]);
 
   const openAdd = () => {
     setEditSlide(null);

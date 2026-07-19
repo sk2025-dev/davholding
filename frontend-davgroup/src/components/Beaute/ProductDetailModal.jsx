@@ -94,7 +94,7 @@ function ProductDetailModal({ product, onClose, onAddToCart, suggestions = [] })
   if (!product) return null;
 
   const images = [product.image, product.image2].filter(Boolean);
-  const currentImg = images[activeImg] || "/images/placeholder.png";
+  const currentImg = images[activeImg] || "/images/placeholder.svg";
 
   const handleAdd = () => {
     onAddToCart(product, qty);
@@ -137,7 +137,7 @@ function ProductDetailModal({ product, onClose, onAddToCart, suggestions = [] })
                   {suggestions.map((s) => (
                     <li key={s.id} className="pdm-sug-row">
                       <div className="pdm-sug-img">
-                        <img src={s.image || "/images/placeholder.png"} alt={s.title} />
+                        <img src={s.image || "/images/placeholder.svg"} alt={s.title} loading="lazy" decoding="async" />
                       </div>
                       <div className="pdm-sug-info">
                         <span className="pdm-sug-name">{s.title}</span>

@@ -12,7 +12,7 @@ function BeauteFooter() {
         <div className="dav-footer__grid">
           <div>
             <div className="brand" style={{ zIndex: 5, position: "relative" }}>
-              <img src="/images/beauté.png" alt="Dav'Beauté" className="footer-logo" />
+              <img src="/images/beauté.png" alt="Dav'Beauté" className="footer-logo" loading="lazy" decoding="async" />
               <h4>Dav'Beauté</h4>
             </div>
             <p className="desc">
@@ -28,37 +28,57 @@ function BeauteFooter() {
                 aria-label="Facebook"
                 title="Facebook"
               >
-                <img src="/images/face.png" alt="Facebook" />
+                <img src="/images/face.png" alt="" loading="lazy" decoding="async" />
               </a>
               <a
                 className="social-pill"
-                href="https://vm.tiktok.com/ZS921QMFWUWfW-wIRfk/"
+                href="https://www.instagram.com/davbeaute/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                title="Instagram"
+              >
+                <img src="/images/instagram.png" alt="" loading="lazy" decoding="async" />
+              </a>
+              <a
+                className="social-pill"
+                href="https://www.tiktok.com/@dav_beaute"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="TikTok"
                 title="TikTok"
               >
-                <img src="/images/tiktoki.png" alt="TikTok" />
+                <img src="/images/tiktoki.png" alt="" loading="lazy" decoding="async" />
               </a>
               <a
                 className="social-pill"
-                href="https://api.whatsapp.com/send?phone=2250757249390"
+                href="https://wa.me/2250757249390"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp"
                 title="WhatsApp"
               >
-                <img src="/images/whatsapp.png" alt="WhatsApp" />
+                <img src="/images/whatsapp.png" alt="" loading="lazy" decoding="async" />
               </a>
             </div>
           </div>
 
           <div>
-            <p className="col-title">Nos réalisations</p>
+            <p className="col-title">Prestations</p>
             <ul>
-              <li>
-                <Link to="/beaute/realisations">Portfolio</Link>
-              </li>
+              <li><Link to="/beaute/coiffures">Coiffures</Link></li>
+              <li><Link to="/beaute/ongerie">Onglerie</Link></li>
+              <li><Link to="/beaute/spa">Spa & détente</Link></li>
+              <li><Link to="/beaute/capillaires">Soins capillaires</Link></li>
+            </ul>
+          </div>
+
+          <div>
+            <p className="col-title">Dav’Beauté</p>
+            <ul>
+              <li><Link to="/beaute/realisations">Nos réalisations</Link></li>
+              <li><Link to="/beaute/about">À propos</Link></li>
+              <li><a href="https://wa.me/2250757249390" target="_blank" rel="noopener noreferrer">WhatsApp Business</a></li>
             </ul>
           </div>
 
@@ -80,7 +100,7 @@ function BeauteFooter() {
                   <path d="M21 10c0 7-9 11-9 11s-9-4-9-11a9 9 0 0 1 18 0z"></path>
                   <circle cx="12" cy="10" r="3"></circle>
                 </svg>
-                <span>Abidjan, Côte d'Ivoire</span>
+                <span>Cocody Angré, 8e tranche<br />Abidjan, Côte d'Ivoire</span>
               </li>
               <li className="contact-line">
                 <svg
@@ -97,7 +117,7 @@ function BeauteFooter() {
                   <path d="M4 4h16v16H4z"></path>
                   <path d="M22 6L12 13 2 6"></path>
                 </svg>
-                <a href="mailto:contact@davbeaute.ci">davholdinggroup@davbeaute.ci</a>
+                <a href="mailto:davholdinggroup@davbeaute.ci">davholdinggroup@davbeaute.ci</a>
               </li>
               <li className="contact-line">
                 <svg
@@ -123,7 +143,10 @@ function BeauteFooter() {
           <div className="left">
             © 2026 Dav'Beauté — DAV Holding Group. Tous droits réservés.
           </div>
-          <div className="right">Côte d'Ivoire</div>
+          <div className="right">
+            <Link to="/politique-de-confidentialite">Confidentialité</Link>
+            <Link to="/conditions-utilisation">Conditions d’utilisation</Link>
+          </div>
         </div>
 
         <div className="dav-footer__watermark" aria-hidden="true">

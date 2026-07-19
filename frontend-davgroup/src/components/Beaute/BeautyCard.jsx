@@ -50,15 +50,19 @@ function BeautyCard({ variant, item, label, onAddToCart, onViewDetails, activePr
           <div className="beauty-product-media__trigger" aria-hidden="true">
             <div className="beauty-product-img-stack">
               <img
-                src={item.image || "/images/placeholder.png"}
+                src={item.image || "/images/placeholder.svg"}
                 alt={item.title}
                 className="beauty-product-img-layer img-front"
+                loading="lazy"
+                decoding="async"
               />
               {item.image2 && (
                 <img
                   src={item.image2}
                   alt={`${item.title} — vue 2`}
                   className="beauty-product-img-layer img-back"
+                  loading="lazy"
+                  decoding="async"
                 />
               )}
             </div>
@@ -133,7 +137,7 @@ function BeautyCard({ variant, item, label, onAddToCart, onViewDetails, activePr
     return (
       <article className="beauty-service-card">
         <div className="beauty-service-image">
-          <img src={item.image} alt={item.title} />
+          <img src={item.image} alt={item.title} loading="lazy" decoding="async" />
           <span>{item.title}</span>
         </div>
         <div className="beauty-service-body">
@@ -148,7 +152,7 @@ function BeautyCard({ variant, item, label, onAddToCart, onViewDetails, activePr
     return (
       <article className="beauty-real-card">
         <div className="beauty-real-image">
-          <img src={item.image} alt={item.title} />
+          <img src={item.image} alt={item.title} loading="lazy" decoding="async" />
         </div>
         <div className="beauty-real-body">
           <h3>{item.title}</h3>

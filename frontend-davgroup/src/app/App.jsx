@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ClientAuthProvider, useClientAuth } from "../context/ClientAuthContext";
 import CookieConsent from "../components/CookieConsent";
+import PageTools from "../components/PageTools";
 import "../styles/Variables.css";
 import "../styles/Holding.css";
 import "../styles/Carrousel.css";
@@ -21,10 +22,31 @@ function lazyWithVersionRecovery(importer, name) {
         sessionStorage.removeItem(`dav_chunk_retry_${name}`);
         return module;
       })
-      .catch((error) => {
+      .catch(async (error) => {
         const retryKey = `dav_chunk_retry_${name}`;
         if (!sessionStorage.getItem(retryKey)) {
           sessionStorage.setItem(retryKey, "1");
+
+          // Une nouvelle version peut rendre obsolète un chunk référencé par
+          // l'ancienne page. Purger les caches applicatifs avant de recharger
+          // empêche une réponse HTML d'être réutilisée comme module JS.
+          if ("caches" in window) {
+            const cacheNames = await caches.keys();
+            await Promise.all(
+              cacheNames
+                .filter((cacheName) =>
+                  cacheName.startsWith("dav-") ||
+                  cacheName.startsWith("workbox-"),
+                )
+                .map((cacheName) => caches.delete(cacheName)),
+            );
+          }
+
+          if ("serviceWorker" in navigator) {
+            const registrations = await navigator.serviceWorker.getRegistrations();
+            await Promise.all(registrations.map((registration) => registration.update()));
+          }
+
           window.location.reload();
           return new Promise(() => {});
         }
@@ -82,6 +104,7 @@ function App() {
   return (
     <ClientAuthProvider>
     <BrowserRouter>
+      <PageTools />
       <AppModals />
       <CookieConsent />
       <Suspense fallback={<PageLoader />}>

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import "../../styles/BeauteRdv.css";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
@@ -25,8 +25,8 @@ const serviceTabs = {
 
 const fallbackServices = {
   coiffure: [
-    { id: 1, title: "Micro-twist",         duration: "11H30", price: "35 000 FCFA", image: "/images/debut.png" },
-    { id: 2, title: "Tresse enfant",        duration: "3H",    price: "25 000 FCFA", image: "/images/mamouch.png" },
+    { id: 1, title: "Micro-twist",         duration: "11H30", price: "35 000 FCFA", image: "/images/debut.webp" },
+    { id: 2, title: "Tresse enfant",        duration: "3H",    price: "25 000 FCFA", image: "/images/mamouch.webp" },
     { id: 3, title: "Coloration naturelle", duration: "2H30",  price: "42 000 FCFA", image: "/images/elegant.jpg" },
   ],
   ongerie: [
@@ -40,8 +40,8 @@ const fallbackServices = {
     { id: 3, title: "Gommage complet",  duration: "1H30", price: "34 000 FCFA", image: "/images/spa7.jpeg" },
   ],
   conseil: [
-    { id: 1, title: "Conseil beauté",               duration: "1H",   price: "20 000 FCFA", image: "/images/mere.png" },
-    { id: 2, title: "Conseil entretien capillaire", duration: "45mn", price: "12 000 FCFA", image: "/images/afro.png" },
+    { id: 1, title: "Conseil beauté",               duration: "1H",   price: "20 000 FCFA", image: "/images/mere.webp" },
+    { id: 2, title: "Conseil entretien capillaire", duration: "45mn", price: "12 000 FCFA", image: "/images/afro.webp" },
   ],
 };
 
@@ -51,7 +51,6 @@ const fallbackImagesByTitle = Object.values(fallbackServices).flat()
 
 function BeauteRdvSection() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const navigate  = useNavigate();
   const didPreselect = useRef(false);
 
   /* ── Succès paiement avance ── */

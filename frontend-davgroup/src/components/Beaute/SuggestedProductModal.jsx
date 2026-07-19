@@ -1,15 +1,20 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styles/SuggestedProductModal.css";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
 const SESSION_KEY = "dav_suggested_product_seen";
-const SHOW_DELAY_MS = 2500;
+const SHOW_AT_SCROLL_PROGRESS = 0.45;
 
 export default function SuggestedProductModal() {
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [visible, setVisible] = useState(false);
+
+  const close = useCallback(() => {
+    sessionStorage.setItem(SESSION_KEY, "1");
+    setVisible(false);
+  }, []);
 
   useEffect(() => {
     if (sessionStorage.getItem(SESSION_KEY)) return;
@@ -24,8 +29,21 @@ export default function SuggestedProductModal() {
 
   useEffect(() => {
     if (!product) return;
-    const timer = setTimeout(() => setVisible(true), SHOW_DELAY_MS);
-    return () => clearTimeout(timer);
+    if (sessionStorage.getItem(SESSION_KEY)) return;
+
+    const onScroll = () => {
+      const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (documentHeight <= 0) return;
+      const progress = window.scrollY / documentHeight;
+      if (progress >= SHOW_AT_SCROLL_PROGRESS) {
+        setVisible(true);
+        window.removeEventListener("scroll", onScroll);
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
   }, [product]);
 
   useEffect(() => {
@@ -33,13 +51,7 @@ export default function SuggestedProductModal() {
     const onKey = (e) => { if (e.key === "Escape") close(); };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visible]);
-
-  const close = () => {
-    sessionStorage.setItem(SESSION_KEY, "1");
-    setVisible(false);
-  };
+  }, [visible, close]);
 
   const discover = () => {
     close();
@@ -58,7 +70,7 @@ export default function SuggestedProductModal() {
 
         <div className="spm-image-wrap">
           {product.badge && <span className="spm-badge">{product.badge}</span>}
-          <img src={product.image || "/images/placeholder.png"} alt={product.name} />
+          <img src={product.image || "/images/placeholder.svg"} alt={product.name} loading="lazy" decoding="async" />
         </div>
 
         <h3 className="spm-name">{product.name}</h3>

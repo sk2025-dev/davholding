@@ -70,22 +70,9 @@ export default defineConfig({
               },
             },
           },
-          {
-            urlPattern: ({ request, sameOrigin }) =>
-              sameOrigin &&
-              ['style', 'script', 'font'].includes(request.destination),
-            handler: 'StaleWhileRevalidate',
-            options: {
-              cacheName: 'dav-static-assets',
-              expiration: {
-                maxEntries: 80,
-                maxAgeSeconds: 60 * 60 * 24 * 7,
-              },
-              cacheableResponse: {
-                statuses: [0, 200],
-              },
-            },
-          },
+          // Les bundles JS/CSS versionnés sont déjà gérés par le précache Workbox.
+          // Ne pas les placer dans un cache runtime : un fallback HTML renvoyé
+          // pour un ancien chunk pourrait sinon être mémorisé comme JavaScript.
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\//,
             handler: 'StaleWhileRevalidate',

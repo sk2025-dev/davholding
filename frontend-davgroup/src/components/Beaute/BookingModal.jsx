@@ -63,7 +63,7 @@ export default function BookingModal({ isOpen, onClose, preService = null }) {
   const { user, login, register, loginWithGoogle } = useClientAuth();
 
   /* step : "auth" | "date" | "info" | "confirm" | "paying" */
-  const [step, setStep]             = useState(user ? "date" : "auth");
+  const [step, setStep]             = useState("date");
   const [authTab, setAuthTab]       = useState("register");
   const [authError, setAuthError]   = useState("");
   const [authLoading, setAuthLoading] = useState(false);
@@ -79,6 +79,8 @@ export default function BookingModal({ isOpen, onClose, preService = null }) {
   const [bookError, setBookError]   = useState("");
 
   const overlayRef = useRef(null);
+  const dialogRef = useRef(null);
+  const previousFocusRef = useRef(null);
 
   /* Pré-remplir depuis user */
   useEffect(() => {
@@ -90,13 +92,13 @@ export default function BookingModal({ isOpen, onClose, preService = null }) {
 
   /* Avancer après connexion */
   useEffect(() => {
-    if (user && step === "auth") setStep("date");
+    if (user && step === "auth") setStep("confirm");
   }, [user, step]);
 
   /* Reset à la fermeture */
   useEffect(() => {
     if (!isOpen) {
-      setStep(user ? "date" : "auth");
+      setStep("date");
       setSelectedDate(null); setSelectedSlot(""); setBookError(""); setAuthError(""); setAvailableSlots([]);
     }
   }, [isOpen, user]);
@@ -106,6 +108,45 @@ export default function BookingModal({ isOpen, onClose, preService = null }) {
     document.body.style.overflow = isOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [isOpen]);
+
+  /* Focus clavier, fermeture Échap et retour au déclencheur */
+  useEffect(() => {
+    if (!isOpen) return;
+    previousFocusRef.current = document.activeElement;
+    const dialog = dialogRef.current;
+    const focusable = dialog?.querySelector(
+      'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), a[href]',
+    );
+    requestAnimationFrame(() => focusable?.focus());
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        onClose?.();
+        return;
+      }
+      if (event.key !== "Tab" || !dialog) return;
+      const elements = [...dialog.querySelectorAll(
+        'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), a[href]',
+      )];
+      if (elements.length === 0) return;
+      const first = elements[0];
+      const last = elements[elements.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      previousFocusRef.current?.focus?.();
+    };
+  }, [isOpen, onClose]);
 
   /* Charger créneaux */
   useEffect(() => {
@@ -127,7 +168,7 @@ export default function BookingModal({ isOpen, onClose, preService = null }) {
   /* ── Auth ── */
   const handleLogin = async (e) => {
     e.preventDefault(); setAuthError(""); setAuthLoading(true);
-    try { await login(loginForm.email, loginForm.password); setStep("date"); }
+    try { await login(loginForm.email, loginForm.password); setStep("confirm"); }
     catch (err) { setAuthError(err.message || "Email ou mot de passe incorrect."); }
     finally { setAuthLoading(false); }
   };
@@ -136,7 +177,7 @@ export default function BookingModal({ isOpen, onClose, preService = null }) {
     e.preventDefault(); setAuthError("");
     if (regForm.password !== regForm.confirm) { setAuthError("Les mots de passe ne correspondent pas."); return; }
     setAuthLoading(true);
-    try { await register(regForm.name, regForm.email, regForm.password, regForm.confirm); setStep("date"); }
+    try { await register(regForm.name, regForm.email, regForm.password, regForm.confirm); setStep("confirm"); }
     catch (err) { setAuthError(err.message || "Erreur lors de la création du compte."); }
     finally { setAuthLoading(false); }
   };
@@ -152,7 +193,7 @@ export default function BookingModal({ isOpen, onClose, preService = null }) {
     if (!form.firstName || !form.lastName) return setBookError("Renseignez votre prénom et nom.");
     if (!form.phone) return setBookError("Renseignez votre numéro de téléphone.");
     setBookError("");
-    setStep("confirm");
+    setStep(user ? "confirm" : "auth");
   };
 
   /* Soumission paiement */
@@ -185,15 +226,22 @@ export default function BookingModal({ isOpen, onClose, preService = null }) {
   /* Indicateur étapes */
   const STEP_LABELS = user
     ? ["Date & Heure", "Informations", "Confirmation"]
-    : ["Connexion", "Date & Heure", "Informations", "Confirmation"];
+    : ["Date & Heure", "Informations", "Identification", "Confirmation"];
   const stepIdxMap  = user
     ? { date: 0, info: 1, confirm: 2, paying: 2 }
-    : { auth: 0, date: 1, info: 2, confirm: 3, paying: 3 };
+    : { date: 0, info: 1, auth: 2, confirm: 3, paying: 3 };
   const stepIdx = stepIdxMap[step] ?? 0;
 
   return (
     <div className="bm-overlay" ref={overlayRef} onClick={(e) => e.target === overlayRef.current && handleClose()}>
-      <div className="bm-card" role="dialog" aria-modal="true">
+      <div
+        className="bm-card"
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="booking-dialog-title"
+        aria-describedby="booking-dialog-service"
+      >
 
         <button className="bm-close" onClick={handleClose} aria-label="Fermer">✕</button>
 
@@ -201,8 +249,8 @@ export default function BookingModal({ isOpen, onClose, preService = null }) {
         <div className="bm-header">
           <div className="bm-header-badge">📅</div>
           <div>
-            <h2 className="bm-header-title">Réserver ce soin</h2>
-            <p className="bm-header-service">{serviceLabel}</p>
+            <h2 className="bm-header-title" id="booking-dialog-title">Réserver ce soin</h2>
+            <p className="bm-header-service" id="booking-dialog-service">{serviceLabel}</p>
           </div>
         </div>
 
@@ -219,7 +267,10 @@ export default function BookingModal({ isOpen, onClose, preService = null }) {
         {/* ══ STEP AUTH ══ */}
         {step === "auth" && (
           <div className="bm-body">
-            <p className="bm-auth-intro">Connectez-vous pour réserver et payer l'avance de <strong>5 000 FCFA</strong>.</p>
+            <p className="bm-auth-intro">
+              Votre créneau est sélectionné. Identifiez-vous maintenant pour confirmer la réservation
+              et payer l'avance de <strong>5 000 FCFA</strong>.
+            </p>
             <button type="button" className="bm-google-btn" onClick={loginWithGoogle}>
               <GoogleIcon /> Continuer avec Google
             </button>

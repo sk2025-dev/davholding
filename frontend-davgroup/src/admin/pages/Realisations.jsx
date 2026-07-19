@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAdmin } from "../hooks/useAdmin";
 import { adminApi } from "../utils/api";
 import "../styles/admin.css";
@@ -143,7 +143,7 @@ const Realisations = () => {
 
   const resetPage = () => setPage(1);
 
-  const loadItems = async () => {
+  const loadItems = useCallback(async () => {
     try {
       const res = await adminApi.getBeautyServices("realisations", true);
       setItems(res?.data || []);
@@ -152,9 +152,9 @@ const Realisations = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [showToast]);
 
-  useEffect(() => { loadItems(); }, []);
+  useEffect(() => { loadItems(); }, [loadItems]);
 
   const filtered = useMemo(() => {
     let r = filterCat === "all" ? items : items.filter((i) => i.category_key === filterCat);

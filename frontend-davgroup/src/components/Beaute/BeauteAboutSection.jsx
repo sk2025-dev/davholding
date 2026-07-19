@@ -7,7 +7,7 @@ const CHAPTERS = [
     eyebrow: "Notre histoire",
     title: "Née d'une passion, grandie par la confiance",
     body: "Dav'Beauté est née d'un rêve simple : offrir à chaque femme un espace où elle se sent belle, écoutée et valorisée. Fondé avec peu de moyens mais beaucoup de cœur, le salon s'est construit année après année grâce à la fidélité de ses clientes et à l'excellence de ses prestataires.",
-    image: "/images/madame k.png",
+    image: "/images/madame k.webp",
     reverse: false,
   },
   {
@@ -15,7 +15,7 @@ const CHAPTERS = [
     eyebrow: "Notre vision",
     title: "La beauté accessible, sans compromis sur la qualité",
     body: "Nous croyons que le luxe n'est pas réservé à quelques-unes. Chez Dav'Beauté, chaque service est pensé pour allier qualité des produits, expertise du geste et chaleur de l'accueil. Notre ambition : que chaque cliente reparte transformée, confiante et rayonnante.",
-    image: "/images/miriam.png",
+    image: "/images/miriam.webp",
     reverse: true,
   },
   {
@@ -32,7 +32,7 @@ const CHAPTERS = [
 ];
 
 function BeauteAboutSection() {
-  const { requireAuth, openBooking } = useClientAuth();
+  const { openBooking } = useClientAuth();
 
   return (
     <div className="about-page">
@@ -55,7 +55,7 @@ function BeauteAboutSection() {
           {ch.image && (
             <div className={`about-split${ch.reverse ? " about-split--reverse" : ""}`}>
               <div className="about-split__photo">
-                <img src={ch.image} alt={ch.eyebrow} />
+                <img src={ch.image} alt={ch.eyebrow} loading="lazy" decoding="async" />
               </div>
               <div className="about-split__body">
                 <span className="about-eyebrow">{ch.eyebrow}</span>
@@ -97,7 +97,7 @@ function BeauteAboutSection() {
         </p>
         <button
           className="about-cta__btn"
-          onClick={() => requireAuth(() => openBooking())}
+          onClick={() => openBooking()}
         >
           📅 Prendre rendez-vous
         </button>
