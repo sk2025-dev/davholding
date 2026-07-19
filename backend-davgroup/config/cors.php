@@ -14,6 +14,7 @@ return [
         'http://127.0.0.1:4173',
         'https://davholdinggroup.com',
         'https://www.davholdinggroup.com',
+        'https://plateforme.davholdinggroup.com',
     ],
 
     // Autorise les ports locaux de Vite sans ouvrir le CORS à des domaines tiers.
