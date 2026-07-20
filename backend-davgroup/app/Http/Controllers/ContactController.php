@@ -112,7 +112,7 @@ class ContactController extends Controller
 </html>
 HTML;
 
-        $to = env('CONTACT_EMAIL', env('MAIL_FROM_ADDRESS'));
+        $to = env('CONTACT_EMAIL', 'contact@davholdinggroup.com');
 
         Mail::html($html, function ($mail) use ($to, $prenom, $nom, $email) {
             $mail->to($to)

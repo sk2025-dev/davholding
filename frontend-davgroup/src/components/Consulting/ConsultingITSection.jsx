@@ -71,6 +71,18 @@ export default function ConsultingITSection() {
           </div>
           <div className="c-app-mobile-visual">
             <img src={image} alt="IT & Surveillance" />
+            <button
+              type="button"
+              className="c-btn-primary c-section-quote-cta c-reveal-r"
+              onClick={() => window.dispatchEvent(new CustomEvent("consulting:open-quote", {
+                detail: {
+                  message: "Bonjour Dav'Consulting, je souhaite demander un devis pour une solution IT et surveillance.",
+                },
+              }))}
+            >
+              Demander un devis
+              <span aria-hidden="true">→</span>
+            </button>
           </div>
         </div>
       </div>

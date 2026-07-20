@@ -1,4 +1,4 @@
-const WHATSAPP_NUMBER = "2250757249390";
+const WHATSAPP_NUMBER = "2250566232575";
 
 const offers = [
   {

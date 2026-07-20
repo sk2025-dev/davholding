@@ -14,7 +14,12 @@ const IconWhatsApp = () => (
   </svg>
 );
 
-function ContactModal({ isOpen, onClose }) {
+function ContactModal({
+  isOpen,
+  onClose,
+  initialMessage = "",
+  whatsappNumber = "2250757249390",
+}) {
   const [activeTab, setActiveTab] = useState("form");
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
@@ -39,12 +44,11 @@ function ContactModal({ isOpen, onClose }) {
 
   if (!isOpen) return null;
 
-  const WA_NUMBER = "2250757249390";
   const API_BASE  = import.meta.env.VITE_API_URL ?? "https://plateforme.davholdinggroup.com/api";
 
   function openWhatsApp(message) {
     window.open(
-      `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`,
+      `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`,
       "_blank",
       "noopener",
     );
@@ -165,6 +169,7 @@ function ContactModal({ isOpen, onClose }) {
                 <div className="cf-group">
                   <label className="cf-label">Votre besoin</label>
                   <textarea name="message" className="cf-input cf-textarea"
+                    defaultValue={initialMessage}
                     placeholder="Décrivez votre projet : développement web, application mobile, transformation digitale, conseil stratégique..." />
                 </div>
                 {error && <p className="cf-error">{error}</p>}

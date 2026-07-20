@@ -4,7 +4,6 @@ import ConstellationCanvas from "../components/Consulting/ConstellationCanvas";
 import ConsultingNav from "../components/Consulting/ConsultingNav";
 import ConsultingHeroCarousel from "../components/Consulting/ConsultingHeroCarousel";
 import ConsultingClientsStrip from "../components/Consulting/ConsultingClientsStrip";
-import ConsultingNumbers from "../components/Consulting/ConsultingNumbers";
 import ConsultingServicesOverview from "../components/Consulting/ConsultingServicesOverview";
 import ConsultingAbout from "../components/Consulting/ConsultingAbout";
 import ConsultingLaunchOffers from "../components/Consulting/ConsultingLaunchOffers";
@@ -69,7 +68,7 @@ export default function ConsultingPage() {
 
       <ConsultingNav />
       <ConsultingHeroCarousel />
-      <ConsultingNumbers />
+      <ConsultingAbout />
       <ConsultingClientsStrip />
       <ConsultingServicesOverview />
       <ConsultingLaunchOffers />
@@ -78,7 +77,6 @@ export default function ConsultingPage() {
       <ConsultingITSection />
       <ConsultingRealisations />
       <ConsultingProcess />
-      <ConsultingAbout />
       <ConsultingStack />
       <ConsultingFaq />
       <ConsultingCTA />

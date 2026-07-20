@@ -16,8 +16,8 @@ const structuredData = {
       name: "Dav'Holding Group SARL",
       url: SITE_URL,
       logo: `${SITE_URL}/consulting/images/code.png`,
-      email: "contact@davconsulting.ci",
-      telephone: "+2250758863765",
+      email: "contact@davholdinggroup.com",
+      telephone: "+2250566232575",
       department: { "@id": `${PAGE_URL}#organization` },
     },
     {

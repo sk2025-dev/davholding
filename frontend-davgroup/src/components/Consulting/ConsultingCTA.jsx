@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ContactModal from "../ContactModal";
 
 const WAIcon = () => (
@@ -16,6 +16,16 @@ const FormIcon = () => (
 
 export default function ConsultingCTA() {
   const [formOpen, setFormOpen] = useState(false);
+  const [initialMessage, setInitialMessage] = useState("");
+
+  useEffect(() => {
+    const openQuoteForm = (event) => {
+      setInitialMessage(event.detail?.message || "");
+      setFormOpen(true);
+    };
+    window.addEventListener("consulting:open-quote", openQuoteForm);
+    return () => window.removeEventListener("consulting:open-quote", openQuoteForm);
+  }, []);
 
   return (
     <>
@@ -39,21 +49,33 @@ export default function ConsultingCTA() {
             </p>
             <div className="c-cta__actions">
               <a
-                href="https://wa.me/2250757249390?text=Bonjour%20Dav%20Consulting%2C%20je%20souhaite%20discuter%20d%27un%20projet%20digital"
+                href="https://wa.me/2250566232575?text=Bonjour%20Dav%20Consulting%2C%20je%20souhaite%20discuter%20d%27un%20projet%20digital"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="c-btn-wa"
               >
                 <WAIcon /> WhatsApp
               </a>
-              <button type="button" className="c-btn-email" onClick={() => setFormOpen(true)}>
+              <button
+                type="button"
+                className="c-btn-email"
+                onClick={() => {
+                  setInitialMessage("");
+                  setFormOpen(true);
+                }}
+              >
                 <FormIcon /> Remplir le formulaire
               </button>
             </div>
           </div>
         </div>
       </section>
-      <ContactModal isOpen={formOpen} onClose={() => setFormOpen(false)} />
+      <ContactModal
+        isOpen={formOpen}
+        onClose={() => setFormOpen(false)}
+        initialMessage={initialMessage}
+        whatsappNumber="2250566232575"
+      />
     </>
   );
 }

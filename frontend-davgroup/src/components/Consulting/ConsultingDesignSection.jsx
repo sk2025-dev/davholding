@@ -24,6 +24,18 @@ export default function ConsultingDesignSection() {
               alt="Conception graphique"
               className="c-what-img c-reveal-l"
             />
+            <button
+              type="button"
+              className="c-btn-primary c-section-quote-cta c-reveal-l"
+              onClick={() => window.dispatchEvent(new CustomEvent("consulting:open-quote", {
+                detail: {
+                  message: "Bonjour Dav'Consulting, je souhaite demander un devis pour un projet de conception graphique.",
+                },
+              }))}
+            >
+              Demander un devis
+              <span aria-hidden="true">→</span>
+            </button>
           </div>
           <div>
             <div className="c-section-tag c-reveal-l">Ce que nous faisons</div>
