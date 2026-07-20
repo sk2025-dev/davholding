@@ -166,7 +166,15 @@ function CommuneSelect({ communes, deliveryFees, value, onChange }) {
 }
 
 /* ══════════════════════════════════════════════════════════════ */
-export default function CheckoutModal({ isOpen, onClose, cartItems, cartTotal, onSuccess, onAddToCart }) {
+export default function CheckoutModal({
+  isOpen,
+  onClose,
+  cartItems,
+  cartTotal,
+  onSuccess,
+  onAddToCart,
+  onReturnToProducts,
+}) {
   const { user } = useClientAuth();
 
   const [step, setStep]               = useState(STEP.CHOICE);
@@ -735,8 +743,15 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, cartTotal, o
             <p className="checkout-note" style={{ marginTop: 0, marginBottom: "24px" }}>
               Nous vous contacterons au <strong>{form.phone}</strong> pour confirmer.
             </p>
-            <button type="button" className="checkout-btn checkout-btn--pay" onClick={onClose}>
-              Parfait, merci !
+            <button
+              type="button"
+              className="checkout-btn checkout-btn--pay"
+              onClick={() => {
+                onClose?.();
+                onReturnToProducts?.(orderNumber);
+              }}
+            >
+              Retourner aux produits
             </button>
           </div>
         )}

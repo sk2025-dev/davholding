@@ -149,6 +149,72 @@
   color: #120b08;
 }
 
+.beauty-order-notice {
+  position: fixed;
+  z-index: 3000;
+  right: 22px;
+  bottom: 22px;
+  width: min(430px, calc(100vw - 32px));
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: start;
+  gap: 13px;
+  padding: 17px;
+  border: 1px solid rgba(22, 101, 52, 0.2);
+  border-radius: 18px;
+  background: #fff;
+  color: #170b0d;
+  box-shadow: 0 24px 60px -25px rgba(26, 15, 10, 0.55);
+  animation: beauty-order-notice-in 0.35s ease both;
+}
+
+.beauty-order-notice__icon {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #16733a;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.beauty-order-notice strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #14532d;
+  font-size: 15px;
+}
+
+.beauty-order-notice p {
+  margin: 0;
+  color: rgba(23, 11, 13, 0.72);
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+}
+
+.beauty-order-notice button {
+  padding: 0 3px;
+  border: 0;
+  background: transparent;
+  color: rgba(23, 11, 13, 0.55);
+  font-size: 23px;
+  cursor: pointer;
+}
+
+@keyframes beauty-order-notice-in {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 600px) {
+  .beauty-order-notice {
+    right: 16px;
+    bottom: calc(16px + env(safe-area-inset-bottom));
+  }
+}
+
 .beauty-hero {
   position: relative;
   display: grid;

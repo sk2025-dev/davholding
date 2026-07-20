@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import BeauteLayout from "../components/Beaute/BeauteLayout";
 import BeauteCapillairesSection from "../components/Beaute/BeauteCapillairesSection";
 import CheckoutModal from "../components/Beaute/CheckoutModal";
+import OrderSuccessNotice from "../components/Beaute/OrderSuccessNotice";
 import { useClientAuth } from "../context/ClientAuthContext";
 
 function parsePrice(price) {
@@ -13,6 +14,7 @@ function BeauteCapillairesPage() {
   const [cartItems, setCartItems] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [orderNotice, setOrderNotice] = useState("");
 
   const cartCount = cartItems.reduce((count, item) => count + item.quantity, 0);
   const cartTotal = useMemo(
@@ -149,6 +151,11 @@ function BeauteCapillairesPage() {
         cartTotal={cartTotal}
         onSuccess={handleCheckoutSuccess}
         onAddToCart={handleAddToCart}
+        onReturnToProducts={setOrderNotice}
+      />
+      <OrderSuccessNotice
+        orderNumber={orderNotice}
+        onClose={() => setOrderNotice("")}
       />
     </BeauteLayout>
   );

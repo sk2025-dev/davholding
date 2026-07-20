@@ -6,13 +6,25 @@ function BeauteMainNav({ tabs }) {
   const location = useLocation();
   const navRef = useRef(null);
   const [openGroup, setOpenGroup] = useState("");
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    setMobileOpen(false);
+    setOpenGroup("");
+  }, [location.pathname]);
 
   useEffect(() => {
     const closeOutside = (event) => {
-      if (!navRef.current?.contains(event.target)) setOpenGroup("");
+      if (!navRef.current?.contains(event.target)) {
+        setOpenGroup("");
+        setMobileOpen(false);
+      }
     };
     const closeWithEscape = (event) => {
-      if (event.key === "Escape") setOpenGroup("");
+      if (event.key === "Escape") {
+        setOpenGroup("");
+        setMobileOpen(false);
+      }
     };
     document.addEventListener("pointerdown", closeOutside);
     document.addEventListener("keydown", closeWithEscape);
@@ -23,8 +35,21 @@ function BeauteMainNav({ tabs }) {
   }, []);
 
   return (
-    <div className="main-nav-wrap">
-      <nav ref={navRef} className="main-nav" id="mainNav" aria-label="Navigation Beauté">
+    <div ref={navRef} className="main-nav-wrap">
+      <button
+        type="button"
+        className="beauty-mobile-nav-toggle"
+        aria-expanded={mobileOpen}
+        aria-controls="mainNav"
+        onClick={() => setMobileOpen((current) => !current)}
+      >
+        <span>
+          <i aria-hidden="true" />
+          Menu Dav’Beauté
+        </span>
+        <strong aria-hidden="true">{mobileOpen ? "×" : "☰"}</strong>
+      </button>
+      <nav className={`main-nav${mobileOpen ? " is-mobile-open" : ""}`} id="mainNav" aria-label="Navigation Beauté">
         {tabs.map((tab) => {
           if (!tab.children) {
             return (
@@ -33,6 +58,7 @@ function BeauteMainNav({ tabs }) {
                 to={tab.to}
                 end
                 className={({ isActive }) => `nav-item${isActive ? " active" : ""}`}
+                onClick={() => setMobileOpen(false)}
               >
                 {tab.label}
               </NavLink>
@@ -58,7 +84,10 @@ function BeauteMainNav({ tabs }) {
                     key={child.to}
                     to={child.to}
                     className={({ isActive }) => `nav-group__link${isActive ? " active" : ""}`}
-                    onClick={() => setOpenGroup("")}
+                    onClick={() => {
+                      setOpenGroup("");
+                      setMobileOpen(false);
+                    }}
                   >
                     {child.label}
                   </NavLink>
