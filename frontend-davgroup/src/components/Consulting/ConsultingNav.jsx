@@ -26,9 +26,20 @@ export default function ConsultingNav() {
         const activationLine = window.scrollY + Math.min(220, window.innerHeight * 0.32);
         let current = "";
 
-        NAV_LINKS.forEach(({ href }) => {
-          const section = document.querySelector(href);
-          if (section && section.offsetTop <= activationLine) current = href;
+        const orderedSections = NAV_LINKS
+          .map(({ href }) => {
+            const section = document.querySelector(href);
+            if (!section) return null;
+            return {
+              href,
+              top: section.getBoundingClientRect().top + window.scrollY,
+            };
+          })
+          .filter(Boolean)
+          .sort((a, b) => a.top - b.top);
+
+        orderedSections.forEach(({ href, top }) => {
+          if (top <= activationLine) current = href;
         });
 
         const pageBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 12;
