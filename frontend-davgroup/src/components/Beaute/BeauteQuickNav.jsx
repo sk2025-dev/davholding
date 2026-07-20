@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { sectionTabs } from "./beauteData";
 import "../../styles/BeauteQuickNav.css";
@@ -14,7 +14,25 @@ const GridIcon = () => (
 
 function BeauteQuickNav() {
   const [open, setOpen] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
   const close = () => setOpen(false);
+
+  useEffect(() => {
+    const updateVisibility = () => {
+      setShowScrollTop(window.scrollY > Math.max(500, window.innerHeight * 0.7));
+    };
+    updateVisibility();
+    window.addEventListener("scroll", updateVisibility, { passive: true });
+    return () => window.removeEventListener("scroll", updateVisibility);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+    });
+    close();
+  };
 
   return (
     <>
@@ -52,6 +70,18 @@ function BeauteQuickNav() {
             )
           ))}
         </div>
+
+        <button
+          type="button"
+          className={`beaute-scrolltop${showScrollTop ? " beaute-scrolltop--visible" : ""}`}
+          onClick={scrollToTop}
+          aria-label="Remonter en haut de la page"
+          title="Remonter en haut"
+          tabIndex={showScrollTop ? 0 : -1}
+        >
+          <span aria-hidden="true">↑</span>
+          <span>Haut</span>
+        </button>
 
         <button
           type="button"
