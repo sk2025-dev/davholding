@@ -15,13 +15,13 @@ const KNOWLEDGE = [
     terms: ["consulting", "site", "application", "mobile", "digital", "informatique", "it", "logiciel"],
     answer:
       "Dav'Consulting est le pôle technologique de Dav'Holding Group SARL. Il réalise des sites web, applications web et mobiles, identités visuelles, infrastructures IT, solutions de sécurité et applications métier.",
-    actions: [{ label: "Découvrir Dav'Consulting", href: "/consulting" }],
+    actions: [{ label: "Découvrir Dav'Consulting", href: "/davconsulting" }],
   },
   {
     terms: ["tarif", "prix", "cout", "budget", "pack", "devis"],
     answer:
       "Les offres Dav'Consulting commencent à 400 000 FCFA pour une présence digitale, 1 500 000 FCFA pour une application métier et 2 800 000 FCFA pour une solution avec IA. Un cadrage confirme ensuite le budget définitif.",
-    actions: [{ label: "Voir les offres", href: "/consulting#offres" }],
+    actions: [{ label: "Voir les offres", href: "/davconsulting#offres" }],
   },
   {
     terms: ["beaute", "coiffure", "spa", "ongle", "onglerie", "rendez", "rdv", "reservation"],

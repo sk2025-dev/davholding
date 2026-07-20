@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 const SITE_URL = (import.meta.env.VITE_SITE_URL || "https://davholdinggroup.com").replace(/\/$/, "");
-const PAGE_URL = `${SITE_URL}/consulting`;
+const PAGE_URL = `${SITE_URL}/davconsulting`;
 const TITLE = "Dav'Consulting | Développement web, mobile, design & IT à Abidjan";
 const DESCRIPTION =
   "Pôle technologique de Dav'Holding Group SARL à Abidjan : applications web et mobile, identité visuelle, infrastructure IT et solutions métiers.";

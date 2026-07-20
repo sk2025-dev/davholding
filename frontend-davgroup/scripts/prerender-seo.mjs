@@ -189,7 +189,7 @@ await writeFile(
 );
 
 const consultingPage = {
-  path: "consulting",
+  path: "davconsulting",
   title: "Dav'Consulting | Développement web, mobile, design & IT à Abidjan",
   description:
     "Dav'Consulting accompagne entreprises et institutions en développement web et mobile, conception graphique, infrastructure IT et vidéosurveillance à Abidjan.",
@@ -300,6 +300,26 @@ consultingHtml = consultingHtml.replace(
 const consultingOutputDir = resolve(distDir, consultingPage.path);
 await mkdir(consultingOutputDir, { recursive: true });
 await writeFile(resolve(consultingOutputDir, "index.html"), consultingHtml);
+
+const legacyConsultingPath = resolve(distDir, "consulting");
+await mkdir(legacyConsultingPath, { recursive: true });
+await writeFile(
+  resolve(legacyConsultingPath, "index.html"),
+  `<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href="${siteUrl}/davconsulting" />
+    <meta http-equiv="refresh" content="0;url=${siteUrl}/davconsulting" />
+    <title>Redirection vers Dav’Consulting</title>
+    <script>window.location.replace("/davconsulting" + window.location.search + window.location.hash);</script>
+  </head>
+  <body>
+    <p>Cette page a changé d’adresse. <a href="/davconsulting">Accéder à Dav’Consulting</a>.</p>
+  </body>
+</html>`,
+);
 
 console.log(
   `SEO statique généré pour ${pages.length} pages Beauté et la page Consulting.`,

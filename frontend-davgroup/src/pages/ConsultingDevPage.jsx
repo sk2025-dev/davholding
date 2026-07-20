@@ -115,11 +115,11 @@ export default function ConsultingDevPage() {
         <img className="dv-hero-bg" src="/consulting/images/saas.png" alt="" />
         <div className="dv-hero-overlay" />
 
-        <Link to="/consulting" className="dv-logo">
+        <Link to="/davconsulting" className="dv-logo">
           <img src="/consulting/images/code.png" alt="DAV Consulting" />
         </Link>
 
-        <Link to="/consulting" className="dv-back-btn">
+        <Link to="/davconsulting" className="dv-back-btn">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M15 18l-6-6 6-6" />
           </svg>

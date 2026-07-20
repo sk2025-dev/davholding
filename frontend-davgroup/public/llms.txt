@@ -4,7 +4,7 @@ Dav'Holding Group SARL est la structure juridique du groupe. Dav'Consulting est 
 
 ## Dav'Consulting
 
-- Présentation, services, offres et contact : https://davholdinggroup.com/consulting
+- Présentation, services, offres et contact : https://davholdinggroup.com/davconsulting
 - Développement web et mobile : https://davholdinggroup.com/consulting/realisations/developpement
 - Branding : https://davholdinggroup.com/consulting/realisations/branding
 - Design UI/UX : https://davholdinggroup.com/consulting/realisations/design

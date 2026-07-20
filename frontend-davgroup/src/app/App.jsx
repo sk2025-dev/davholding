@@ -123,7 +123,8 @@ function App() {
         <Route path="/beaute/ongerie" element={<BeauteOngeriePage />} />
         <Route path="/beaute/spa" element={<BeauteSpaPage />} />
         <Route path="/beaute/about" element={<BeauteAboutPage />} />
-        <Route path="/consulting" element={<ConsultingPage />} />
+        <Route path="/davconsulting" element={<ConsultingPage />} />
+        <Route path="/consulting" element={<Navigate to="/davconsulting" replace />} />
         <Route path="/consulting/realisations/branding" element={<ConsultingBrandingPage />} />
         <Route path="/consulting/realisations/developpement" element={<ConsultingDevPage />} />
         <Route path="/consulting/realisations/design" element={<ConsultingDesignPage />} />

@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import "../../styles/ConsultingQuickNav.css";
 
 const QUICK_LINKS = [
-  { label: "Accueil Consulting", to: "/consulting" },
+  { label: "Accueil Consulting", to: "/davconsulting" },
   { label: "Réalisations Branding", to: "/consulting/realisations/branding" },
   { label: "Réalisations Développement", to: "/consulting/realisations/developpement" },
   { label: "Réalisations Design", to: "/consulting/realisations/design" },

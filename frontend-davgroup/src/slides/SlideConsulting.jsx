@@ -27,7 +27,7 @@ function SlideConsulting() {
               <span>Transformation digitale</span>
               <span>Stratégie data &amp; IA</span>
             </div>
-            <Link to="/consulting" className="slide-cta slide-cta--tech">
+            <Link to="/davconsulting" className="slide-cta slide-cta--tech">
               <span>Découvrir DAV Consulting</span>
               <span className="cta-arrow">→</span>
             </Link>
