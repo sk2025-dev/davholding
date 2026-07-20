@@ -1,5 +1,5 @@
 export const sectionTabs = [
-  { label: "Accueil", to: "/beaute/realisations" },
+  { label: "Accueil", to: "/davbeaute" },
   {
     label: "Prestations",
     children: [

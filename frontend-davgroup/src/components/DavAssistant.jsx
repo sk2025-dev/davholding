@@ -27,7 +27,7 @@ const KNOWLEDGE = [
     terms: ["beaute", "coiffure", "spa", "ongle", "onglerie", "rendez", "rdv", "reservation"],
     answer:
       "Dav'Beauté propose notamment coiffure, soins capillaires, spa, onglerie et cosmétiques. Vous pouvez consulter les prestations et réserver directement en ligne.",
-    actions: [{ label: "Prendre rendez-vous", href: "/beaute/realisations?rdv=1" }],
+    actions: [{ label: "Prendre rendez-vous", href: "/davbeaute?rdv=1" }],
   },
   {
     terms: ["holding", "groupe", "dav", "structure", "entreprise"],

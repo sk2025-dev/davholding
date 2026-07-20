@@ -111,10 +111,11 @@ function App() {
         <Routes>
           <Route path="/" element={<HoldingPage />} />
           <Route path="/admin" element={<Admin />} />
-        <Route path="/beaute" element={<Navigate to="/beaute/realisations" replace />} />
+        <Route path="/beaute" element={<Navigate to="/davbeaute" replace />} />
+        <Route path="/davbeaute" element={<BeauteRealisationsPage />} />
         <Route
           path="/beaute/realisations"
-          element={<BeauteRealisationsPage />}
+          element={<Navigate to="/davbeaute" replace />}
         />
         <Route path="/beaute/capillaires" element={<BeauteCapillairesPage />} />
         <Route path="/beaute/coiffures" element={<BeauteCoiffuresPage />} />

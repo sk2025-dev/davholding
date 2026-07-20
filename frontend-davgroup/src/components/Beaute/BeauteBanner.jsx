@@ -26,7 +26,7 @@ function BeauteBanner() {
           </button>
           <Link
             className="beauty-btn beauty-btn--ghost"
-            to="/beaute/realisations"
+            to="/davbeaute"
           >
             Voir nos réalisations
           </Link>

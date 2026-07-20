@@ -76,7 +76,7 @@ function BeauteFooter() {
           <div>
             <p className="col-title">Dav’Beauté</p>
             <ul>
-              <li><Link to="/beaute/realisations">Nos réalisations</Link></li>
+              <li><Link to="/davbeaute">Nos réalisations</Link></li>
               <li><Link to="/beaute/about">À propos</Link></li>
               <li><a href="https://wa.me/2250757249390" target="_blank" rel="noopener noreferrer">WhatsApp Business</a></li>
             </ul>

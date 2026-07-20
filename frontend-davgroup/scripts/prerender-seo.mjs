@@ -8,7 +8,7 @@ const siteUrl = (process.env.SITE_URL || "https://davholdinggroup.com").replace(
 
 const pages = [
   {
-    path: "beaute/realisations",
+    path: "davbeaute",
     title: "Salon de beauté à Cocody Angré | Dav’Beauté Abidjan",
     description: "Dav’Beauté, salon à Cocody Angré : coiffure, onglerie, spa, soins capillaires et cosmétiques à Abidjan. Découvrez nos réalisations et réservez en ligne.",
   },
@@ -56,10 +56,10 @@ for (const page of pages) {
   const schema = {
     "@context": "https://schema.org",
     "@type": "BeautySalon",
-    "@id": `${siteUrl}/beaute/#salon`,
+    "@id": `${siteUrl}/davbeaute#salon`,
     name: "Dav’Beauté",
     description: page.description,
-    url: `${siteUrl}/beaute/realisations`,
+    url: `${siteUrl}/davbeaute`,
     image: `${siteUrl}/images/beaue2.webp`,
     logo: `${siteUrl}/images/beauté.png`,
     telephone: "+2250757249390",
@@ -109,14 +109,8 @@ for (const page of pages) {
   };
 
   const seoMarkup = [
-    `<link rel="canonical" href="${escapeHtml(canonical)}" />`,
-    `<meta property="og:title" content="${escapeHtml(page.title)}" />`,
-    `<meta property="og:description" content="${escapeHtml(page.description)}" />`,
-    `<meta property="og:type" content="business.business" />`,
-    `<meta property="og:url" content="${escapeHtml(canonical)}" />`,
-    `<meta property="og:image" content="${siteUrl}/images/beaue2.webp" />`,
     `<script id="beaute-local-business-schema" type="application/ld+json">${JSON.stringify(schema).replaceAll("<", "\\u003c")}</script>`,
-    page.path === "beaute/realisations"
+    page.path === "davbeaute"
       ? `<script id="beaute-faq-schema" type="application/ld+json">${JSON.stringify(faqSchema).replaceAll("<", "\\u003c")}</script>`
       : "",
   ].join("\n    ");
@@ -127,12 +121,72 @@ for (const page of pages) {
       /<meta name="description" content=".*?" \/>/,
       `<meta name="description" content="${escapeHtml(page.description)}" />`,
     )
+    .replace(
+      /<link rel="canonical" href=".*?" \/>/,
+      `<link rel="canonical" href="${escapeHtml(canonical)}" />`,
+    )
+    .replace(
+      /<meta property="og:title" content=".*?" \/>/,
+      `<meta property="og:title" content="${escapeHtml(page.title)}" />`,
+    )
+    .replace(
+      /<meta property="og:description" content=".*?" \/>/,
+      `<meta property="og:description" content="${escapeHtml(page.description)}" />`,
+    )
+    .replace(
+      /<meta property="og:type" content=".*?" \/>/,
+      '<meta property="og:type" content="business.business" />',
+    )
+    .replace(
+      /<meta property="og:url" content=".*?" \/>/,
+      `<meta property="og:url" content="${escapeHtml(canonical)}" />`,
+    )
+    .replace(
+      /<meta property="og:image" content=".*?" \/>/,
+      `<meta property="og:image" content="${siteUrl}/images/beaue2.webp" />`,
+    )
+    .replace(
+      /<meta property="og:image:secure_url" content=".*?" \/>/,
+      `<meta property="og:image:secure_url" content="${siteUrl}/images/beaue2.webp" />`,
+    )
+    .replace(
+      /<meta name="twitter:title" content=".*?" \/>/,
+      `<meta name="twitter:title" content="${escapeHtml(page.title)}" />`,
+    )
+    .replace(
+      /<meta name="twitter:description" content=".*?" \/>/,
+      `<meta name="twitter:description" content="${escapeHtml(page.description)}" />`,
+    )
+    .replace(
+      /<meta name="twitter:image" content=".*?" \/>/,
+      `<meta name="twitter:image" content="${siteUrl}/images/beaue2.webp" />`,
+    )
     .replace("</head>", `    ${seoMarkup}\n  </head>`);
 
   const outputDir = resolve(distDir, page.path);
   await mkdir(outputDir, { recursive: true });
   await writeFile(resolve(outputDir, "index.html"), html);
 }
+
+const legacyBeautyPath = resolve(distDir, "beaute/realisations");
+await mkdir(legacyBeautyPath, { recursive: true });
+await writeFile(
+  resolve(legacyBeautyPath, "index.html"),
+  `<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href="${siteUrl}/davbeaute" />
+    <meta http-equiv="refresh" content="0;url=${siteUrl}/davbeaute" />
+    <title>Redirection vers Dav’Beauté</title>
+    <script>window.location.replace("/davbeaute" + window.location.search + window.location.hash);</script>
+  </head>
+  <body>
+    <p>Cette page a changé d’adresse. <a href="/davbeaute">Accéder à Dav’Beauté</a>.</p>
+  </body>
+</html>`,
+);
 
 const consultingPage = {
   path: "consulting",

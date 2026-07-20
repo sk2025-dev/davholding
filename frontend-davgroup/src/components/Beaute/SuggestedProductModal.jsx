@@ -55,7 +55,7 @@ export default function SuggestedProductModal() {
 
   const discover = () => {
     close();
-    navigate("/beaute/realisations");
+    navigate("/davbeaute");
   };
 
   if (!visible || !product) return null;

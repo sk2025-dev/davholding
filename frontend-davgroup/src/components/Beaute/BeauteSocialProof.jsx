@@ -37,7 +37,7 @@ export default function BeauteSocialProof() {
         ))}
       </div>
       <div className="beauty-proof__links">
-        <Link to="/beaute/realisations">Voir les réalisations</Link>
+        <Link to="/davbeaute">Voir les réalisations</Link>
         <a href="https://www.facebook.com/Davi225" target="_blank" rel="noopener noreferrer">Suivre sur Facebook</a>
         <a href="https://www.instagram.com/davbeaute/" target="_blank" rel="noopener noreferrer">Suivre sur Instagram</a>
         <a href="https://www.tiktok.com/@dav_beaute" target="_blank" rel="noopener noreferrer">Voir sur TikTok</a>

@@ -26,7 +26,7 @@ function SlideBeaute() {
             <span>Conseil beauté</span>
           </div>
           {/* Link vers la future page React davbeaute */}
-          <Link to="/beaute" className="slide-cta slide-cta--beauty">
+          <Link to="/davbeaute" className="slide-cta slide-cta--beauty">
             <span>Entrer dans l'univers</span>
             <span className="cta-arrow">→</span>
           </Link>

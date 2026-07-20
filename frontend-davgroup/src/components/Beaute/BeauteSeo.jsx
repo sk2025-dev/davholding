@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { BEAUTY_FAQ } from "./beauteFaqData";
 
 const PAGE_META = {
-  "/beaute/realisations": {
+  "/davbeaute": {
     title: "Salon de beauté à Cocody Angré | Dav’Beauté Abidjan",
     description: "Dav’Beauté, salon à Cocody Angré : coiffure, onglerie, spa, soins capillaires et cosmétiques à Abidjan. Découvrez nos réalisations et réservez en ligne.",
   },
@@ -46,7 +46,7 @@ export default function BeauteSeo() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    const meta = PAGE_META[pathname] || PAGE_META["/beaute/realisations"];
+    const meta = PAGE_META[pathname] || PAGE_META["/davbeaute"];
     const canonicalUrl = `${window.location.origin}${pathname}`;
     document.title = meta.title;
     setMeta('meta[name="description"]', { name: "description", content: meta.description });
@@ -67,9 +67,9 @@ export default function BeauteSeo() {
     const schema = {
       "@context": "https://schema.org",
       "@type": "BeautySalon",
-      "@id": `${window.location.origin}/beaute/#salon`,
+      "@id": `${window.location.origin}/davbeaute#salon`,
       name: "Dav’Beauté",
-      url: `${window.location.origin}/beaute/realisations`,
+      url: `${window.location.origin}/davbeaute`,
       image: `${window.location.origin}/images/beaue2.webp`,
       logo: `${window.location.origin}/images/beauté.png`,
       telephone: "+2250757249390",
@@ -117,7 +117,7 @@ export default function BeauteSeo() {
       })),
     };
     let faqScript = document.getElementById("beaute-faq-schema");
-    if (pathname === "/beaute/realisations") {
+    if (pathname === "/davbeaute") {
       if (!faqScript) {
         faqScript = document.createElement("script");
         faqScript.id = "beaute-faq-schema";
