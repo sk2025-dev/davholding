@@ -52,7 +52,7 @@ function SlideContact({ onOpen }) {
                     <circle cx="12" cy="10" r="2.2" />
                   </svg>
                   <span>
-                    <strong>Adresse :</strong> Angré 8e tranche
+                    <strong>Adresse :</strong> Cocody Angré, 8e tranche — Abidjan
                   </span>
                 </div>
                 <div className="slide-contact-line">
@@ -68,9 +68,12 @@ function SlideContact({ onOpen }) {
                   >
                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.86 19.86 0 0 1 2.11 4.18 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.72c.12 1.05.37 2.07.72 3.03a2 2 0 0 1-.45 2.11L9.91 10.09a16 16 0 0 0 6 6l1.22-1.22a2 2 0 0 1 2.11-.45c.96.35 1.98.6 3.03.72A2 2 0 0 1 22 16.92z" />
                   </svg>
-                  <span>
-                    <strong>Contact :</strong> 07 57 24 93 90
-                  </span>
+                  <div className="slide-contact-values">
+                    <strong>Contacts :</strong>
+                    <a href="tel:+2250757249390">+225 07 57 24 93 90</a>
+                    <a href="tel:+2250566232575">+225 05 66 23 25 75</a>
+                    <a href="tel:+2250788827665">+225 07 88 82 76 65</a>
+                  </div>
                 </div>
                 <div className="slide-contact-line">
                   <svg
@@ -87,7 +90,10 @@ function SlideContact({ onOpen }) {
                     <path d="M22 6L12 13 2 6" />
                   </svg>
                   <span>
-                    <strong>Email :</strong> davholdinggroup@gmail.com
+                    <strong>Email :</strong>{" "}
+                    <a href="mailto:contact@davholdinggroup.com">
+                      contact@davholdinggroup.com
+                    </a>
                   </span>
                 </div>
               </div>

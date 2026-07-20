@@ -37,7 +37,7 @@ const KNOWLEDGE = [
   {
     terms: ["contact", "conseiller", "humain", "appeler", "telephone", "email", "projet"],
     answer:
-      "Je peux vous orienter. Pour échanger avec l'équipe, utilisez le formulaire de contact ou appelez le +225 07 58 86 37 65.",
+      "Je peux vous orienter. Pour échanger avec l'équipe, utilisez le formulaire de contact, écrivez à contact@davholdinggroup.com ou appelez le +225 07 57 24 93 90, le +225 05 66 23 25 75 ou le +225 07 88 82 76 65.",
     contact: true,
   },
 ];

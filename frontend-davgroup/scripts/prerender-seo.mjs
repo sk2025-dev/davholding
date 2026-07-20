@@ -63,7 +63,7 @@ for (const page of pages) {
     image: `${siteUrl}/images/beaue2.webp`,
     logo: `${siteUrl}/images/beauté.png`,
     telephone: "+2250757249390",
-    email: "davholdinggroup@davbeaute.ci",
+    email: "contact@davholdinggroup.com",
     priceRange: "FCFA",
     currenciesAccepted: "XOF",
     address: {

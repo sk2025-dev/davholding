@@ -73,7 +73,7 @@ export default function BeauteSeo() {
       image: `${window.location.origin}/images/beaue2.webp`,
       logo: `${window.location.origin}/images/beauté.png`,
       telephone: "+2250757249390",
-      email: "davholdinggroup@davbeaute.ci",
+      email: "contact@davholdinggroup.com",
       priceRange: "FCFA",
       address: {
         "@type": "PostalAddress",

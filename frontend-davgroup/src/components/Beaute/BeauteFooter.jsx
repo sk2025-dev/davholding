@@ -117,7 +117,7 @@ function BeauteFooter() {
                   <path d="M4 4h16v16H4z"></path>
                   <path d="M22 6L12 13 2 6"></path>
                 </svg>
-                <a href="mailto:davholdinggroup@davbeaute.ci">davholdinggroup@davbeaute.ci</a>
+                <a href="mailto:contact@davholdinggroup.com">contact@davholdinggroup.com</a>
               </li>
               <li className="contact-line">
                 <svg
