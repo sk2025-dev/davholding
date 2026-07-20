@@ -1,3 +1,4 @@
+import { useState } from "react";
 import BeauteFooter from "./BeauteFooter";
 import BeauteHeader from "./BeauteHeader";
 import BeauteMainNav from "./BeauteMainNav";
@@ -9,6 +10,7 @@ import BeauteSeo from "./BeauteSeo";
 import BeauteSocialProof from "./BeauteSocialProof";
 import BeauteFaq from "./BeauteFaq";
 import BeauteTestimonials from "./BeauteTestimonials";
+import BeautePreloader from "./BeautePreloader";
 import { sectionTabs } from "./beauteData";
 import "../../styles/BeautePage.css";
 import "../../styles/BeauteHeader.css";
@@ -16,8 +18,13 @@ import "../../styles/BeauteMainNav.css";
 import "../../styles/BeauteRealisations.css";
 
 function BeauteLayout({ children, cartCount = 0, onCartClick, showHomeHero = false }) {
+  const [preloaderVisible, setPreloaderVisible] = useState(showHomeHero);
+
   return (
     <>
+      {preloaderVisible && (
+        <BeautePreloader onComplete={() => setPreloaderVisible(false)} />
+      )}
       <a className="beauty-skip-link" href="#beauty-main-content">
         Aller au contenu principal
       </a>
