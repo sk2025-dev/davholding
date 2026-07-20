@@ -134,4 +134,119 @@ for (const page of pages) {
   await writeFile(resolve(outputDir, "index.html"), html);
 }
 
-console.log(`SEO statique généré pour ${pages.length} pages Beauté.`);
+const consultingPage = {
+  path: "consulting",
+  title: "Dav'Consulting | Développement web, mobile, design & IT à Abidjan",
+  description:
+    "Dav'Consulting accompagne entreprises et institutions en développement web et mobile, conception graphique, infrastructure IT et vidéosurveillance à Abidjan.",
+  image: `${siteUrl}/consulting/images/femmedev.png`,
+};
+const consultingCanonical = `${siteUrl}/${consultingPage.path}`;
+const consultingSchema = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "@id": `${consultingCanonical}#organization`,
+  name: "Dav'Consulting",
+  url: consultingCanonical,
+  description: consultingPage.description,
+  image: consultingPage.image,
+  logo: `${siteUrl}/consulting/images/code.png`,
+  telephone: "+2250566232575",
+  email: "contact@davholdinggroup.com",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Cocody Angré, 8e tranche",
+    addressLocality: "Abidjan",
+    addressCountry: "CI",
+  },
+  parentOrganization: {
+    "@type": "Organization",
+    name: "Dav'Holding Group SARL",
+    url: siteUrl,
+  },
+};
+
+const replaceMetaContent = (html, selector, value) => {
+  const escapedSelector = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const pattern = new RegExp(
+    `<meta (${escapedSelector}) content="[^"]*" \\/>`,
+  );
+  return html.replace(pattern, `<meta ${selector} content="${escapeHtml(value)}" />`);
+};
+
+let consultingHtml = template
+  .replace(
+    /<title>.*?<\/title>/,
+    `<title>${escapeHtml(consultingPage.title)}</title>`,
+  )
+  .replace(
+    /<meta name="description" content=".*?" \/>/,
+    `<meta name="description" content="${escapeHtml(consultingPage.description)}" />`,
+  )
+  .replace(
+    /<link rel="canonical" href=".*?" \/>/,
+    `<link rel="canonical" href="${escapeHtml(consultingCanonical)}" />`,
+  );
+
+consultingHtml = replaceMetaContent(
+  consultingHtml,
+  'property="og:title"',
+  consultingPage.title,
+);
+consultingHtml = replaceMetaContent(
+  consultingHtml,
+  'property="og:description"',
+  consultingPage.description,
+);
+consultingHtml = replaceMetaContent(
+  consultingHtml,
+  'property="og:url"',
+  consultingCanonical,
+);
+consultingHtml = replaceMetaContent(
+  consultingHtml,
+  'property="og:image"',
+  consultingPage.image,
+);
+consultingHtml = replaceMetaContent(
+  consultingHtml,
+  'property="og:image:secure_url"',
+  consultingPage.image,
+);
+consultingHtml = replaceMetaContent(
+  consultingHtml,
+  'property="og:image:type"',
+  "image/png",
+);
+consultingHtml = replaceMetaContent(
+  consultingHtml,
+  'property="og:image:alt"',
+  "Dav'Consulting — solutions technologiques à Abidjan",
+);
+consultingHtml = replaceMetaContent(
+  consultingHtml,
+  'name="twitter:title"',
+  consultingPage.title,
+);
+consultingHtml = replaceMetaContent(
+  consultingHtml,
+  'name="twitter:description"',
+  consultingPage.description,
+);
+consultingHtml = replaceMetaContent(
+  consultingHtml,
+  'name="twitter:image"',
+  consultingPage.image,
+);
+consultingHtml = consultingHtml.replace(
+  "</head>",
+  `    <script id="consulting-organization-schema" type="application/ld+json">${JSON.stringify(consultingSchema).replaceAll("<", "\\u003c")}</script>\n  </head>`,
+);
+
+const consultingOutputDir = resolve(distDir, consultingPage.path);
+await mkdir(consultingOutputDir, { recursive: true });
+await writeFile(resolve(consultingOutputDir, "index.html"), consultingHtml);
+
+console.log(
+  `SEO statique généré pour ${pages.length} pages Beauté et la page Consulting.`,
+);
