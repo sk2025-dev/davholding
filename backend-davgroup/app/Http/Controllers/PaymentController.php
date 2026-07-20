@@ -13,6 +13,15 @@ class PaymentController extends Controller
     private string $baseUrl;
     private array $headers;
 
+    private function paydunyaCredential(string $key): string
+    {
+        $value = config("services.paydunya.{$key}", '');
+
+        return is_scalar($value) || $value instanceof \Stringable
+            ? trim((string) $value)
+            : '';
+    }
+
     public function __construct()
     {
         $mode = config('services.paydunya.mode', 'test');
@@ -21,9 +30,9 @@ class PaymentController extends Controller
             : 'https://app.paydunya.com/sandbox-api/v1';
 
         $this->headers = [
-            'PAYDUNYA-MASTER-KEY'  => config('services.paydunya.master_key'),
-            'PAYDUNYA-PRIVATE-KEY' => config('services.paydunya.private_key'),
-            'PAYDUNYA-TOKEN'       => config('services.paydunya.token'),
+            'PAYDUNYA-MASTER-KEY'  => $this->paydunyaCredential('master_key'),
+            'PAYDUNYA-PRIVATE-KEY' => $this->paydunyaCredential('private_key'),
+            'PAYDUNYA-TOKEN'       => $this->paydunyaCredential('token'),
             'Content-Type'         => 'application/json',
         ];
     }

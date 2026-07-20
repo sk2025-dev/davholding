@@ -533,6 +533,14 @@
   align-items: center;
 }
 
+.beauty-real-section-header h2 {
+  color: #170b0d;
+}
+
+.beauty-real-section-header h2 span {
+  color: #c41420;
+}
+
 .beauty-real-section-header > div {
   display: flex;
   flex-direction: column;
@@ -967,6 +975,29 @@
 
   .beauty-real-cat-title {
     font-size: 22px;
+  }
+
+  .beauty-real-section-header {
+    width: 100%;
+  }
+
+  .beauty-real-section-header h2 {
+    color: #170b0d !important;
+    font-size: clamp(34px, 10vw, 48px);
+    line-height: 1.03;
+    opacity: 1;
+  }
+
+  .beauty-real-section-header .beauty-btn {
+    width: 100%;
+    max-width: 100%;
+    min-height: 54px;
+    padding: 13px 18px;
+    justify-content: center;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.35;
+    letter-spacing: 0.1em;
   }
 }
 .beauty-skip-link {

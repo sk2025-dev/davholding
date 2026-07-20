@@ -212,7 +212,13 @@ export default function BookingModal({ isOpen, onClose, preService = null }) {
       if (!res.ok) throw new Error(data?.message || "Erreur lors de la réservation.");
       setStep("paying");
       setTimeout(() => { window.location.href = data.invoice_url; }, 1500);
-    } catch (err) { setBookError(err.message); }
+    } catch (err) {
+      const technicalMessage = err?.message || "";
+      const safeMessage = /header values|scalar|Laravel|Stringable|TypeError/i.test(technicalMessage)
+        ? "Le service de paiement est momentanément indisponible. Veuillez réessayer dans quelques instants."
+        : technicalMessage || "Impossible de lancer le paiement. Veuillez réessayer.";
+      setBookError(safeMessage);
+    }
     finally { setSubmitting(false); }
   };
 
