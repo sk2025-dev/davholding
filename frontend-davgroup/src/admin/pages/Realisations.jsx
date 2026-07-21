@@ -16,9 +16,12 @@ const initialForm = {
   category_key: "coiffure",
   title:        "",
   subtitle:     "",
+  description:  "",
+  duration:     "",
   price:        "",
   sort_order:   "0",
   image:        null,
+  gallery_images: [],
 };
 
 /* ── Carte réalisation ── */
@@ -153,6 +156,7 @@ const Realisations = () => {
   const [editItem, setEditItem]      = useState(null);
   const [form, setForm]              = useState(initialForm);
   const [imagePreview, setImagePreview] = useState(null);
+  const [galleryPreviews, setGalleryPreviews] = useState([]);
 
   const resetPage = () => setPage(1);
 
@@ -188,6 +192,12 @@ const Realisations = () => {
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === "image") setImagePreview(files?.[0] ? URL.createObjectURL(files[0]) : null);
+    if (name === "gallery_images") {
+      const selected = Array.from(files || []).slice(0, 12);
+      setGalleryPreviews(selected.map((file) => URL.createObjectURL(file)));
+      setForm((cur) => ({ ...cur, gallery_images: selected }));
+      return;
+    }
     setForm((cur) => ({ ...cur, [name]: files ? files[0] : value }));
   };
 
@@ -197,7 +207,11 @@ const Realisations = () => {
       return;
     }
     const fd = new FormData();
-    Object.entries(form).forEach(([k, v]) => { if (v !== null && v !== "") fd.append(k, v); });
+    Object.entries(form).forEach(([k, v]) => {
+      if (k === "gallery_images") {
+        v.forEach((file) => fd.append("gallery_images[]", file));
+      } else if (v !== null && v !== "") fd.append(k, v);
+    });
     try {
       if (editItem) {
         fd.append("_method", "PUT");
@@ -219,6 +233,7 @@ const Realisations = () => {
     setEditItem(null);
     setForm(initialForm);
     setImagePreview(null);
+    setGalleryPreviews([]);
   };
 
   const handleEdit = (item) => {
@@ -228,11 +243,15 @@ const Realisations = () => {
       category_key: item.category_key || "coiffure",
       title:        item.title        || "",
       subtitle:     item.subtitle     || "",
+      description:  item.description  || "",
+      duration:     item.duration     || "",
       price:        item.price        || "",
       sort_order:   String(item.sort_order ?? 0),
       image:        null, // nouvelle photo optionnelle
+      gallery_images: [],
     });
     setImagePreview(item.image_url || null);
+    setGalleryPreviews(item.gallery_urls || []);
     setAddOpen(true);
   };
 
@@ -490,9 +509,20 @@ const Realisations = () => {
                 </div>
 
                 <div className="admin-field">
-                  <label className="admin-label">Prix indicatif <span style={{ fontWeight: 400, color: "var(--ink-m)", fontSize: "11px" }}>(optionnel)</span></label>
-                  <input name="price" className="admin-inp" value={form.price} onChange={handleChange}
-                    placeholder="Ex : 35 000 FCFA" />
+                  <label className="admin-label">Description détaillée</label>
+                  <textarea name="description" className="admin-inp" rows="4" value={form.description} onChange={handleChange}
+                    placeholder="Décrivez le résultat, les étapes du soin et les informations utiles avant de réserver." />
+                </div>
+
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                  <div className="admin-field">
+                    <label className="admin-label">Prix indicatif</label>
+                    <input name="price" className="admin-inp" value={form.price} onChange={handleChange} placeholder="Ex : 35 000 FCFA" />
+                  </div>
+                  <div className="admin-field">
+                    <label className="admin-label">Durée</label>
+                    <input name="duration" className="admin-inp" value={form.duration} onChange={handleChange} placeholder="Ex : 1 h 30" />
+                  </div>
                 </div>
 
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 90px", gap: "12px" }}>
@@ -512,6 +542,24 @@ const Realisations = () => {
                 {imagePreview && (
                   <div style={{ height: "180px", borderRadius: "14px", overflow: "hidden", background: "rgba(0,0,0,.06)" }}>
                     <img src={imagePreview} alt="Aperçu" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  </div>
+                )}
+
+                <div className="admin-field">
+                  <label className="admin-label">
+                    Galerie de la prestation
+                    <span style={{ fontWeight: 400, color: "var(--ink-m)", fontSize: "11px", marginLeft: 6 }}>
+                      (jusqu'à 12 photos — une nouvelle sélection remplace l'ancienne)
+                    </span>
+                  </label>
+                  <input name="gallery_images" type="file" accept="image/*" multiple className="admin-inp" onChange={handleChange} />
+                </div>
+
+                {galleryPreviews.length > 0 && (
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "8px" }}>
+                    {galleryPreviews.map((src, index) => (
+                      <img key={`${src}-${index}`} src={src} alt={`Galerie ${index + 1}`} style={{ width: "100%", aspectRatio: "1", objectFit: "cover", borderRadius: "9px" }} />
+                    ))}
                   </div>
                 )}
 

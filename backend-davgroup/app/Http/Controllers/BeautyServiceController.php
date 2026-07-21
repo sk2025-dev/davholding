@@ -37,10 +37,13 @@ class BeautyServiceController extends Controller
             'category_key' => ['required', 'string', 'max:100'],
             'title' => ['required', 'string', 'max:255'],
             'subtitle' => ['nullable', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:3000'],
             'duration' => ['nullable', 'string', 'max:50'],
             'price' => ['nullable', 'string', 'max:50'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
             'image' => ['nullable', 'image', 'max:4096'],
+            'gallery_images' => ['nullable', 'array', 'max:12'],
+            'gallery_images.*' => ['image', 'max:4096'],
             'is_featured' => ['nullable', 'boolean'],
         ]);
 
@@ -54,9 +57,14 @@ class BeautyServiceController extends Controller
             'category_key' => $data['category_key'],
             'title' => $data['title'],
             'subtitle' => $data['subtitle'] ?? null,
+            'description' => $data['description'] ?? null,
             'duration' => $data['duration'] ?? null,
             'price' => $data['price'] ?? null,
             'image_path' => $imagePath,
+            'gallery_images' => collect($request->file('gallery_images', []))
+                ->map(fn ($image) => $image->store('beauty-services/gallery', 'public'))
+                ->values()
+                ->all(),
             'sort_order' => $data['sort_order'] ?? 0,
             'is_active' => true,
             'is_featured' => $request->boolean('is_featured', false),
@@ -72,12 +80,15 @@ class BeautyServiceController extends Controller
             'category_key' => ['sometimes', 'string', 'max:100'],
             'title' => ['sometimes', 'string', 'max:255'],
             'subtitle' => ['nullable', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:3000'],
             'duration' => ['nullable', 'string', 'max:50'],
             'price' => ['nullable', 'string', 'max:50'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
             'is_active' => ['sometimes', 'boolean'],
             'is_featured' => ['sometimes', 'boolean'],
             'image' => ['nullable', 'image', 'max:4096'],
+            'gallery_images' => ['nullable', 'array', 'max:12'],
+            'gallery_images.*' => ['image', 'max:4096'],
         ]);
 
         if ($request->hasFile('image')) {
@@ -85,6 +96,16 @@ class BeautyServiceController extends Controller
                 Storage::disk('public')->delete($beautyService->image_path);
             }
             $beautyService->image_path = $request->file('image')->store('beauty-services', 'public');
+        }
+
+        if ($request->hasFile('gallery_images')) {
+            foreach ($beautyService->gallery_images ?? [] as $path) {
+                Storage::disk('public')->delete($path);
+            }
+            $beautyService->gallery_images = collect($request->file('gallery_images'))
+                ->map(fn ($image) => $image->store('beauty-services/gallery', 'public'))
+                ->values()
+                ->all();
         }
 
         $beautyService->fill($data);
@@ -97,6 +118,9 @@ class BeautyServiceController extends Controller
     {
         if ($beautyService->image_path) {
             Storage::disk('public')->delete($beautyService->image_path);
+        }
+        foreach ($beautyService->gallery_images ?? [] as $path) {
+            Storage::disk('public')->delete($path);
         }
 
         $beautyService->delete();
@@ -112,12 +136,17 @@ class BeautyServiceController extends Controller
             'category_key' => $item->category_key,
             'title' => $item->title,
             'subtitle' => $item->subtitle,
+            'description' => $item->description,
             'duration' => $item->duration,
             'price' => $item->price,
             'sort_order' => $item->sort_order,
             'is_active' => $item->is_active,
             'is_featured' => $item->is_featured,
             'image_url' => $item->image_path ? asset('storage/' . $item->image_path) : null,
+            'gallery_urls' => collect($item->gallery_images ?? [])
+                ->map(fn ($path) => asset('storage/' . $path))
+                ->values()
+                ->all(),
         ];
     }
 }

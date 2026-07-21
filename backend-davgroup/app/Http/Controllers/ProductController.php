@@ -71,7 +71,7 @@ class ProductController extends Controller
                     'source_id' => $service->id,
                     'kind' => 'service',
                     'name' => $service->title,
-                    'description' => $service->subtitle,
+                    'description' => $service->description ?: $service->subtitle,
                     'category' => $labels[$service->category_key] ?? $service->category_key,
                     'price' => null,
                     'price_label' => $service->price,

@@ -15,9 +15,11 @@ class BeautyService extends Model
         'category_key',
         'title',
         'subtitle',
+        'description',
         'duration',
         'price',
         'image_path',
+        'gallery_images',
         'sort_order',
         'is_active',
         'is_featured',
@@ -27,5 +29,6 @@ class BeautyService extends Model
         'sort_order' => 'integer',
         'is_active' => 'boolean',
         'is_featured' => 'boolean',
+        'gallery_images' => 'array',
     ];
 }

@@ -34,6 +34,7 @@ function RealisationsSection() {
   const [items, setItems]       = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [lightbox, setLightbox]   = useState(null); /* { items: [], idx: number } */
+  const [galleryIndex, setGalleryIndex] = useState(0);
 
   useEffect(() => {
     let mounted = true;
@@ -52,7 +53,10 @@ function RealisationsSection() {
   }, []);
 
   /* ── Lightbox helpers ── */
-  const openLightbox  = useCallback((groupItems, idx) => setLightbox({ items: groupItems, idx }), []);
+  const openLightbox  = useCallback((groupItems, idx) => {
+    setGalleryIndex(0);
+    setLightbox({ items: groupItems, idx });
+  }, []);
   const closeLightbox = useCallback(() => {
     setLightbox(null);
     if (searchParams.has("service")) {
@@ -61,10 +65,14 @@ function RealisationsSection() {
       setSearchParams(next, { replace: true });
     }
   }, [searchParams, setSearchParams]);
-  const prevPhoto = useCallback(() =>
-    setLightbox((l) => ({ ...l, idx: l.idx > 0 ? l.idx - 1 : l.items.length - 1 })), []);
-  const nextPhoto = useCallback(() =>
-    setLightbox((l) => ({ ...l, idx: l.idx < l.items.length - 1 ? l.idx + 1 : 0 })), []);
+  const prevPhoto = useCallback(() => {
+    setGalleryIndex(0);
+    setLightbox((l) => ({ ...l, idx: l.idx > 0 ? l.idx - 1 : l.items.length - 1 }));
+  }, []);
+  const nextPhoto = useCallback(() => {
+    setGalleryIndex(0);
+    setLightbox((l) => ({ ...l, idx: l.idx < l.items.length - 1 ? l.idx + 1 : 0 }));
+  }, []);
 
   useEffect(() => {
     if (!lightbox) return;
@@ -88,6 +96,9 @@ function RealisationsSection() {
     .filter((g) => g.photos.length > 0);
 
   const currentItem = lightbox ? lightbox.items[lightbox.idx] : null;
+  const currentGallery = currentItem
+    ? [currentItem.image_url, ...(currentItem.gallery_urls || [])].filter(Boolean)
+    : [];
 
   useEffect(() => {
     const serviceId = searchParams.get("service");
@@ -96,8 +107,8 @@ function RealisationsSection() {
     if (!target) return;
     const groupItems = items.filter((item) => item.category_key === target.category_key);
     const index = groupItems.findIndex((item) => item.id === target.id);
-    if (index >= 0) setLightbox({ items: groupItems, idx: index });
-  }, [isLoading, items, lightbox, searchParams]);
+    if (index >= 0) openLightbox(groupItems, index);
+  }, [isLoading, items, lightbox, searchParams, openLightbox]);
 
   return (
     <section id="realisations" className="rl-section">
@@ -203,16 +214,27 @@ function RealisationsSection() {
 
           <div className="rl-lb-inner" onClick={(e) => e.stopPropagation()}>
             <img
-              src={currentItem.image_url}
+              src={currentGallery[galleryIndex] || currentItem.image_url}
               alt={currentItem.title}
               className="rl-lb-img"
               decoding="async"
             />
+            {currentGallery.length > 1 && (
+              <div className="rl-lb-gallery" aria-label="Galerie de la prestation">
+                {currentGallery.map((src, index) => (
+                  <button key={`${src}-${index}`} type="button" className={`rl-lb-thumb${index === galleryIndex ? " is-active" : ""}`} onClick={() => setGalleryIndex(index)} aria-label={`Afficher la photo ${index + 1}`}>
+                    <img src={src} alt="" />
+                  </button>
+                ))}
+              </div>
+            )}
             <div className="rl-lb-footer">
               <div className="rl-lb-info">
                 <div className="rl-lb-name">{currentItem.title}</div>
+                {currentItem.description && <div className="rl-lb-description">{currentItem.description}</div>}
+                {currentItem.duration && <div className="rl-lb-duration">Durée : {currentItem.duration}</div>}
                 {currentItem.price && <div className="rl-lb-price">{currentItem.price}</div>}
-                <div className="rl-lb-count">{lightbox.idx + 1} / {lightbox.items.length}</div>
+                <div className="rl-lb-count">Photo {galleryIndex + 1} / {currentGallery.length}</div>
               </div>
               <button
                 className="rl-lb-rdv-btn"
