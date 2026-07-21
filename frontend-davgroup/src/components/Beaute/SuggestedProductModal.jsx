@@ -8,7 +8,8 @@ const SHOW_AT_SCROLL_PROGRESS = 0.45;
 
 export default function SuggestedProductModal() {
   const navigate = useNavigate();
-  const [product, setProduct] = useState(null);
+  const [items, setItems] = useState([]);
+  const [activeIndex, setActiveIndex] = useState(0);
   const [visible, setVisible] = useState(false);
 
   const close = useCallback(() => {
@@ -22,13 +23,14 @@ export default function SuggestedProductModal() {
     fetch(`${API_URL}/products/featured`, { headers: { Accept: "application/json" } })
       .then((res) => res.json())
       .then((json) => {
-        if (json?.data) setProduct(json.data);
+        const data = Array.isArray(json?.data) ? json.data : (json?.data ? [json.data] : []);
+        setItems(data);
       })
       .catch(() => {});
   }, []);
 
   useEffect(() => {
-    if (!product) return;
+    if (items.length === 0) return;
     if (sessionStorage.getItem(SESSION_KEY)) return;
 
     const onScroll = () => {
@@ -44,7 +46,7 @@ export default function SuggestedProductModal() {
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
-  }, [product]);
+  }, [items]);
 
   useEffect(() => {
     if (!visible) return;
@@ -53,36 +55,53 @@ export default function SuggestedProductModal() {
     return () => window.removeEventListener("keydown", onKey);
   }, [visible, close]);
 
+  const currentItem = items[activeIndex] || null;
+
   const discover = () => {
     close();
-    navigate("/davbeaute");
+    navigate(currentItem?.detail_url || "/davbeaute");
   };
 
-  if (!visible || !product) return null;
+  if (!visible || !currentItem) return null;
 
   return (
     <>
       <div className="spm-overlay" onClick={close} aria-hidden="true" />
-      <div className="spm-panel" role="dialog" aria-modal="true" aria-label="Produit suggéré">
+      <div className="spm-panel" role="dialog" aria-modal="true" aria-label="Sélection en vedette">
         <button type="button" className="spm-close" onClick={close} aria-label="Fermer">✕</button>
 
         <div className="spm-tag">✨ Rien que pour vous</div>
 
         <div className="spm-image-wrap">
-          {product.badge && <span className="spm-badge">{product.badge}</span>}
-          <img src={product.image || "/images/placeholder.svg"} alt={product.name} loading="lazy" decoding="async" />
+          {currentItem.badge && <span className="spm-badge">{currentItem.badge}</span>}
+          <img src={currentItem.image || "/images/placeholder.svg"} alt={currentItem.name} loading="lazy" decoding="async" />
+          {items.length > 1 && (
+            <>
+              <button type="button" className="spm-nav spm-nav--prev" onClick={() => setActiveIndex((activeIndex - 1 + items.length) % items.length)} aria-label="Suggestion précédente">‹</button>
+              <button type="button" className="spm-nav spm-nav--next" onClick={() => setActiveIndex((activeIndex + 1) % items.length)} aria-label="Suggestion suivante">›</button>
+            </>
+          )}
         </div>
 
-        <h3 className="spm-name">{product.name}</h3>
-        {product.category && <p className="spm-category">{product.category}</p>}
-        <p className="spm-price">{Number(product.price).toLocaleString("fr-FR")} FCFA</p>
+        <h3 className="spm-name">{currentItem.name}</h3>
+        {currentItem.category && <p className="spm-category">{currentItem.category}</p>}
+        {(currentItem.price_label || currentItem.price !== null) && (
+          <p className="spm-price">{currentItem.price_label || `${Number(currentItem.price).toLocaleString("fr-FR")} FCFA`}</p>
+        )}
+        {items.length > 1 && (
+          <div className="spm-dots" aria-label={`${activeIndex + 1} sur ${items.length}`}>
+            {items.map((item, index) => (
+              <button key={item.id} type="button" className={`spm-dot${index === activeIndex ? " is-active" : ""}`} onClick={() => setActiveIndex(index)} aria-label={`Afficher ${item.name}`} />
+            ))}
+          </div>
+        )}
 
         <div className="spm-actions">
           <button type="button" className="spm-btn spm-btn--secondary" onClick={close}>
             Non merci
           </button>
           <button type="button" className="spm-btn spm-btn--primary" onClick={discover}>
-            Découvrir →
+            En savoir plus →
           </button>
         </div>
       </div>

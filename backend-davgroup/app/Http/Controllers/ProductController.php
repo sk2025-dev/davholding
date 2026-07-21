@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Product;
+use App\Models\BeautyService;
 
 class ProductController extends Controller
 {
@@ -28,18 +29,59 @@ class ProductController extends Controller
         return response()->json(['data' => $this->transform($p)]);
     }
 
-    /**
-     * Produit vedette à suggérer aux visiteurs (popup d'accueil Beauté).
-     */
+    /** Sélection de produits et prestations à suggérer aux visiteurs. */
     public function featured()
     {
-        $p = Product::with('category')
+        $products = Product::with('category')
             ->where('is_active', true)
             ->where('is_featured', true)
             ->latest('updated_at')
-            ->first();
+            ->limit(12)
+            ->get()
+            ->map(function (Product $product) {
+                $item = $this->transform($product);
+                $category = Str::lower($item['category'] ?? '');
 
-        return response()->json(['data' => $p ? $this->transform($p) : null]);
+                return array_merge($item, [
+                    'id' => 'product-' . $product->id,
+                    'source_id' => $product->id,
+                    'kind' => 'product',
+                    'detail_url' => Str::contains($category, 'capill')
+                        ? '/beaute/capillaires?product=' . $product->id
+                        : '/beaute/cosmetiques?product=' . $product->id,
+                ]);
+            });
+
+        $services = BeautyService::query()
+            ->where('is_active', true)
+            ->where('is_featured', true)
+            ->whereIn('category_key', ['coiffure', 'ongerie', 'spa'])
+            ->latest('updated_at')
+            ->limit(12)
+            ->get()
+            ->map(function (BeautyService $service) {
+                $labels = [
+                    'coiffure' => 'Coiffure',
+                    'ongerie' => 'Onglerie',
+                    'spa' => 'Spa & détente',
+                ];
+
+                return [
+                    'id' => 'service-' . $service->id,
+                    'source_id' => $service->id,
+                    'kind' => 'service',
+                    'name' => $service->title,
+                    'description' => $service->subtitle,
+                    'category' => $labels[$service->category_key] ?? $service->category_key,
+                    'price' => null,
+                    'price_label' => $service->price,
+                    'badge' => 'Prestation vedette',
+                    'image' => $service->image_path ? asset('storage/' . $service->image_path) : null,
+                    'detail_url' => '/davbeaute?service=' . $service->id,
+                ];
+            });
+
+        return response()->json(['data' => $products->concat($services)->values()]);
     }
 
     public function store(Request $request)

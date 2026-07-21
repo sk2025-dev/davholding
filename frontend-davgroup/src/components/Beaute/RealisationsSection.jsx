@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { realisationCategories } from "./beauteData";
 import { useClientAuth } from "../../context/ClientAuthContext";
 
@@ -29,6 +29,7 @@ const buildFallback = () =>
 
 function RealisationsSection() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { openBooking } = useClientAuth();
   const [items, setItems]       = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -52,7 +53,14 @@ function RealisationsSection() {
 
   /* ── Lightbox helpers ── */
   const openLightbox  = useCallback((groupItems, idx) => setLightbox({ items: groupItems, idx }), []);
-  const closeLightbox = useCallback(() => setLightbox(null), []);
+  const closeLightbox = useCallback(() => {
+    setLightbox(null);
+    if (searchParams.has("service")) {
+      const next = new URLSearchParams(searchParams);
+      next.delete("service");
+      setSearchParams(next, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
   const prevPhoto = useCallback(() =>
     setLightbox((l) => ({ ...l, idx: l.idx > 0 ? l.idx - 1 : l.items.length - 1 })), []);
   const nextPhoto = useCallback(() =>
@@ -80,6 +88,16 @@ function RealisationsSection() {
     .filter((g) => g.photos.length > 0);
 
   const currentItem = lightbox ? lightbox.items[lightbox.idx] : null;
+
+  useEffect(() => {
+    const serviceId = searchParams.get("service");
+    if (isLoading || !serviceId || lightbox) return;
+    const target = items.find((item) => String(item.id) === serviceId);
+    if (!target) return;
+    const groupItems = items.filter((item) => item.category_key === target.category_key);
+    const index = groupItems.findIndex((item) => item.id === target.id);
+    if (index >= 0) setLightbox({ items: groupItems, idx: index });
+  }, [isLoading, items, lightbox, searchParams]);
 
   return (
     <section id="realisations" className="rl-section">

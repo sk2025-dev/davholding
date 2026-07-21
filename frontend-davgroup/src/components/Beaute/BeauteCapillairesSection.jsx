@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import BeautyCard from "./BeautyCard";
 import ProductDetailModal from "./ProductDetailModal";
 import { useClientAuth } from "../../context/ClientAuthContext";
@@ -26,6 +27,7 @@ function toCardItem(p) {
 }
 
 function BeauteCapillairesSection({ onAddToCart }) {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { openBooking } = useClientAuth();
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -39,6 +41,22 @@ function BeauteCapillairesSection({ onAddToCart }) {
       .catch(() => setProducts([]))
       .finally(() => setIsLoading(false));
   }, []);
+
+  useEffect(() => {
+    const productId = searchParams.get("product");
+    if (!productId || products.length === 0) return;
+    const target = products.find((product) => String(product.id) === productId);
+    if (target) setSelectedProduct(target);
+  }, [products, searchParams]);
+
+  const closeProductDetails = () => {
+    setSelectedProduct(null);
+    if (searchParams.has("product")) {
+      const next = new URLSearchParams(searchParams);
+      next.delete("product");
+      setSearchParams(next, { replace: true });
+    }
+  };
 
   const inStock = products.filter((p) => p.inStock);
   const allProducts = products.filter((p) =>
@@ -150,7 +168,7 @@ function BeauteCapillairesSection({ onAddToCart }) {
       {selectedProduct && (
         <ProductDetailModal
           product={selectedProduct}
-          onClose={() => setSelectedProduct(null)}
+          onClose={closeProductDetails}
           onAddToCart={onAddToCart}
           suggestions={inStock.filter((p) => p.id !== selectedProduct.id).slice(0, 3)}
         />

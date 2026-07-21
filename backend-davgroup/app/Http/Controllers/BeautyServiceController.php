@@ -41,6 +41,7 @@ class BeautyServiceController extends Controller
             'price' => ['nullable', 'string', 'max:50'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
             'image' => ['nullable', 'image', 'max:4096'],
+            'is_featured' => ['nullable', 'boolean'],
         ]);
 
         $imagePath = null;
@@ -58,6 +59,7 @@ class BeautyServiceController extends Controller
             'image_path' => $imagePath,
             'sort_order' => $data['sort_order'] ?? 0,
             'is_active' => true,
+            'is_featured' => $request->boolean('is_featured', false),
         ]);
 
         return response()->json(['data' => $this->transform($item)], 201);
@@ -74,6 +76,7 @@ class BeautyServiceController extends Controller
             'price' => ['nullable', 'string', 'max:50'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
             'is_active' => ['sometimes', 'boolean'],
+            'is_featured' => ['sometimes', 'boolean'],
             'image' => ['nullable', 'image', 'max:4096'],
         ]);
 
@@ -113,6 +116,7 @@ class BeautyServiceController extends Controller
             'price' => $item->price,
             'sort_order' => $item->sort_order,
             'is_active' => $item->is_active,
+            'is_featured' => $item->is_featured,
             'image_url' => $item->image_path ? asset('storage/' . $item->image_path) : null,
         ];
     }

@@ -22,7 +22,7 @@ const initialForm = {
 };
 
 /* ── Carte réalisation ── */
-const RealisationCard = ({ item, onToggle, onDelete, onEdit }) => {
+const RealisationCard = ({ item, onToggle, onFeaturedToggle, onDelete, onEdit }) => {
   const cat = CATEGORIES.find((c) => c.value === item.category_key);
   return (
     <div style={{
@@ -84,6 +84,19 @@ const RealisationCard = ({ item, onToggle, onDelete, onEdit }) => {
           )}
         </div>
         <div style={{ display: "flex", gap: "6px" }}>
+          <button
+            onClick={() => onFeaturedToggle(item)}
+            title={item.is_featured ? "Retirer de la sélection vedette" : "Mettre en vedette"}
+            aria-label={item.is_featured ? "Retirer de la sélection vedette" : "Mettre en vedette"}
+            style={{
+              padding: "6px 10px", borderRadius: "8px", cursor: "pointer",
+              border: "1.5px solid rgba(196,20,32,.22)", fontSize: "13px",
+              background: item.is_featured ? "#c41420" : "rgba(196,20,32,.07)",
+              color: item.is_featured ? "#fff" : "#c41420",
+            }}
+          >
+            {item.is_featured ? "★" : "☆"}
+          </button>
           <button
             onClick={() => onToggle(item)}
             style={{
@@ -243,6 +256,19 @@ const Realisations = () => {
     }
   };
 
+  const handleFeaturedToggle = async (item) => {
+    const fd = new FormData();
+    fd.append("_method", "PUT");
+    fd.append("is_featured", item.is_featured ? "0" : "1");
+    try {
+      await adminApi.updateBeautyService(item.id, fd);
+      await loadItems();
+      showToast(item.is_featured ? "Retirée des vedettes" : "★ Ajoutée aux vedettes");
+    } catch (err) {
+      showToast(err.message || "Erreur", 3000);
+    }
+  };
+
   const handleDelete = async (id) => {
     try {
       await adminApi.deleteBeautyService(id);
@@ -381,6 +407,7 @@ const Realisations = () => {
               key={item.id}
               item={item}
               onToggle={handleToggle}
+              onFeaturedToggle={handleFeaturedToggle}
               onDelete={handleDelete}
               onEdit={handleEdit}
             />

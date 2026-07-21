@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import "../../styles/BeauteCosmetiques.css";
 import "../../styles/BeauteCoiffures.css";
 import BeautyCard from "./BeautyCard";
@@ -28,6 +29,7 @@ function toCardItem(p) {
 const PER_PAGE = 8;
 
 function BeauteCosmetiquesSection({ onAddToCart }) {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -47,6 +49,22 @@ function BeauteCosmetiquesSection({ onAddToCart }) {
       .then(d => { if (d?.data?.length > 0) setActivePromo(d.data[0]); })
       .catch(() => {});
   }, []);
+
+  useEffect(() => {
+    const productId = searchParams.get("product");
+    if (!productId || products.length === 0) return;
+    const target = products.find((product) => String(product.id) === productId);
+    if (target) setSelectedProduct(target);
+  }, [products, searchParams]);
+
+  const closeProductDetails = () => {
+    setSelectedProduct(null);
+    if (searchParams.has("product")) {
+      const next = new URLSearchParams(searchParams);
+      next.delete("product");
+      setSearchParams(next, { replace: true });
+    }
+  };
 
   const inStock    = products.filter((p) => p.inStock);
   const filtered   = products.filter((p) => p.title.toLowerCase().includes(search.toLowerCase()));
@@ -130,7 +148,7 @@ function BeauteCosmetiquesSection({ onAddToCart }) {
       {selectedProduct && (
         <ProductDetailModal
           product={selectedProduct}
-          onClose={() => setSelectedProduct(null)}
+          onClose={closeProductDetails}
           onAddToCart={onAddToCart}
           suggestions={inStock.filter((p) => p.id !== selectedProduct.id).slice(0, 3)}
         />
